@@ -121,6 +121,12 @@ class Easy_Reservations_Reviews {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-easy-reservations-reviews-public.php';
+		/**
+		 * The files responsible for common static functions
+		 * side of the site.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/easy-reservations-reviews-functions.php';
+		
 
 		$this->loader = new Easy_Reservations_Reviews_Loader();
 
@@ -156,6 +162,9 @@ class Easy_Reservations_Reviews {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_filter( 'woocommerce_get_sections_easy-reservations', $plugin_admin, 'ersrvr_reviews_settings_section' );
+		$this->loader->add_filter( 'woocommerce_get_settings_easy-reservations', $plugin_admin, 'ersrvr_reviews_settings_fields', 99, 2 );
+		
 
 	}
 

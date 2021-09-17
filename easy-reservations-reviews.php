@@ -79,4 +79,58 @@ function run_easy_reservations_reviews() {
 	$plugin->run();
 
 }
-run_easy_reservations_reviews();
+/**
+ * This initiates the plugin.
+ * Checks for the required plugins to be installed and active.
+ *
+ * @since 1.0.0
+ */
+function ersrvr_plugins_loaded_callback() {
+	$active_plugins   = get_option( 'active_plugins' );
+	$is_ersrvr_active = in_array( 'easy-reservations/easy-reservations.php', $active_plugins, true );
+
+	if ( current_user_can( 'activate_plugins' ) && false === $is_ersrvr_active ) {
+		add_action( 'admin_notices', 'ersrvr_admin_notices_callback' );
+	} else {
+		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'ersrvr_plugin_actions_callback' );
+		run_easy_reservations_reviews();
+	}
+}
+add_action( 'plugins_loaded', 'ersrvr_plugins_loaded_callback' );
+/**
+ * Show admin notice for the required plugins not active or installed.
+ *
+ * @since 1.0.0
+ */
+function ersrvr_admin_notices_callback() {
+	$this_plugin_data = get_plugin_data( __FILE__ );
+	$this_plugin      = $this_plugin_data['Name'];
+	$ersrv_plugin        = 'Easy Reservations';
+	?>
+	<div class="error">
+		<p>
+			<?php
+			/* translators: 1: %s: strong tag open, 2: %s: strong tag close, 3: %s: this plugin, 4: %s: woocommerce plugin, 5: anchor tag for woocommerce plugin, 6: anchor tag close */
+			echo wp_kses_post( sprintf( __( '%1$s%3$s%2$s is ineffective as it requires %1$s%4$s%2$s to be installed and active. Click %5$shere%6$s to install or activate it.', 'wc-quick-buy' ), '<strong>', '</strong>', esc_html( $this_plugin ), esc_html( $ersrv_plugin ), '<a target="_blank" href="' . admin_url( 'plugin-install.php?s=woocommerce&tab=search&type=term' ) . '">', '</a>' ) );
+			?>
+		</p>
+	</div>
+	<?php
+}
+/**
+ * This function adds custom plugin actions.
+ *
+ * @param array $links Links array.
+ * @return array
+ * @since 1.0.0
+ */
+function ersrvr_plugin_actions_callback( $links ) {
+	$this_plugin_links = array(
+		'<a title="' . __( 'Settings', 'easy-reservations-reviews' ) . '" href="' . esc_url( admin_url( 'admin.php?page=wc-settings&tab=easy-reservations' ) ) . '">' . __( 'Settings', 'easy-reservations-reviews' ) . '</a>',
+		'<a title="' . __( 'Docs', 'easy-reservations-reviews' ) . '" href="javascript:void(0);">' . __( 'Docs', 'easy-reservations-reviews' ) . '</a>',
+		'<a title="' . __( 'Support', 'easy-reservations-reviews' ) . '" href="javascript:void(0);">' . __( 'Support', 'easy-reservations-reviews' ) . '</a>',
+		'<a title="' . __( 'Changelog', 'easy-reservations-reviews' ) . '" href="javascript:void(0);">' . __( 'Changelog', 'easy-reservations-reviews' ) . '</a>',
+	);
+
+	return array_merge( $this_plugin_links, $links );
+}

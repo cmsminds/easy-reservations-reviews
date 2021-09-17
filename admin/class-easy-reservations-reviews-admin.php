@@ -99,5 +99,31 @@ class Easy_Reservations_Reviews_Admin {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/easy-reservations-reviews-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
-
+	/**
+	 * Add review setting section on easy reservations setting page.
+	 *
+	 * @param string $sections Holds the existing sections of easy reservations
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function ersrvr_reviews_settings_section( $sections ){
+		$sections['reviews_settings'] = esc_html__( 'Reviews Settings', 'easy-reservations-reviews' );
+		return $sections;
+	}
+	/**
+	 * Hook the receipt option in order listing page on customer's my account.
+	 *
+	 * @param array    $settings Holds the array of setting fiels.
+	 * @param string $current_section Holds the current section screen at easy reservations setting section.
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function ersrvr_reviews_settings_fields( $settings, $current_section ){
+		if( 'reviews_settings' !== $current_section ) {
+			return	$settings;
+		}
+		$settings = ersrvr_setting_fields();
+		return $settings;
+	}
+	
 }
