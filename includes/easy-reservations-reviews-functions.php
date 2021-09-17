@@ -31,7 +31,6 @@ if ( ! function_exists( 'ersrvr_setting_fields' ) ) {
 				'options'  => ersrvr_default_review_criterias(),
 				'class'    => 'wc-enhanced-select',
 				'desc'     => __( 'This holds the review criteria. if you want add custom criteria please click <a href="#" class="ersrv_add_more_criterias">here</a>' ),
-				// 'desc_tip' => true,
 				'default'  => '',
 				'id'       => 'ersrv_submit_review_criterias',
 			),
@@ -54,12 +53,22 @@ if ( ! function_exists( 'ersrvr_default_review_criterias' ) ) {
 	 * @return array
 	 * @since 1.0.0
 	 */
-	function ersrvr_default_review_criterias(){
-		$criterias = array(
-			'accuracy'      => __( 'Accuracy', 'easy-reservations-reviews' ),
-			'communication' => __( 'Communication', 'easy-reservations-reviews' ),
+	function ersrvr_default_review_criterias() {
+		$criterias = array_merge(
+			array(
+				__( 'Accuracy', 'easy-reservations-reviews' )      => __( 'Accuracy', 'easy-reservations-reviews' ),
+				__( 'Communication', 'easy-reservations-reviews' ) => __( 'Communication', 'easy-reservations-reviews' ),
+			),
+			ersrvr_get_plugin_settings( 'ersrv_submit_review_criterias' )
 		);
+
+		debug( $criterias );
+
+		/**
+		 * 
+		 */
 		$criterias = apply_filters( 'ersrvr_add_custom_review_criterias', $criterias );
+
 		return $criterias;
 	}
 }

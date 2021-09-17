@@ -1,17 +1,6 @@
 jQuery( document ).ready( function( $ ) {
 	'use strict';
 
-	// Localized variables.
-	var review_criterias = ERSRVR_Reviews_Script_Vars.review_criterias;
-
-	var review_criterias_arr = [];
-	for( var i in review_criterias ) {
-		review_criterias_arr.push( review_criterias[i] );
-	}
-
-	console.log( 'review_criterias', review_criterias, typeof review_criterias );
-	console.log( 'review_criterias_arr', review_criterias_arr, typeof review_criterias_arr );
-
 	/**
 	 * Append a new criteria for review.
 	 */
@@ -25,13 +14,13 @@ jQuery( document ).ready( function( $ ) {
 			return false;
 		}
 
-		var criteria_slug = criteria_name.toLowerCase();
-		criteria_slug     = criteria_slug.replace( ' ', '-' );
-		review_criterias_arr  = review_criterias_arr.push( criteria_slug );
-		// console.log( 'review_criterias_arr', review_criterias_arr );
+		// Check if the criteria to be added doesn't already exist.
 
-		// $( '#ersrv_submit_review_criterias' ).append( '<option value="' + criteria_slug + '">' + criteria_name + '</option>' );
-		// $( '#ersrv_submit_review_criterias' ).select2( 'val', review_criterias );
+		// Push the slug into the array.
+		var new_criteria = new Option( criteria_name, criteria_name, true, true );
+
+		// Append the select option.
+		$( '#ersrv_submit_review_criterias' ).append( new_criteria ).trigger( 'change' );
 	} );
 
 	/**

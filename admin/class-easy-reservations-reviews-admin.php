@@ -85,8 +85,7 @@ class Easy_Reservations_Reviews_Admin {
 			$this->plugin_name,
 			'ERSRVR_Reviews_Script_Vars',
 			array(
-				'ajaxurl'          => admin_url( 'admin-ajax.php' ),
-				'review_criterias' => ersrvr_get_plugin_settings( 'ersrv_submit_review_criterias' ),
+				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			)
 		);
 
