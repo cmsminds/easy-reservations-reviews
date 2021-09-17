@@ -63,3 +63,24 @@ if ( ! function_exists( 'ersrvr_default_review_criterias' ) ) {
 		return $criterias;
 	}
 }
+
+/**
+ * Get plugin setting by setting index.
+ *
+ * @param string $setting Holds the setting index.
+ * @return boolean|string|array|int
+ * @since 1.0.0
+ */
+function ersrvr_get_plugin_settings( $setting ) {
+	switch ( $setting ) {
+		case 'ersrv_submit_review_criterias':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : array();
+			break;
+
+		default:
+			$data = -1;
+	}
+
+	return $data;
+}

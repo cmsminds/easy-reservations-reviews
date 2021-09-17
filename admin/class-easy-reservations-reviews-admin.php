@@ -61,18 +61,6 @@ class Easy_Reservations_Reviews_Admin {
 	 */
 	public function enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Easy_Reservations_Reviews_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Easy_Reservations_Reviews_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/easy-reservations-reviews-admin.css', array(), $this->version, 'all' );
 
 	}
@@ -83,27 +71,22 @@ class Easy_Reservations_Reviews_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-		global $current_section;
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Easy_Reservations_Reviews_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Easy_Reservations_Reviews_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+		// Custom admin script.
+		wp_enqueue_script(
+			$this->plugin_name,
+			plugin_dir_url( __FILE__ ) . 'js/easy-reservations-reviews-admin.js',
+			array( 'jquery' ),
+			$this->version,
+			true
+		);
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/easy-reservations-reviews-admin.js', array( 'jquery' ), $this->version, false );
+		// Localize variables.
 		wp_localize_script(
 			$this->plugin_name,
 			'ERSRVR_Reviews_Script_Vars',
 			array(
-				'ajaxurl'         => admin_url( 'admin-ajax.php' ),
-				'current_section' => $current_section,
-				
+				'ajaxurl'          => admin_url( 'admin-ajax.php' ),
+				'review_criterias' => ersrvr_get_plugin_settings( 'ersrv_submit_review_criterias' ),
 			)
 		);
 
