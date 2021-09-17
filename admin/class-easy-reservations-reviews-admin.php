@@ -83,7 +83,7 @@ class Easy_Reservations_Reviews_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-
+		global $current_section;
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
@@ -97,6 +97,15 @@ class Easy_Reservations_Reviews_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/easy-reservations-reviews-admin.js', array( 'jquery' ), $this->version, false );
+		wp_localize_script(
+			$this->plugin_name,
+			'ERSRVR_Reviews_Script_Vars',
+			array(
+				'ajaxurl'         => admin_url( 'admin-ajax.php' ),
+				'current_section' => $current_section,
+				
+			)
+		);
 
 	}
 	/**

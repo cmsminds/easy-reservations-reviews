@@ -28,5 +28,21 @@
 	 * Although scripts in the WordPress core, Plugins and Themes may be
 	 * practising this, we should strive to set a better example in our own work.
 	 */
+	jQuery(document).on('click','.ersrv_add_more_criterias', function(e) {
+		e.preventDefault();
+		var criteria_name = prompt("Please Add Criteria","");
+		if( '' !== criteria_name ) {
+			var criteria_slug    = criteria_name.toLowerCase();
+			criteria_slug        = criteria_slug.replace( ' ', '-' );
+			var previous_criteria = $('#ersrv_submit_review_criterias option').val();
+			console.log(previous_criteria);
+			$('#ersrv_submit_review_criterias').append('<option value="'+ criteria_slug +'">'+ criteria_name +'</option>');
+			// $("#ersrv_submit_review_criterias").val([criteria_slug]).trigger("change");
+			
+			$('#ersrv_submit_review_criterias').select2('val', [criteria_slug]);
 
+		}
+
+	} );
+	
 })( jQuery );
