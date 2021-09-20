@@ -4,18 +4,10 @@ jQuery( document ).ready( function( $ ) {
 	// Localized variables.
 	var review_criterias = ERSRVR_Reviews_Script_Vars.review_criterias;
 	var promptbox_text   = ERSRVR_Reviews_Script_Vars.promptbox_text;
-	// console.log(review_criterias);
-	// return false;
-
 	var review_criterias_arr = [];
 	for( var i in review_criterias ) {
 		review_criterias_arr.push( review_criterias[i] );
 	}
-	// console.log(review_criterias_arr);
-
-	// console.log( 'review_criterias', review_criterias, typeof review_criterias );
-	// console.log( 'review_criterias_arr', review_criterias_arr, typeof review_criterias_arr );
-
 	/**
 	 * Append a new criteria for review.
 	 */
@@ -30,12 +22,13 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		var criteria_slug     = criteria_name.toLowerCase();
-		criteria_slug         = criteria_slug.replace( ' ', '-' );
-		review_criterias_arr  = review_criterias_arr.push( criteria_slug );
+		criteria_slug         = criteria_slug.replace(/ /g, "-");
+		review_criterias_arr.push(criteria_slug);
 		console.log( 'review_criterias_arr', review_criterias_arr );
 
 		// Append the select option.
-		$( '#ersrv_submit_review_criterias' ).append( new_criteria ).trigger( 'change' );
+		$( '#ersrv_submit_review_criterias' ).append( '<option value="' + criteria_slug + '">' + criteria_slug + '</option>' );
+		$("#ersrv_submit_review_criterias").val(review_criterias_arr); 
 	} );
 
 	/**
