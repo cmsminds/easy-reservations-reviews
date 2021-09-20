@@ -75,10 +75,10 @@ class Easy_Reservations_Reviews_Admin {
 			$this->plugin_name,
 			'ERSRVR_Reviews_Script_Vars',
 			array(
-				'ajaxurl'                         => admin_url( 'admin-ajax.php' ),
-				'review_criterias'                => ersrvr_get_plugin_settings( 'ersrv_submit_review_criterias' ),
-				'add_criterias_promptbox_text'    => esc_html__( 'Add Criteria:', 'easy-reservations-reviews' ),
-				'remove_criterias_promptbox_text' => esc_html__( 'Remove Criteria:', 'easy-reservations-reviews' )
+				'ajaxurl'                      => admin_url( 'admin-ajax.php' ),
+				'add_criteria_button_text'     => __( 'Add Criteria', 'easy-reservations-reviews' ),
+				'add_criterias_promptbox_text' => __( 'New Criteria', 'easy-reservations-reviews' ),
+				'add_same_criteria_error'      => __( 'The criteria already exists. Please add a different criteria.', 'easy-reservations-reviews' ),
 			)
 		);
 
@@ -115,14 +115,14 @@ class Easy_Reservations_Reviews_Admin {
 	 * @return array
 	 * @since 1.0.0
 	 */
-	// public function ersrvr_reviews_add_options() {
-	// 	global $current_section;
-	// 	if( 'reviews' !== $current_section ) {
-	// 		return	true;
-	// 	}
-	// 	if( isset( $_POST ) && ! empty ( $_POST ) ) {
-	// 		update_option ( 'ersrv_submit_review_criterias', );
-	// 	}
-	// }
-	
+	public function ersrvr_woocommerce_admin_settings_sanitize_option_callback( $value, $option, $raw_value ) {
+		debug( '1' );
+		var_dump( $value );
+		debug( '2' );
+		debug( $option );
+		debug( '3' );
+		var_dump( $raw_value );
+
+		die;
+	}
 }

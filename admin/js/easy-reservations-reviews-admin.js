@@ -2,13 +2,20 @@ jQuery( document ).ready( function( $ ) {
 	'use strict';
 
 	// Localized variables.
-	var review_criterias                = ERSRVR_Reviews_Script_Vars.review_criterias;
-	var add_criterias_promptbox_text    = ERSRVR_Reviews_Script_Vars.add_criterias_promptbox_text;
-	var remove_criterias_promptbox_text = ERSRVR_Reviews_Script_Vars.add_criterias_promptbox_text;
-	var review_criterias_arr = [];
-	for( var i in review_criterias ) {
-		review_criterias_arr.push( review_criterias[i] );
+	var add_criteria_button_text     = ERSRVR_Reviews_Script_Vars.add_criteria_button_text;
+	var add_criterias_promptbox_text = ERSRVR_Reviews_Script_Vars.add_criterias_promptbox_text;
+	var add_same_criteria_error      = ERSRVR_Reviews_Script_Vars.add_same_criteria_error;
+
+	// Get the current section.
+	var current_section = get_query_string_parameter_value( 'section' );
+	if ( 1 === is_valid_string( current_section ) && 'reviews' === current_section ) {
+		// Add a button just after the review criterias.
+		var criteria_select2_class = $( '#ersrv_submit_review_criterias' ).next( 'span.select2' ).attr( 'class' );
+		criteria_select2_class     = '.' + criteria_select2_class.replace( / /g, '.' );
+		$( '<a href="#" class="ersrv_add_more_criterias button">' + add_criteria_button_text + '</a>' ).insertAfter( criteria_select2_class );
+		$( '.ersrv_add_more_criterias' ).css( 'margin-left', '5px' );
 	}
+	
 	/**
 	 * Append a new criteria for review.
 	 */
@@ -22,15 +29,34 @@ jQuery( document ).ready( function( $ ) {
 			return false;
 		}
 
-		var criteria_slug     = criteria_name.toLowerCase();
-		criteria_slug         = criteria_slug.replace(/ /g, "-");
-		review_criterias_arr.push(criteria_slug);
-		// console.log( 'review_criterias_arr', review_criterias_arr );
+		// Check if the criteria to be added doesn't already exist.
+		var existing_cirterias_count = $( '#ersrv_submit_review_criterias > option' ).length;
+		var has_similar_criteria     = false;
+		if ( 1 <= existing_cirterias_count ) {
+			$( '#ersrv_submit_review_criterias > option' ).each( function() {
+				var this_option      = $( this );
+				var this_option_text = this_option.text();
+
+				if ( this_option_text.toLowerCase() === criteria_name.toLowerCase() ) {
+					has_similar_criteria = true;
+					return false;
+				}
+			} );
+		}
+
+		// Check if there was any similar criteria.
+		if ( has_similar_criteria ) {
+			alert( add_same_criteria_error );
+			return false;
+		}
+
+		// Push the slug into the array.
+		var new_criteria = new Option( criteria_name, criteria_name, true, true );
 
 		// Append the select option.
-		$( '#ersrv_submit_review_criterias' ).append( '<option value="' + criteria_slug + '">' + criteria_name + '</option>' );
-		$("#ersrv_submit_review_criterias").val(review_criterias_arr); 
+		$( '#ersrv_submit_review_criterias' ).append( new_criteria ).trigger( 'change' );
 	} );
+
 	/**
 	 * Remove  criteria for review.
 	 */
@@ -91,5 +117,18 @@ jQuery( document ).ready( function( $ ) {
 	function unblock_element( element ) {
 		element.removeClass( 'non-clickable' );
 	}
-	
+
+	/**
+	 * Get query string parameter value.
+	 *
+	 * @param {string} string
+	 * @return {string} string
+	 */
+	function get_query_string_parameter_value( param_name ) {
+		var url_string = window.location.href;
+		var url        = new URL( url_string );
+		var val        = url.searchParams.get( param_name );
+
+		return val;
+	}
 } );
