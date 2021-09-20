@@ -62,7 +62,7 @@ if ( ! function_exists( 'ersrvr_default_review_criterias' ) ) {
 			ersrvr_get_plugin_settings( 'ersrv_submit_review_criterias' )
 		);
 
-		debug( $criterias );
+		// debug( $criterias );
 
 		/**
 		 * 
