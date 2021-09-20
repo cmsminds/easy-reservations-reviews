@@ -75,9 +75,10 @@ class Easy_Reservations_Reviews_Admin {
 			$this->plugin_name,
 			'ERSRVR_Reviews_Script_Vars',
 			array(
-				'ajaxurl'          => admin_url( 'admin-ajax.php' ),
-				'review_criterias' => ersrvr_get_plugin_settings( 'ersrv_submit_review_criterias' ),
-				'promptbox_text'   => esc_html__( 'Criteria:', 'easy-reservations-reviews' )
+				'ajaxurl'                         => admin_url( 'admin-ajax.php' ),
+				'review_criterias'                => ersrvr_get_plugin_settings( 'ersrv_submit_review_criterias' ),
+				'add_criterias_promptbox_text'    => esc_html__( 'Add Criteria:', 'easy-reservations-reviews' ),
+				'remove_criterias_promptbox_text' => esc_html__( 'Remove Criteria:', 'easy-reservations-reviews' )
 			)
 		);
 
@@ -108,5 +109,5 @@ class Easy_Reservations_Reviews_Admin {
 		$settings = ersrvr_setting_fields();
 		return $settings;
 	}
-	
+
 }

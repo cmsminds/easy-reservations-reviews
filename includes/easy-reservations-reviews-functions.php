@@ -30,7 +30,7 @@ if ( ! function_exists( 'ersrvr_setting_fields' ) ) {
 				'type'     => 'multiselect',
 				'options'  => ersrvr_default_review_criterias(),
 				'class'    => 'wc-enhanced-select',
-				'desc'     => __( '<a href="#" class="ersrv_add_more_criterias">Add Criterias</a>&nbsp;&nbsp;<a href="#" class="ersrv_remove_criterias">Remove Criterias:</a>' ),
+				'desc'     => __( '<a href="#" class="ersrv_add_more_criterias">' . __( 'Add Criterias','easy-reservations-reviews') . '</a>&nbsp;&nbsp;<a href="#" class="ersrv_remove_criterias">' . __( 'Remove Criterias','easy-reservations-reviews') . '</a>' ),
 				'default'  => '',
 				'id'       => 'ersrv_submit_review_criterias',
 			),
@@ -57,11 +57,10 @@ if ( ! function_exists( 'ersrvr_default_review_criterias' ) ) {
 		$criterias = array_merge(
 			array(
 				__( 'Accuracy', 'easy-reservations-reviews' )      => __( 'Accuracy', 'easy-reservations-reviews' ),
-				__( 'Communication', 'easy-reservations-reviews' ) => __( 'Communication', 'easy-reservations-reviews' ),
 			),
 			ersrvr_get_plugin_settings( 'ersrv_submit_review_criterias' )
 		);
-
+		// $criterias = array();
 		// debug( $criterias );
 
 		/**
