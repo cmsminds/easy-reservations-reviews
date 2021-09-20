@@ -13,6 +13,6 @@
  */
 ?>
 <div class ="ersrvr_main_container">
-    <h1><?php esc_html_e( "Hello",'easy-reservations-reviews' ); ?></h1>
+    <p><?php esc_html_e( "Hello",'easy-reservations-reviews' ); ?></p>
 </div>
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->

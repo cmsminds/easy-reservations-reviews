@@ -151,7 +151,33 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 		if( file_exists( $file_path ) ) {
 			require_once $file_path;
 		}
-		$html .= ob_get_clean();
+		$html .= wp_kses(
+			ob_get_clean(),
+			array(
+				'div'    => array(
+					'class' => array(),
+				),
+				'span'   => array(
+					'class' => array(),
+				),
+				'p'      => array(),
+				'a'      => array(
+					'href'     => array(),
+					'class'    => array(),
+					'download' => array(),
+				),
+				'button' => array(
+					'type'  => array(),
+					'class' => array(),
+				),
+				'input'  => array(
+					'type'   => array(),
+					'name'   => array(),
+					'id'     => array(),
+					'accept' => array(),
+				),
+			),
+		);
 		return $html;
 	}
 }
