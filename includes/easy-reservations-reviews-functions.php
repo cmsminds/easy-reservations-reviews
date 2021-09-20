@@ -9,7 +9,7 @@ if ( ! function_exists( 'ersrvr_setting_fields' ) ) {
 	 * @return array
 	 * @since 1.0.0
 	 */
-	function ersrvr_setting_fields(){
+	function ersrvr_setting_fields() {
 		$fields = array(
 			array(
 				'title' => __( 'Reservations Reviews Setting', 'easy-reservations-reviews' ),
@@ -47,22 +47,56 @@ if ( ! function_exists( 'ersrvr_setting_fields' ) ) {
 }
 
 /**
- * Get plugin setting by setting index.
- *
- * @param string $setting Holds the setting index.
- * @return boolean|string|array|int
- * @since 1.0.0
+ * Check if the function exists.
  */
-function ersrvr_get_plugin_settings( $setting ) {
-	switch ( $setting ) {
-		case 'ersrv_submit_review_criterias':
-			$data = get_option( $setting );
-			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : array();
-			break;
+if ( ! function_exists( 'ersrvr_get_plugin_settings' ) ) {
+	/**
+	 * Get plugin setting by setting index.
+	 *
+	 * @param string $setting Holds the setting index.
+	 * @return boolean|string|array|int
+	 * @since 1.0.0
+	 */
+	function ersrvr_get_plugin_settings( $setting ) {
+		switch ( $setting ) {
+			case 'ersrv_submit_review_criterias':
+				$data = get_option( $setting );
+				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : array();
+				$data = ( ! empty( $data ) ) ? ersrvr_prepare_criterias_array( $data ) : array();
+				break;
 
-		default:
-			$data = -1;
+			default:
+				$data = -1;
+		}
+
+		return $data;
 	}
+}
 
-	return $data;
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrvr_prepare_criterias_array' ) ) {
+	/**
+	 * Get plugin setting by setting index.
+	 *
+	 * @param string $setting Holds the setting index.
+	 * @return boolean|string|array|int
+	 * @since 1.0.0
+	 */
+	function ersrvr_prepare_criterias_array( $data ) {
+		// Return, if the data is blank.
+		if ( empty( $data ) || ! is_array( $data ) ) {
+			return $data;
+		}
+
+		$criterias = array();
+
+		// Iterate through the data items to prepare as per the need.
+		foreach ( $data as $criteria_name ) {
+			$criterias[ $criteria_name ] = $criteria_name;
+		}
+
+		return $criterias;
+	}
 }

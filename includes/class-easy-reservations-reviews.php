@@ -163,8 +163,6 @@ class Easy_Reservations_Reviews {
 		$this->loader->add_filter( 'woocommerce_get_sections_easy-reservations', $plugin_admin, 'ersrvr_reviews_settings_section' );
 		$this->loader->add_filter( 'woocommerce_get_settings_easy-reservations', $plugin_admin, 'ersrvr_reviews_settings_fields', 99, 2 );
 		// $this->loader->add_action( 'admin_init', $plugin_admin, 'ersrvr_reviews_add_options');
-		// $this->loader->add_filter( 'woocommerce_admin_settings_sanitize_option', $plugin_admin, 'ersrvr_woocommerce_admin_settings_sanitize_option_callback', 20, 3 );
-		// $this->loader->add_action( 'woocommerce_update_option', $plugin_admin, 'ersrvr_woocommerce_update_option_callback', 20 );
 	}
 
 	/**

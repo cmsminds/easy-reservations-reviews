@@ -109,20 +109,4 @@ class Easy_Reservations_Reviews_Admin {
 		$settings = ersrvr_setting_fields();
 		return $settings;
 	}
-	/**
-	 * Hook the receipt option in order listing page on customer's my account.
-	 *
-	 * @return array
-	 * @since 1.0.0
-	 */
-	public function ersrvr_woocommerce_admin_settings_sanitize_option_callback( $value, $option, $raw_value ) {
-		debug( '1' );
-		var_dump( $value );
-		debug( '2' );
-		debug( $option );
-		debug( '3' );
-		var_dump( $raw_value );
-
-		die;
-	}
 }
