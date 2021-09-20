@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       Easy Reservations Reviews
  * Plugin URI:        https://github.com/cmsminds/easy-reservations-reviews
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       This is Add-ons for Easy Reservation Plugin. This plugin holds add reservation reviews on reservation products.
  * Version:           1.0.0
  * Author:            cmsMinds
  * Author URI:        https://cmsminds.com
@@ -126,7 +126,7 @@ function ersrvr_admin_notices_callback() {
  */
 function ersrvr_plugin_actions_callback( $links ) {
 	$this_plugin_links = array(
-		'<a title="' . __( 'Settings', 'easy-reservations-reviews' ) . '" href="' . esc_url( admin_url( 'admin.php?page=wc-settings&tab=easy-reservations' ) ) . '">' . __( 'Settings', 'easy-reservations-reviews' ) . '</a>',
+		'<a title="' . __( 'Settings', 'easy-reservations-reviews' ) . '" href="' . esc_url( admin_url( 'admin.php?page=wc-settings&tab=easy-reservations&section=reviews' ) ) . '">' . __( 'Settings', 'easy-reservations-reviews' ) . '</a>',
 		'<a title="' . __( 'Docs', 'easy-reservations-reviews' ) . '" href="javascript:void(0);">' . __( 'Docs', 'easy-reservations-reviews' ) . '</a>',
 		'<a title="' . __( 'Support', 'easy-reservations-reviews' ) . '" href="javascript:void(0);">' . __( 'Support', 'easy-reservations-reviews' ) . '</a>',
 		'<a title="' . __( 'Changelog', 'easy-reservations-reviews' ) . '" href="javascript:void(0);">' . __( 'Changelog', 'easy-reservations-reviews' ) . '</a>',

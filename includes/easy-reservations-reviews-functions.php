@@ -15,7 +15,7 @@ if ( ! function_exists( 'ersrvr_setting_fields' ) ) {
 				'title' => __( 'Reservations Reviews Setting', 'easy-reservations-reviews' ),
 				'type'  => 'title',
 				'desc'  => '',
-				'id'    => 'ersrvr_reviews_settings',
+				'id'    => 'ersrvr_reviews',
 			),
 			array(
 				'name'        => __( 'Submit Review Button Text', 'easy-reservations-reviews' ),
@@ -37,7 +37,7 @@ if ( ! function_exists( 'ersrvr_setting_fields' ) ) {
 			),
 			array(
 				'type' => 'sectionend',
-				'id'   => 'ersrvr_reviews_settings',
+				'id'   => 'ersrvr_reviews',
 			),
 		);
 		

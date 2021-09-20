@@ -159,8 +159,6 @@ class Easy_Reservations_Reviews {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Easy_Reservations_Reviews_Admin( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_filter( 'woocommerce_get_sections_easy-reservations', $plugin_admin, 'ersrvr_reviews_settings_section' );
 		$this->loader->add_filter( 'woocommerce_get_settings_easy-reservations', $plugin_admin, 'ersrvr_reviews_settings_fields', 99, 2 );
@@ -178,8 +176,6 @@ class Easy_Reservations_Reviews {
 	private function define_public_hooks() {
 
 		$plugin_public = new Easy_Reservations_Reviews_Public( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 	}

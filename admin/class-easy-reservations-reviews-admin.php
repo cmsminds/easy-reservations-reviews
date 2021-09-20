@@ -55,22 +55,12 @@ class Easy_Reservations_Reviews_Admin {
 	}
 
 	/**
-	 * Register the stylesheets for the admin area.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_styles() {
-
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/easy-reservations-reviews-admin.css', array(), $this->version, 'all' );
-
-	}
-
-	/**
-	 * Register the JavaScript for the admin area.
+	 * Register the JavaScriptn & stylesheet for the admin area.
 	 *
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/easy-reservations-reviews-admin.css', array(), $this->version, 'all' );
 		// Custom admin script.
 		wp_enqueue_script(
 			$this->plugin_name,
@@ -99,7 +89,7 @@ class Easy_Reservations_Reviews_Admin {
 	 * @since 1.0.0
 	 */
 	public function ersrvr_reviews_settings_section( $sections ){
-		$sections['reviews_settings'] = esc_html__( 'Reviews Settings', 'easy-reservations-reviews' );
+		$sections['reviews'] = esc_html__( 'Reviews', 'easy-reservations-reviews' );
 		return $sections;
 	}
 	/**
@@ -111,7 +101,7 @@ class Easy_Reservations_Reviews_Admin {
 	 * @since 1.0.0
 	 */
 	public function ersrvr_reviews_settings_fields( $settings, $current_section ){
-		if( 'reviews_settings' !== $current_section ) {
+		if( 'reviews' !== $current_section ) {
 			return	$settings;
 		}
 		$settings = ersrvr_setting_fields();
