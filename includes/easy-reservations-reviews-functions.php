@@ -30,7 +30,7 @@ if ( ! function_exists( 'ersrvr_setting_fields' ) ) {
 				'type'     => 'multiselect',
 				'options'  => ersrvr_default_review_criterias(),
 				'class'    => 'wc-enhanced-select',
-				'desc'     => __( 'This holds the review criteria. if you want add custom criteria please click <a href="#" class="ersrv_add_more_criterias">here</a>' ),
+				'desc'     => __( '<a href="#" class="ersrv_add_more_criterias">Add Criterias</a>&nbsp;&nbsp;<a href="#" class="ersrv_remove_criterias">Remove Criterias:</a>' ),
 				'default'  => '',
 				'id'       => 'ersrv_submit_review_criterias',
 			),
