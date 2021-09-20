@@ -27,11 +27,11 @@ if ( ! function_exists( 'ersrvr_setting_fields' ) ) {
 				'placeholder' => __( 'E.g.: Submit Review', 'easy-reservations-reviews' ),
 			),
 			array(
-				'name'     => __( 'Review Criteriass', 'easy-reservations-reviews' ),
+				'name'     => __( 'Review Criteria', 'easy-reservations-reviews' ),
 				'type'     => 'multiselect',
 				'options'  => ersrvr_get_plugin_settings( 'ersrv_submit_review_criterias' ),
 				'class'    => 'wc-enhanced-select',
-				'desc'     => __( 'This holds the review criterias. If you want to add some more, click on the button besides the selectbox.', 'easy-reservations-reviews' ),
+				'desc'     => __( 'This holds the review criteria. If you want to add some more, click on the button besides the selectbox.', 'easy-reservations-reviews' ),
 				'desc_tip' => true,
 				'default'  => '',
 				'id'       => 'ersrv_submit_review_criterias',
