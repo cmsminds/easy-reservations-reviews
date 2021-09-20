@@ -95,7 +95,7 @@ class Easy_Reservations_Reviews_Admin {
 		return $sections;
 	}
 	/**
-	 * Hook the receipt option in order listing page on customer's my account.
+	 * Add Custom fields to review section.
 	 *
 	 * @param array    $settings Holds the array of setting fiels.
 	 * @param string $current_section Holds the current section screen at easy reservations setting section.
@@ -109,5 +109,20 @@ class Easy_Reservations_Reviews_Admin {
 		$settings = ersrvr_setting_fields();
 		return $settings;
 	}
-
+	/**
+	 * Hook the receipt option in order listing page on customer's my account.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	// public function ersrvr_reviews_add_options() {
+	// 	global $current_section;
+	// 	if( 'reviews' !== $current_section ) {
+	// 		return	true;
+	// 	}
+	// 	if( isset( $_POST ) && ! empty ( $_POST ) ) {
+	// 		update_option ( 'ersrv_submit_review_criterias', );
+	// 	}
+	// }
+	
 }

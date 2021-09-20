@@ -16,6 +16,7 @@ if ( ! function_exists( 'ersrvr_setting_fields' ) ) {
 				'type'  => 'title',
 				'desc'  => '',
 				'id'    => 'ersrvr_reviews',
+				'name'  => 'ersrvr_reviews',
 			),
 			array(
 				'name'        => __( 'Submit Review Button Text', 'easy-reservations-reviews' ),
