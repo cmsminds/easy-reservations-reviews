@@ -166,6 +166,7 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 					'class'    => array(),
 					'download' => array(),
 				),
+				'h1'     => array(),
 				'button' => array(
 					'type'  => array(),
 					'class' => array(),
