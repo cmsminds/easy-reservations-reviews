@@ -64,7 +64,10 @@ if ( ! function_exists( 'ersrvr_get_plugin_settings' ) ) {
 				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : array();
 				$data = ( ! empty( $data ) ) ? ersrvr_prepare_criterias_array( $data ) : array();
 				break;
-
+			case 'ersrv_submit_review_button_text':
+				$data = get_option( $setting );
+				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : array();
+				break;
 			default:
 				$data = -1;
 		}
@@ -98,5 +101,58 @@ if ( ! function_exists( 'ersrvr_prepare_criterias_array' ) ) {
 		}
 
 		return $criterias;
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrvr_get_plugin_settings' ) ) {
+	/**
+	 * Get plugin setting by setting index.
+	 *
+	 * @param string $setting Holds the setting index.
+	 * @return boolean|string|array|int
+	 * @since 1.0.0
+	 */
+	function ersrvr_get_plugin_settings( $setting ) {
+		switch ( $setting ) {
+			case 'ersrv_submit_review_criterias':
+				$data = get_option( $setting );
+				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : array();
+				$data = ( ! empty( $data ) ) ? ersrvr_prepare_criterias_array( $data ) : array();
+				break;
+			case 'ersrv_submit_review_button_text':
+				$data = get_option( $setting );
+				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : array();
+				break;
+			default:
+				$data = -1;
+		}
+
+		return $data;
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
+	/**
+	 * Make Review Form HTML.
+	 *
+	 * @param string $setting Holds the setting index.
+	 * @return boolean|string|array|int
+	 * @since 1.0.0
+	 */
+	function ersrvr_prepare_reviews_html() {
+		$html = '';
+		ob_start(); 
+		$file_path = plugin_dir_path( __DIR__ ).'public/templates/woocommerce/easy-reservations-reviews-html.php';
+		if( file_exists( $file_path ) ) {
+			require_once $file_path;
+		}
+		$html .= ob_get_clean();
+		return $html;
 	}
 }
