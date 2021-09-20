@@ -141,8 +141,7 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 	/**
 	 * Make Review Form HTML.
 	 *
-	 * @param string $setting Holds the setting index.
-	 * @return boolean|string|array|int
+	 * @return string
 	 * @since 1.0.0
 	 */
 	function ersrvr_prepare_reviews_html() {
