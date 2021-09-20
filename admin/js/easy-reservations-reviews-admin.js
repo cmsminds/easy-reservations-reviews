@@ -57,22 +57,7 @@ jQuery( document ).ready( function( $ ) {
 		$( '#ersrv_submit_review_criterias' ).append( new_criteria ).trigger( 'change' );
 	} );
 
-	/**
-	 * Remove  criteria for review.
-	 */
-	jQuery( document ).on( 'click', '.ersrv_remove_criterias', function( evt ) {
-		evt.preventDefault();
-		// Get the criteria.
-		var criteria_name = prompt( remove_criterias_promptbox_text );
-		// Exit, if the criteria is invalid.
-		if ( -1 === is_valid_string( criteria_name ) ) {
-			return false;
-		}
-		var criteria_slug     = criteria_name.toLowerCase();
-		criteria_slug         = criteria_slug.replace(/ /g, "-");
-		$('#ersrv_submit_review_criterias option[value="' + criteria_slug + '"]').remove();
-		
-	} );
+	
 
 	/**
 	 * Check if a string is valid.
