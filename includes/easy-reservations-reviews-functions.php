@@ -263,3 +263,37 @@ if ( ! function_exists( 'ersrvr_get_active_stylesheet' ) ) {
 		}
 	}
 }
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrvr_user_loggend_in_data' ) ) {
+	/**
+	 * Get User loggedin Data
+	 *
+	 * 
+	 * @return array
+	 * @since 1.0.0
+	 */
+	function ersrvr_user_loggend_in_data() {
+		$current_userid = get_current_user_id();
+		$users_info = array();
+		if ( 0 ==  $current_userid ) {
+			// The user ID is 0, therefore the current user is not logged in
+			return $users_info; // escape this function, without making any changes
+		} else {
+			$user_obj     = get_userdata( $current_userid );
+			$first_name   = ! empty( $user_obj->data->first_name ) ? $user_obj->data->first_name : '';
+			$last_name    = ! empty( $user_obj->data->last_name ) ? $user_obj->data->last_name : '';
+			$display_name = ! empty( $user_obj->data->display_name ) ? $user_obj->data->display_name : '';
+			$username     = sprintf( __( '%1$s %2$s', 'easy-reservations' ), $first_name, $last_name );
+			$username     = ! empty( $username ) ? $username : $display_name;
+			$user_email   = ! empty( $user_obj->data->user_email ) ? $user_obj->data->user_email : '';
+			$users_info   = array(
+				'username'   => $username,
+				'user_email' => $user_email,
+			);
+		}
+		return apply_filters( 'ersrvr_add_user_information', $users_info, $current_userid );
+	}
+}
