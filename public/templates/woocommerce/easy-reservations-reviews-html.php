@@ -11,6 +11,9 @@
  * @package    Easy_Reservations_Reviews
  * @subpackage Easy_Reservations_Reviews/public/templates
  */
+$user_info  = ersrvr_user_logged_in_data();
+$user_email = $user_info['user_email'];
+$username   = $user_info['username'];
 ?>
 
 <div class="ship-reviews info-box">
@@ -19,11 +22,13 @@
     </a>
     <div class="collapse show" id="ship-reviews-collapse">
         <div class="dropdown-divider"></div>
-
-        <div class="alert alert-warning" role="alert">
-            You are logged in as <span class="font-weight-bold">hiren@magicontap.com</span>. If you would like to use a different account for this mmbership, <a href="#" class="">Log out now</a>.
-        </div>
-
+        <?php 
+        if( is_array( $user_info ) && ! empty( $user_info ) ) { ?>
+            <div class="alert alert-warning" role="alert">
+                <?php 
+                echo sprintf( __( 'You are logged in as %1$s %2$s %3$s %4$s Logout %5$s.' ), '<span class="font-weight-bold">', $user_email, '</span>', '<a href="#" class="">','</a>' ); ?>
+            </div>
+        <?php } ?>
         <!-- form start here -->
         <!-- name, email, phone, file upload button, review message textarea ye fields chaiye hongi hume -->
         <div class="review-form-wrapper">
