@@ -157,6 +157,7 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 				'div'    => array(
 					'class' => array(),
 					'id'	=> array(),
+					'role'  => array(),
 				),
 				'span'   => array(
 					'class' => array(),
@@ -177,11 +178,28 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 					'class' => array(),
 				),
 				'input'  => array(
-					'type'   => array(),
-					'name'   => array(),
-					'id'     => array(),
-					'accept' => array(),
+					'type'        => array(),
+					'name'        => array(),
+					'id'          => array(),
+					'accept'      => array(),
+					'placeholder' => array(),
 				),
+				'form'   => array(
+					'method'  => array(),
+					'enctype' => array(),
+					
+				),
+				'label'  => array(
+					'class' => array(),
+					'for'   => array(),
+				),
+				'textarea' => array(
+					'name'        => array(),
+					'id'          => array(),
+					'class'       => array(),
+					'placeholder' => array(),
+				)
+
 			),
 		);
 		return $html;
@@ -203,44 +221,44 @@ if ( ! function_exists( 'ersrvr_get_active_stylesheet' ) ) {
 		switch ( $current_theme ) {
 			case 'twentysixteen':
 				return array(
-					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-twentysixteen.css',
-					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-twentysixteen.css',
+					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-reviews-twentysixteen.css',
+					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-reviews-twentysixteen.css',
 				);
 
 			case 'twentyseventeen':
 				return array(
-					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-twentyseventeen.css',
-					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-twentyseventeen.css',
+					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-reviews-twentyseventeen.css',
+					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-reviews-twentyseventeen.css',
 				);
 
 			case 'twentynineteen':
 				return array(
-					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-twentynineteen.css',
-					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-twentynineteen.css',
+					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-reviews-twentynineteen.css',
+					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-reviews-twentynineteen.css',
 				);
 
 			case 'twentytwenty':
 				return array(
-					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-twentytwenty.css',
-					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-twentytwenty.css',
+					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-reviews-twentytwenty.css',
+					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-reviews-twentytwenty.css',
 				);
 
 			case 'twentytwentyone':
 				return array(
-					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-twentytwentyone.css',
-					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-twentytwentyone.css',
+					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-reviews-twentytwentyone.css',
+					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-reviews-twentytwentyone.css',
 				);
 
 			case 'storefront':
 				return array(
-					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-storefront.css',
-					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-storefront.css',
+					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-reviews-storefront.css',
+					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-reviews-storefront.css',
 				);
 
 			default:
 				return array(
-					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-other.css',
-					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-other.css',
+					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-reviews-other.css',
+					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-reviews-other.css',
 				);
 		}
 	}
