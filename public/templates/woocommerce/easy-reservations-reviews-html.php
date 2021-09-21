@@ -19,6 +19,7 @@
     </a>
     <div class="collapse" id="ship-reviews-collapse">
         <div class="dropdown-divider"></div>
+        <p>show list of reviews here...</p>
     </div>
 </div>
 
