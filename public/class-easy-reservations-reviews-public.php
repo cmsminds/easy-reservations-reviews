@@ -63,11 +63,9 @@ class Easy_Reservations_Reviews_Public {
 		global $wp_registered_widgets, $post, $wp_query;
 		// Active style file based on the active theme.
 		$current_theme            = get_option( 'stylesheet' );
-		$active_style             = ersrv_get_active_stylesheet( $current_theme );
+		$active_style             = ersrvr_get_active_stylesheet( $current_theme );
 		$active_style_url         = ( ! empty( $active_style['url'] ) ) ? $active_style['url'] : '';
 		$active_style_path        = ( ! empty( $active_style['path'] ) ) ? $active_style['path'] : '';
-		debug($active_style_path);
-		die;
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/easy-reservations-reviews-public.css', array(), $this->version, 'all' );
 
 

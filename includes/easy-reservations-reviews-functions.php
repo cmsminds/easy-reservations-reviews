@@ -187,3 +187,61 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 		return $html;
 	}
 }
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrvr_get_active_stylesheet' ) ) {
+	/**
+	 * Get the active stysheet URL.
+	 *
+	 * @param string $current_theme Holds the current theme slug.
+	 * @return string
+	 * @since 1.0.0
+	 */
+	function ersrvr_get_active_stylesheet( $current_theme ) {
+		switch ( $current_theme ) {
+			case 'twentysixteen':
+				return array(
+					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-twentysixteen.css',
+					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-twentysixteen.css',
+				);
+
+			case 'twentyseventeen':
+				return array(
+					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-twentyseventeen.css',
+					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-twentyseventeen.css',
+				);
+
+			case 'twentynineteen':
+				return array(
+					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-twentynineteen.css',
+					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-twentynineteen.css',
+				);
+
+			case 'twentytwenty':
+				return array(
+					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-twentytwenty.css',
+					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-twentytwenty.css',
+				);
+
+			case 'twentytwentyone':
+				return array(
+					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-twentytwentyone.css',
+					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-twentytwentyone.css',
+				);
+
+			case 'storefront':
+				return array(
+					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-storefront.css',
+					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-storefront.css',
+				);
+
+			default:
+				return array(
+					'url'  => ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-other.css',
+					'path' => ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-other.css',
+				);
+		}
+	}
+}

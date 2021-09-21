@@ -35,7 +35,17 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'EASY_RESERVATIONS_REVIEWS_VERSION', '1.0.0' );
+define( 'ERSRVR_PLUGIN_VERSION', '1.0.0' );
+
+// Plugin path.
+if ( ! defined( 'ERSRVR_PLUGIN_PATH' ) ) {
+	define( 'ERSRVR_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+}
+
+// Plugin URL.
+if ( ! defined( 'ERSRVR_PLUGIN_URL' ) ) {
+	define( 'ERSRVR_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+}
 
 /**
  * The code that runs during plugin activation.
