@@ -61,11 +61,10 @@ class Easy_Reservations_Reviews_Public {
 	public function enqueue_scripts() {
 		global $wp_registered_widgets, $post, $wp_query;
 		// Active style file based on the active theme.
-		$current_theme            = get_option( 'stylesheet' );
-		$active_style             = ersrvr_get_active_stylesheet( $current_theme );
-		$active_style_url         = ( ! empty( $active_style['url'] ) ) ? $active_style['url'] : '';
-		$active_style_path        = ( ! empty( $active_style['path'] ) ) ? $active_style['path'] : '';
-		
+		$current_theme     = get_option( 'stylesheet' );
+		$active_style      = ersrvr_get_active_stylesheet( $current_theme );
+		$active_style_url  = ( ! empty( $active_style['url'] ) ) ? $active_style['url'] : '';
+		$active_style_path = ( ! empty( $active_style['path'] ) ) ? $active_style['path'] : '';
 		// Enque Style file.
 		if ( ! empty( $active_style_url ) && ! empty( $active_style_path ) ) {
 			wp_enqueue_style(
@@ -75,14 +74,13 @@ class Easy_Reservations_Reviews_Public {
 				filemtime( $active_style_path ),
 			);
 		}
-		
 		// Enque Javascript file.
-		wp_enqueue_script( 
-			$this->plugin_name, 
-			plugin_dir_url( __FILE__ ) . 'js/easy-reservations-reviews-public.js', 
-			array( 'jquery' ), 
-			$this->version, 
-			false 
+		wp_enqueue_script(
+			$this->plugin_name,
+			ERSRVR_PLUGIN_URL . 'public/js/easy-reservations-reviews-public.js',
+			array(),
+			filemtime( ERSRVR_PLUGIN_PATH . 'public/js/easy-reservations-reviews-public.js' ),
+			true
 		);
 
 		// Enqueue the common public style.
@@ -109,20 +107,19 @@ class Easy_Reservations_Reviews_Public {
 		}
 
 		ob_start();
-		echo ersrvr_prepare_reviews_html();
+		echo wp_kses( ersrvr_prepare_reviews_html() );
 		return ob_get_clean();
 	}
 	/**
 	 * Add review setting section on easy reservations setting page.
 	 *
 	 * @param string $reservation_id Holds the reservation product id.
-	 * @return array
 	 * @since 1.0.0
 	 */
-	public function ersrvr_after_item_details_callback( $reservation_id ){
+	public function ersrvr_after_item_details_callback( $reservation_id ) {
 		$product = get_product( $reservation_id );
-		// check product is reservation type or not
-    	if( $product->is_type( 'reservation' ) ) { 
+		// check product is reservation type or not.
+		if ( $product->is_type( 'reservation' ) ) {
 			$ersrvr_reservation_button_text          = ersrvr_submit_review_button_text();
 			$ersrvr_reservation_review_criteria      = ersrvr_submit_review_criterias();
 			$ersrvr_reservation_review_guest_setting = ersrvr_enable_reservation_reviews_guest_users();
