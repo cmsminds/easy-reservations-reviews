@@ -193,6 +193,8 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 					'id'          => array(),
 					'accept'      => array(),
 					'placeholder' => array(),
+					'class'       => array(),
+					'value'       => array(),
 				),
 				'form'   => array(
 					'method'  => array(),
@@ -291,11 +293,11 @@ if ( ! function_exists( 'ersrvr_user_logged_in_data' ) ) {
 			return $users_info; // escape this function, without making any changes
 		} else {
 			$user_obj     = get_userdata( $current_userid );
-			$first_name   = ! empty( $user_obj->data->first_name ) ? $user_obj->data->first_name : '';
-			$last_name    = ! empty( $user_obj->data->last_name ) ? $user_obj->data->last_name : '';
+			$first_name   = ! empty( get_user_meta( $current_userid, 'first_name', true ) ) ? get_user_meta( $current_userid, 'first_name', true ) : '';
+			$last_name    = ! empty( get_user_meta( $current_userid, 'last_name', true ) ) ? get_user_meta( $current_userid, 'last_name', true ) : '';
 			$display_name = ! empty( $user_obj->data->display_name ) ? $user_obj->data->display_name : '';
 			$username     = sprintf( __( '%1$s %2$s', 'easy-reservations-reviews' ), $first_name, $last_name );
-			$username     = ! empty( $username ) ? $username : $display_name;
+			$username     = ( ' ' !== $username ) ? $username : $display_name;
 			$user_email   = ! empty( $user_obj->data->user_email ) ? $user_obj->data->user_email : '';
 			$users_info   = array(
 				'username'   => $username,
