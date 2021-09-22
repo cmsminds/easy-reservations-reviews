@@ -233,25 +233,77 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 		<form action="#" method="post" enctype="multipart/form-data">
 			<div class="form-row">
 				<div class="col-12">
-					<label class="sr-only" for="name"><?php esc_html_e( 'Name', 'easy-reservations-reviews' ); ?></label>
+					<label for="">Please reate us 1 (bad) to 5 (excellent) *</label>
+					<div id="full-stars-example-two" class="rating-group-wrapper border">
+						<div class="rating-group">
+							<input disabled checked class="rating__input rating__input--none" name="rating3" id="rating3-none" value="0" type="radio">
+							<label aria-label="1 star" class="rating__label" for="rating3-1"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+							<input class="rating__input" name="rating3" id="rating3-1" value="1" type="radio">
+							<label aria-label="2 stars" class="rating__label" for="rating3-2"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+							<input class="rating__input" name="rating3" id="rating3-2" value="2" type="radio">
+							<label aria-label="3 stars" class="rating__label" for="rating3-3"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+							<input class="rating__input" name="rating3" id="rating3-3" value="3" type="radio">
+							<label aria-label="4 stars" class="rating__label" for="rating3-4"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+							<input class="rating__input" name="rating3" id="rating3-4" value="4" type="radio">
+							<label aria-label="5 stars" class="rating__label" for="rating3-5"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+							<input class="rating__input" name="rating3" id="rating3-5" value="5" type="radio">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="col-12 col-md-6">
+					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="name"><?php esc_html_e( 'Name', 'easy-reservations-reviews' ); ?> <span class="text-danger">*</span></label>
 					<input type="text" class="form-control mb-2" id="name" placeholder="Name" value="<?php esc_html_e( $username, 'easy-reservations-reviews' ); ?>" />
 				</div>
-				<div class="col-12">
-					<label class="sr-only" for="email"><?php esc_html_e( 'Email', 'easy-reservations-reviews' ); ?></label>
+				<div class="col-12 col-md-6">
+					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="email"><?php esc_html_e( 'Email', 'easy-reservations-reviews' ); ?> <span class="text-danger">*</span></label>
 					<input type="email" class="form-control mb-2" id="email" placeholder="E-mail" value="<?php esc_html_e( $user_email, 'easy-reservations-reviews' ); ?>" />
 				</div>
 			</div>
 			<div class="form-row">
-				<div class="col-12">
-					<label class="sr-only" for="phone"><?php esc_html_e( 'Phone Number', 'easy-reservations-reviews' ); ?></label>
+				<div class="col-12 col-md-6">
+					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="phone"><?php esc_html_e( 'Phone Number', 'easy-reservations-reviews' ); ?> <span class="text-danger">*</span></label>
 					<input type="text" class="form-control mb-2" id="phone" placeholder="Phone Number" value="<?php esc_html_e( $user_phone_number, 'easy-reservations-reviews' ); ?>" />
 				</div>
-				<div class="col-12">
-					<label class="sr-only" for="message"><?php esc_html_e( 'Message', 'easy-reservations-reviews' ); ?></label>
-					<textarea name="message" id="message" class="form-control mb-2"  placeholder="Message"></textarea>
+				<div class="col-12 col-md-6">
+					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="message"><?php esc_html_e( 'Upload Something Here', 'easy-reservations-reviews' ); ?> <span class="text-danger">*</span></label>
+					<div class="upload-btn-wrapper">
+						<!-- actual upload which is hidden -->
+						<input type="file" id="actual-btn" class="invisible sr-only"/>
+	
+						<!-- our custom upload button -->
+						<div class="d-flex align-items-center flex-wrap cus-btn">
+							<label for="actual-btn" class="btn btn-outline-fill-primary d-inline-bloxk px-3 mb-0"> <span class="fa fa-upload mr-2"></span> Add File</label>
+							<span id="file-chosen" class="font-lato font-size-14 ml-2 font-weight-semibold">No file chosen</span>
+							<!--
+								for file chosen js code
+								https://codepen.io/wizardofcodez/pen/XWddObO  
+								js code
+								const actualBtn = document.getElementById('actual-btn');
+
+								const fileChosen = document.getElementById('file-chosen');
+
+								actualBtn.addEventListener('change', function(){
+								fileChosen.textContent = this.files[0].name
+								})
+							-->
+
+						</div>
+					</div>
 				</div>
 			</div>
-		</form>   
+			<div class="form-row">
+				<div class="col-12 col-md-12">
+					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="message"><?php esc_html_e( 'Review', 'easy-reservations-reviews' ); ?> <span class="text-danger">*</span></label>
+					<textarea name="message" id="message" class="form-control mb-2"  placeholder="Message"></textarea>
+				</div>
+				<div class="col-12 text-center">
+					<label class="font-Poppins font-weight-normal text-black font-size-15">Thanks Again For Your Review!</label>
+					<button type="submit" class="btn btn-primary px-4 py-2 font-lato font-size-18 font-weight-bold">Submit</button>
+				</div>
+			</div>
+		</form>
 		<?php 
 		return wp_kses(
 			ob_get_clean(),
@@ -262,6 +314,9 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 					'role'  => array(),
 				),
 				'span'   => array(
+					'class' => array(),
+				),
+				'i'   => array(
 					'class' => array(),
 				),
 				'p'      => array(),
@@ -287,6 +342,7 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 					'placeholder' => array(),
 					'class'       => array(),
 					'value'       => array(),
+					'hidden'       => array(),
 				),
 				'form'   => array(
 					'method'  => array(),
