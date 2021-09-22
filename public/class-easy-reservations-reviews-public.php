@@ -66,10 +66,24 @@ class Easy_Reservations_Reviews_Public {
 		$active_style             = ersrvr_get_active_stylesheet( $current_theme );
 		$active_style_url         = ( ! empty( $active_style['url'] ) ) ? $active_style['url'] : '';
 		$active_style_path        = ( ! empty( $active_style['path'] ) ) ? $active_style['path'] : '';
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/easy-reservations-reviews-public.css', array(), $this->version, 'all' );
+		// Enque Style file.
 
-
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/easy-reservations-reviews-public.js', array( 'jquery' ), $this->version, false );
+		if ( ! empty( $active_style_url ) && ! empty( $active_style_path ) ) {
+			wp_enqueue_style(
+				$this->plugin_name,
+				$active_style_url,
+				array(),
+				filemtime( $active_style_path ),
+			);
+		}
+		// Enque Javascript file.
+		wp_enqueue_script( 
+			$this->plugin_name, 
+			plugin_dir_url( __FILE__ ) . 'js/easy-reservations-reviews-public.js', 
+			array( 'jquery' ), 
+			$this->version, 
+			false 
+		);
 
 	}
 	/**
