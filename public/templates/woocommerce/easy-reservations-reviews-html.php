@@ -35,8 +35,6 @@ $get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_rese
 		<!-- name, email, phone, file upload button, review message textarea ye fields chaiye hongi hume -->
 		<div class="review-form-wrapper">
 			<?php 
-			// debug($user_info);
-			// die;
 			if( empty( $user_info ) ) {
 				if( ! empty( $get_guest_user_enable_Setting ) && 'yes' === $get_guest_user_enable_Setting ) { ?>
 					<form action="#" method="post" enctype="multipart/form-data">
