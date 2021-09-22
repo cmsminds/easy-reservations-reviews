@@ -21,7 +21,7 @@ $get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_rese
 
 <div class="ship-reviews info-box">
 	<a class="section-title font-Poppins font-size-24 font-weight-bold d-block color-black text-decoration-none" data-toggle="collapse" href="#ship-reviews-collapse" role="button" aria-expanded="true" aria-controls="ship-reviews-collapse">
-		<span class="">Reviews</span>
+		<span class=""><?php esc_html_e( 'Reviews', 'easy-reservations-reviews' ); ?></span>
 	</a>
 	<div class="collapse show" id="ship-reviews-collapse">
 		<div class="dropdown-divider"></div>
@@ -29,7 +29,18 @@ $get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_rese
 		if( is_array( $user_info ) && ! empty( $user_info ) ) { ?>
 			<div class="alert alert-warning" role="alert">
 				<?php 
-				echo sprintf( __( 'You are logged in as %1$s %2$s %3$s %4$s Logout %5$s.', 'easy-reservations-reviews' ), '<span class="font-weight-bold">', $user_email, '</span>', '<a href="'. wp_logout_url( home_url() ) .'" class="">','</a>' ); ?>
+				echo wp_kses(
+					sprintf( __( 'You are logged in as %1$s %2$s %3$s %4$s Logout %5$s.', 'easy-reservations-reviews' ), '<span class="font-weight-bold">', $user_email, '</span>', '<a href="'. wp_logout_url( home_url() ) .'" class="">','</a>' ),
+					array(
+						'span'   => array(
+							'class' => array(),
+						),
+						'a'      => array(
+							'href'          => array(),
+							'class'         => array(),
+						),
+					),
+				); ?>
 			</div>
 		<?php } ?>
 		<!-- form start here -->
