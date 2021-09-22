@@ -87,6 +87,24 @@ class Easy_Reservations_Reviews_Public {
 		);
 
 	}
+
+	/**
+	 * Review Form Shortcode.
+	 *
+	 * @param array $args Holds the shortcode arguments.
+	 * @return string
+	 * @since 1.0.0
+	 */
+	public function ersrvr_review_form_shortcode_callback( $args = array() ) {
+		// Return, if it's admin panel.
+		if ( is_admin() ) {
+			return;
+		}
+
+		ob_start();
+		echo ersrvr_prepare_reviews_html();
+		return ob_get_clean();
+	}
 	/**
 	 * Add review setting section on easy reservations setting page.
 	 *

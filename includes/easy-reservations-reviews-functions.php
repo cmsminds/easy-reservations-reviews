@@ -149,7 +149,7 @@ if ( ! function_exists( 'ersrvr_get_plugin_settings' ) ) {
  */
 if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 	/**
-	 * Make Review Form HTML.
+	 * Make Review Template HTML.
 	 *
 	 * @return string
 	 * @since 1.0.0
@@ -215,6 +215,97 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 			),
 		);
 		return $html;
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
+	/**
+	 * Make Review Form HTML.
+	 *
+	 * @return string
+	 * @since 1.0.0
+	 */
+	function ersrvr_prepare_reviews_form_html( $user_email, $username, $user_phone_number ) {
+		ob_start(); ?>
+		<form action="#" method="post" enctype="multipart/form-data">
+			<div class="form-row">
+				<div class="col-12">
+					<label class="sr-only" for="name"><?php esc_html_e( 'Name', 'easy-reservations-reviews' ); ?></label>
+					<input type="text" class="form-control mb-2" id="name" placeholder="Name" value="<?php esc_html_e( $username, 'easy-reservations-reviews' ); ?>" />
+				</div>
+				<div class="col-12">
+					<label class="sr-only" for="email"><?php esc_html_e( 'Email', 'easy-reservations-reviews' ); ?></label>
+					<input type="email" class="form-control mb-2" id="email" placeholder="E-mail" value="<?php esc_html_e( $user_email, 'easy-reservations-reviews' ); ?>" />
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="col-12">
+					<label class="sr-only" for="phone"><?php esc_html_e( 'Phone Number', 'easy-reservations-reviews' ); ?></label>
+					<input type="text" class="form-control mb-2" id="phone" placeholder="Phone Number" value="<?php esc_html_e( $user_phone_number, 'easy-reservations-reviews' ); ?>" />
+				</div>
+				<div class="col-12">
+					<label class="sr-only" for="message"><?php esc_html_e( 'Message', 'easy-reservations-reviews' ); ?></label>
+					<textarea name="message" id="message" class="form-control mb-2"  placeholder="Message"></textarea>
+				</div>
+			</div>
+		</form>   
+		<?php 
+		return wp_kses(
+			ob_get_clean(),
+			array(
+				'div'    => array(
+					'class' => array(),
+					'id'	=> array(),
+					'role'  => array(),
+				),
+				'span'   => array(
+					'class' => array(),
+				),
+				'p'      => array(),
+				'a'      => array(
+					'href'          => array(),
+					'class'         => array(),
+					'download'      => array(),
+					'data-toggle'   => array(),
+					'role'          => array(),
+					'aria-expanded' => array(),
+					'aria-controls' => array(),
+				),
+				'h1'     => array(),
+				'button' => array(
+					'type'  => array(),
+					'class' => array(),
+				),
+				'input'  => array(
+					'type'        => array(),
+					'name'        => array(),
+					'id'          => array(),
+					'accept'      => array(),
+					'placeholder' => array(),
+					'class'       => array(),
+					'value'       => array(),
+				),
+				'form'   => array(
+					'method'  => array(),
+					'enctype' => array(),
+					'action'  => array(),
+				),
+				'label'  => array(
+					'class' => array(),
+					'for'   => array(),
+				),
+				'textarea' => array(
+					'name'        => array(),
+					'id'          => array(),
+					'class'       => array(),
+					'placeholder' => array(),
+				)
+
+			),
+		);
 	}
 }
 
