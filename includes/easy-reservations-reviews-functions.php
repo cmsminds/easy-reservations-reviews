@@ -292,16 +292,18 @@ if ( ! function_exists( 'ersrvr_user_logged_in_data' ) ) {
 			// The user ID is 0, therefore the current user is not logged in
 			return $users_info; // escape this function, without making any changes
 		} else {
-			$user_obj     = get_userdata( $current_userid );
-			$first_name   = ! empty( get_user_meta( $current_userid, 'first_name', true ) ) ? get_user_meta( $current_userid, 'first_name', true ) : '';
-			$last_name    = ! empty( get_user_meta( $current_userid, 'last_name', true ) ) ? get_user_meta( $current_userid, 'last_name', true ) : '';
-			$display_name = ! empty( $user_obj->data->display_name ) ? $user_obj->data->display_name : '';
-			$username     = sprintf( __( '%1$s %2$s', 'easy-reservations-reviews' ), $first_name, $last_name );
-			$username     = ( ' ' !== $username ) ? $username : $display_name;
-			$user_email   = ! empty( $user_obj->data->user_email ) ? $user_obj->data->user_email : '';
+			$user_obj          = get_userdata( $current_userid );
+			$first_name        = ! empty( get_user_meta( $current_userid, 'first_name', true ) ) ? get_user_meta( $current_userid, 'first_name', true ) : '';
+			$last_name         = ! empty( get_user_meta( $current_userid, 'last_name', true ) ) ? get_user_meta( $current_userid, 'last_name', true ) : '';
+			$display_name      = ! empty( $user_obj->data->display_name ) ? $user_obj->data->display_name : '';
+			$username          = sprintf( __( '%1$s %2$s', 'easy-reservations-reviews' ), $first_name, $last_name );
+			$username          = ( ' ' !== $username ) ? $username : $display_name;
+			$user_email        = ! empty( $user_obj->data->user_email ) ? $user_obj->data->user_email : '';
+			$user_phone_number = ! empty( get_user_meta( $current_userid, 'billing_phone', true ) ) ? get_user_meta( $current_userid, 'billing_phone', true ) : '';
 			$users_info   = array(
-				'username'   => $username,
-				'user_email' => $user_email,
+				'username'          => $username,
+				'user_email'        => $user_email,
+				'user_phone_number' => $user_phone_number
 			);
 		}
 		// This filters holds the user information modifications.

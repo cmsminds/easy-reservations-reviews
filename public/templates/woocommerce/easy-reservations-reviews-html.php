@@ -14,6 +14,7 @@
 $user_info                     = ersrvr_user_logged_in_data();
 $user_email                    = $user_info['user_email'];
 $username                      = $user_info['username'];
+$user_phone_number             = $user_info['user_phone_number'];
 $get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_reservation_reviews_guest_users' );
 
 ?>
@@ -40,46 +41,46 @@ $get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_rese
 					<form action="#" method="post" enctype="multipart/form-data">
 						<div class="form-row">
 							<div class="col-12">
-								<label class="sr-only" for="name">Name</label>
-								<input type="text" class="form-control mb-2" id="name" placeholder="Name" />
+								<label class="sr-only" for="name"><?php esc_html_e( 'Name', 'easy-reservations-reviews' ); ?></label>
+								<input type="text" class="form-control mb-2" id="name" placeholder="Name" value="<?php esc_html_e( $username, 'easy-reservations-reviews' ); ?>" />
 							</div>
 							<div class="col-12">
-								<label class="sr-only" for="email">Email</label>
-								<input type="email" class="form-control mb-2" id="email" placeholder="E-mail" />
+								<label class="sr-only" for="email"><?php esc_html_e( 'Email', 'easy-reservations-reviews' ); ?></label>
+								<input type="email" class="form-control mb-2" id="email" placeholder="E-mail" value="<?php esc_html_e( $user_email, 'easy-reservations-reviews' ); ?>" />
 							</div>
 						</div>
 						<div class="form-row">
 							<div class="col-12">
-								<label class="sr-only" for="phone">Phone Number</label>
-								<input type="text" class="form-control mb-2" id="phone" placeholder="Phone Number" />
+								<label class="sr-only" for="phone"><?php esc_html_e( 'Phone Number', 'easy-reservations-reviews' ); ?></label>
+								<input type="text" class="form-control mb-2" id="phone" placeholder="Phone Number" value="<?php esc_html_e( $user_phone_number, 'easy-reservations-reviews' ); ?>" />
 							</div>
 							<div class="col-12">
-								<label class="sr-only" for="message">Message</label>
+								<label class="sr-only" for="message"><?php esc_html_e( 'Message', 'easy-reservations-reviews' ); ?></label>
 								<textarea name="message" id="message" class="form-control mb-2"  placeholder="Message"></textarea>
 							</div>
 						</div>
-					</form>    
+					</form>   
 				<?php 
 				}
 			} else { ?>
 				<form action="#" method="post" enctype="multipart/form-data">
 					<div class="form-row">
 						<div class="col-12">
-							<label class="sr-only" for="name">Name</label>
+							<label class="sr-only" for="name"><?php esc_html_e( 'Name', 'easy-reservations-reviews' ); ?></label>
 							<input type="text" class="form-control mb-2" id="name" placeholder="Name" value="<?php esc_html_e( $username, 'easy-reservations-reviews' ); ?>" />
 						</div>
 						<div class="col-12">
-							<label class="sr-only" for="email">Email</label>
+							<label class="sr-only" for="email"><?php esc_html_e( 'Email', 'easy-reservations-reviews' ); ?></label>
 							<input type="email" class="form-control mb-2" id="email" placeholder="E-mail" value="<?php esc_html_e( $user_email, 'easy-reservations-reviews' ); ?>" />
 						</div>
 					</div>
 					<div class="form-row">
 						<div class="col-12">
-							<label class="sr-only" for="phone">Phone Number</label>
-							<input type="text" class="form-control mb-2" id="phone" placeholder="Phone Number" />
+							<label class="sr-only" for="phone"><?php esc_html_e( 'Phone Number', 'easy-reservations-reviews' ); ?></label>
+							<input type="text" class="form-control mb-2" id="phone" placeholder="Phone Number" value="<?php esc_html_e( $user_phone_number, 'easy-reservations-reviews' ); ?>" />
 						</div>
 						<div class="col-12">
-							<label class="sr-only" for="message">Message</label>
+							<label class="sr-only" for="message"><?php esc_html_e( 'Message', 'easy-reservations-reviews' ); ?></label>
 							<textarea name="message" id="message" class="form-control mb-2"  placeholder="Message"></textarea>
 						</div>
 					</div>
