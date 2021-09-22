@@ -88,9 +88,6 @@ class Easy_Reservations_Reviews_Public {
 			$ersrvr_reservation_review_guest_setting = ersrvr_get_plugin_settings( 'ersrvr_enable_reservation_reviews_guest_users' );
 			echo ersrvr_prepare_reviews_html();
 		}
-		
-		
-		
 	}
 
 }
