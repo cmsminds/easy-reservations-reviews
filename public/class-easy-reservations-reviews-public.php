@@ -85,6 +85,14 @@ class Easy_Reservations_Reviews_Public {
 			false 
 		);
 
+		// Enqueue the common public style.
+		wp_enqueue_style(
+			$this->plugin_name . '-common',
+			ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-reviews-common.css',
+			array(),
+			filemtime( ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-reviews-common.css' )
+		);
+
 	}
 
 	/**
