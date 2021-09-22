@@ -37,6 +37,12 @@ if ( ! function_exists( 'ersrvr_setting_fields' ) ) {
 				'id'       => 'ersrv_submit_review_criterias',
 			),
 			array(
+				'name' => __( 'Enable', 'easy-reservations-reviews' ),
+				'type' => 'checkbox',
+				'desc' => __( 'This will decide whether the guest user can fill up their reviews or not. Default is no.', 'easy-reservations-reviews' ),
+				'id'   => 'ersrvr_enable_reservation_reviews_guest_users',
+			),
+			array(
 				'type' => 'sectionend',
 				'id'   => 'ersrvr_reviews',
 			),
@@ -65,6 +71,10 @@ if ( ! function_exists( 'ersrvr_get_plugin_settings' ) ) {
 				$data = ( ! empty( $data ) ) ? ersrvr_prepare_criterias_array( $data ) : array();
 				break;
 			case 'ersrv_submit_review_button_text':
+				$data = get_option( $setting );
+				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : array();
+				break;
+			case 'ersrvr_enable_reservation_reviews_guest_users':
 				$data = get_option( $setting );
 				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : array();
 				break;
