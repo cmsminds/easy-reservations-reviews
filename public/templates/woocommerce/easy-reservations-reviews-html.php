@@ -15,9 +15,7 @@ $user_info                     = ersrvr_user_logged_in_data();
 $user_email                    = $user_info['user_email'];
 $username                      = $user_info['username'];
 $user_phone_number             = $user_info['user_phone_number'];
-$get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_reservation_reviews_guest_users' );
-
-?>
+$get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_reservation_reviews_guest_users' ); ?>
 
 <div class="ship-reviews info-box">
 	<a class="section-title font-Poppins font-size-24 font-weight-bold d-block color-black text-decoration-none" data-toggle="collapse" href="#ship-reviews-collapse" role="button" aria-expanded="true" aria-controls="ship-reviews-collapse">
