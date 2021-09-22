@@ -66,8 +66,8 @@ class Easy_Reservations_Reviews_Public {
 		$active_style             = ersrvr_get_active_stylesheet( $current_theme );
 		$active_style_url         = ( ! empty( $active_style['url'] ) ) ? $active_style['url'] : '';
 		$active_style_path        = ( ! empty( $active_style['path'] ) ) ? $active_style['path'] : '';
+		
 		// Enque Style file.
-
 		if ( ! empty( $active_style_url ) && ! empty( $active_style_path ) ) {
 			wp_enqueue_style(
 				$this->plugin_name,
@@ -76,6 +76,7 @@ class Easy_Reservations_Reviews_Public {
 				filemtime( $active_style_path ),
 			);
 		}
+		
 		// Enque Javascript file.
 		wp_enqueue_script( 
 			$this->plugin_name, 
