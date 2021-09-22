@@ -1,10 +1,21 @@
 <?php
 /**
+ * The Common file functions.
+ *
+ * @link       https://cmsminds.com
+ * @since      1.0.0
+ *
+ * @package    Easy_Reservations_Reviews
+ * @subpackage Easy_Reservations_Reviews/public
+ */
+
+/**
  * Check if the function exists.
  */
+
 if ( ! function_exists( 'ersrvr_setting_fields' ) ) {
 	/**
-	 * add setting fields here.
+	 * Add setting fields here.
 	 *
 	 * @return array
 	 * @since 1.0.0
@@ -47,7 +58,6 @@ if ( ! function_exists( 'ersrvr_setting_fields' ) ) {
 				'id'   => 'ersrvr_reviews',
 			),
 		);
-		
 		return apply_filters( 'ersrv_review_section_plugin_settings', $fields );
 	}
 }
@@ -93,7 +103,7 @@ if ( ! function_exists( 'ersrvr_prepare_criterias_array' ) ) {
 	/**
 	 * Get plugin setting by setting index.
 	 *
-	 * @param string $setting Holds the setting index.
+	 * @param array $data Holds the setting index.
 	 * @return boolean|string|array|int
 	 * @since 1.0.0
 	 */
@@ -156,24 +166,24 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 	 */
 	function ersrvr_prepare_reviews_html() {
 		$html = '';
-		ob_start(); 
-		$file_path = plugin_dir_path( __DIR__ ).'public/templates/woocommerce/easy-reservations-reviews-html.php';
-		if( file_exists( $file_path ) ) {
+		ob_start();
+		$file_path = plugin_dir_path( __DIR__ ) . 'public/templates/woocommerce/easy-reservations-reviews-html.php';
+		if ( file_exists( $file_path ) ) {
 			require_once $file_path;
 		}
 		$html .= wp_kses(
 			ob_get_clean(),
 			array(
-				'div'    => array(
+				'div'      => array(
 					'class' => array(),
-					'id'	=> array(),
+					'id'    => array(),
 					'role'  => array(),
 				),
-				'span'   => array(
+				'span'     => array(
 					'class' => array(),
 				),
-				'p'      => array(),
-				'a'      => array(
+				'p'        => array(),
+				'a'        => array(
 					'href'          => array(),
 					'class'         => array(),
 					'download'      => array(),
@@ -182,12 +192,12 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 					'aria-expanded' => array(),
 					'aria-controls' => array(),
 				),
-				'h1'     => array(),
-				'button' => array(
+				'h1'       => array(),
+				'button'   => array(
 					'type'  => array(),
 					'class' => array(),
 				),
-				'input'  => array(
+				'input'    => array(
 					'type'        => array(),
 					'name'        => array(),
 					'id'          => array(),
@@ -196,12 +206,12 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 					'class'       => array(),
 					'value'       => array(),
 				),
-				'form'   => array(
+				'form'     => array(
 					'method'  => array(),
 					'enctype' => array(),
 					'action'  => array(),
 				),
-				'label'  => array(
+				'label'    => array(
 					'class' => array(),
 					'for'   => array(),
 				),
@@ -210,7 +220,7 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 					'id'          => array(),
 					'class'       => array(),
 					'placeholder' => array(),
-				)
+				),
 
 			),
 		);
@@ -224,6 +234,10 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 	/**
 	 * Make Review Form HTML.
+	 *
+	 * @param string $user_email Holds the user email.
+	 * @param string $username Holds the username.
+	 * @param string $user_phone_number Holds the user phone number.
 	 *
 	 * @return string
 	 * @since 1.0.0
@@ -275,7 +289,7 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 			<div class="form-row">
 				<div class="col-12 col-md-6">
 					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="name"><?php esc_html_e( 'Name', 'easy-reservations-reviews' ); ?> <span class="text-danger">*</span></label>
-					<input type="text" class="form-control mb-2" id="name" placeholder="Name" value="<?php esc_html_e( $username, 'easy-reservations-reviews' ); ?>" />
+					<input type="text" class="form-control mb-2" id="name" placeholder="Name" value="<?php esc_attr_e( $username, 'easy-reservations-reviews' ); ?>" />
 				</div>
 				<div class="col-12 col-md-6">
 					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="email"><?php esc_html_e( 'Email', 'easy-reservations-reviews' ); ?> <span class="text-danger">*</span></label>
@@ -292,7 +306,6 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 					<div class="upload-btn-wrapper">
 						<!-- actual upload which is hidden -->
 						<input type="file" id="actual-btn" class="invisible sr-only"/>
-	
 						<!-- our custom upload button -->
 						<div class="d-flex align-items-center flex-wrap cus-btn">
 							<label for="actual-btn" class="btn btn-outline-fill-primary d-inline-bloxk px-3 mb-0"> <span class="fa fa-upload mr-2"></span> Add File</label>
@@ -325,7 +338,7 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 				</div>
 			</div>
 		</form>
-		<?php 
+		<?php
 		return ob_get_clean();
 	}
 }
@@ -394,15 +407,16 @@ if ( ! function_exists( 'ersrvr_get_active_stylesheet' ) ) {
 if ( ! function_exists( 'ersrvr_user_logged_in_data' ) ) {
 	/**
 	 * Get User loggedin Data
+	 *
 	 * @return array
 	 * @since 1.0.0
 	 */
 	function ersrvr_user_logged_in_data() {
 		$current_userid = get_current_user_id();
-		$users_info = array();
-		if ( 0 ==  $current_userid ) {
-			// The user ID is 0, therefore the current user is not logged in
-			return $users_info; // escape this function, without making any changes
+		$users_info     = array();
+		if ( 0 === $current_userid ) {
+			// The user ID is 0, therefore the current user is not logged in.
+			return $users_info; // escape this function, without making any changes.
 		} else {
 			$user_obj          = get_userdata( $current_userid );
 			$first_name        = ! empty( get_user_meta( $current_userid, 'first_name', true ) ) ? get_user_meta( $current_userid, 'first_name', true ) : '';
@@ -412,10 +426,10 @@ if ( ! function_exists( 'ersrvr_user_logged_in_data' ) ) {
 			$username          = ( ' ' !== $username ) ? $username : $display_name;
 			$user_email        = ! empty( $user_obj->data->user_email ) ? $user_obj->data->user_email : '';
 			$user_phone_number = ! empty( get_user_meta( $current_userid, 'billing_phone', true ) ) ? get_user_meta( $current_userid, 'billing_phone', true ) : '';
-			$users_info   = array(
+			$users_info        = array(
 				'username'          => $username,
 				'user_email'        => $user_email,
-				'user_phone_number' => $user_phone_number
+				'user_phone_number' => $user_phone_number,
 			);
 		}
 		// This filters holds the user information modifications.
@@ -429,6 +443,7 @@ if ( ! function_exists( 'ersrvr_user_logged_in_data' ) ) {
 if ( ! function_exists( 'ersrvr_submit_review_button_text' ) ) {
 	/**
 	 * Get setting  of submit button name.
+	 *
 	 * @return string
 	 * @since 1.0.0
 	 */
@@ -443,6 +458,7 @@ if ( ! function_exists( 'ersrvr_submit_review_button_text' ) ) {
 if ( ! function_exists( 'ersrvr_submit_review_criterias' ) ) {
 	/**
 	 * Get criteria
+	 *
 	 * @return array
 	 * @since 1.0.0
 	 */
@@ -457,6 +473,7 @@ if ( ! function_exists( 'ersrvr_submit_review_criterias' ) ) {
 if ( ! function_exists( 'ersrvr_enable_reservation_reviews_guest_users' ) ) {
 	/**
 	 * Get setting of enable form display for guest users.
+	 *
 	 * @return string
 	 * @since 1.0.0
 	 */
