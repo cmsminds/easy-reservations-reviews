@@ -10,7 +10,7 @@ jQuery( document ).ready( function( $ ) {
 	var current_section = get_query_string_parameter_value( 'section' );
 	if ( 1 === is_valid_string( current_section ) && 'reviews' === current_section ) {
 		// Add a button just after the review criterias.
-		var criteria_select2_class = $( '#ersrv_submit_review_criterias' ).next( 'span.select2' ).attr( 'class' );
+		var criteria_select2_class = $( '#ersrvr_submit_review_criterias' ).next( 'span.select2' ).attr( 'class' );
 		criteria_select2_class     = '.' + criteria_select2_class.replace( / /g, '.' );
 		$( '<a href="#" class="ersrv_add_more_criterias button">' + add_criteria_button_text + '</a>' ).insertAfter( criteria_select2_class );
 		$( '.ersrv_add_more_criterias' ).css( 'margin-left', '5px' );
@@ -30,10 +30,10 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		// Check if the criteria to be added doesn't already exist.
-		var existing_cirterias_count = $( '#ersrv_submit_review_criterias > option' ).length;
+		var existing_cirterias_count = $( '#ersrvr_submit_review_criterias > option' ).length;
 		var has_similar_criteria     = false;
 		if ( 1 <= existing_cirterias_count ) {
-			$( '#ersrv_submit_review_criterias > option' ).each( function() {
+			$( '#ersrvr_submit_review_criterias > option' ).each( function() {
 				var this_option      = $( this );
 				var this_option_text = this_option.text();
 
@@ -54,7 +54,7 @@ jQuery( document ).ready( function( $ ) {
 		var new_criteria = new Option( criteria_name, criteria_name, true, true );
 
 		// Append the select option.
-		$( '#ersrv_submit_review_criterias' ).append( new_criteria ).trigger( 'change' );
+		$( '#ersrvr_submit_review_criterias' ).append( new_criteria ).trigger( 'change' );
 	} );
 
 	

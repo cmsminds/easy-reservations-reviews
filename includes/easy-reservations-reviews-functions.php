@@ -23,18 +23,18 @@ if ( ! function_exists( 'ersrvr_setting_fields' ) ) {
 				'type'        => 'text',
 				'desc'        => __( 'This holds the submit reviews button text. Default: Submit Review', 'easy-reservations-reviews' ),
 				'desc_tip'    => true,
-				'id'          => 'ersrv_submit_review_button_text',
+				'id'          => 'ersrvr_submit_review_button_text',
 				'placeholder' => __( 'E.g.: Submit Review', 'easy-reservations-reviews' ),
 			),
 			array(
 				'name'     => __( 'Review Criteria', 'easy-reservations-reviews' ),
 				'type'     => 'multiselect',
-				'options'  => ersrvr_get_plugin_settings( 'ersrv_submit_review_criterias' ),
+				'options'  => ersrvr_get_plugin_settings( 'ersrvr_submit_review_criterias' ),
 				'class'    => 'wc-enhanced-select',
 				'desc'     => __( 'This holds the review criteria. If you want to add some more, click on the button besides the selectbox.', 'easy-reservations-reviews' ),
 				'desc_tip' => true,
 				'default'  => '',
-				'id'       => 'ersrv_submit_review_criterias',
+				'id'       => 'ersrvr_submit_review_criterias',
 			),
 			array(
 				'name' => __( 'Enable', 'easy-reservations-reviews' ),
@@ -65,12 +65,12 @@ if ( ! function_exists( 'ersrvr_get_plugin_settings' ) ) {
 	 */
 	function ersrvr_get_plugin_settings( $setting ) {
 		switch ( $setting ) {
-			case 'ersrv_submit_review_criterias':
+			case 'ersrvr_submit_review_criterias':
 				$data = get_option( $setting );
 				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : array();
 				$data = ( ! empty( $data ) ) ? ersrvr_prepare_criterias_array( $data ) : array();
 				break;
-			case 'ersrv_submit_review_button_text':
+			case 'ersrvr_submit_review_button_text':
 				$data = get_option( $setting );
 				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : array();
 				break;
@@ -127,12 +127,12 @@ if ( ! function_exists( 'ersrvr_get_plugin_settings' ) ) {
 	 */
 	function ersrvr_get_plugin_settings( $setting ) {
 		switch ( $setting ) {
-			case 'ersrv_submit_review_criterias':
+			case 'ersrvr_submit_review_criterias':
 				$data = get_option( $setting );
 				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : array();
 				$data = ( ! empty( $data ) ) ? ersrvr_prepare_criterias_array( $data ) : array();
 				break;
-			case 'ersrv_submit_review_button_text':
+			case 'ersrvr_submit_review_button_text':
 				$data = get_option( $setting );
 				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : array();
 				break;
