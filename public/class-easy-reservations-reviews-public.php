@@ -116,9 +116,9 @@ class Easy_Reservations_Reviews_Public {
 		$product = get_product( $reservation_id );
 		// check product is reservation type or not
     	if( $product->is_type( 'reservation' ) ) { 
-			$ersrvr_reservation_button_text          = ersrvr_get_plugin_settings( 'ersrvr_submit_review_button_text' );
-			$ersrvr_reservation_review_criteria      = ersrvr_get_plugin_settings( 'ersrvr_submit_review_criterias' );
-			$ersrvr_reservation_review_guest_setting = ersrvr_get_plugin_settings( 'ersrvr_enable_reservation_reviews_guest_users' );
+			$ersrvr_reservation_button_text          = ersrvr_submit_review_button_text();
+			$ersrvr_reservation_review_criteria      = ersrvr_submit_review_criterias();
+			$ersrvr_reservation_review_guest_setting = ersrvr_enable_reservation_reviews_guest_users();
 			echo ersrvr_prepare_reviews_html();
 		}
 	}

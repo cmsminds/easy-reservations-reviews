@@ -29,7 +29,7 @@ if ( ! function_exists( 'ersrvr_setting_fields' ) ) {
 			array(
 				'name'     => __( 'Review Criteria', 'easy-reservations-reviews' ),
 				'type'     => 'multiselect',
-				'options'  => ersrvr_get_plugin_settings( 'ersrvr_submit_review_criterias' ),
+				'options'  => __( ersrvr_get_plugin_settings( 'ersrvr_submit_review_criterias' ), 'easy-reservations-reviews' ),
 				'class'    => 'wc-enhanced-select',
 				'desc'     => __( 'This holds the review criteria. If you want to add some more, click on the button besides the selectbox.', 'easy-reservations-reviews' ),
 				'desc_tip' => true,
@@ -399,5 +399,47 @@ if ( ! function_exists( 'ersrvr_user_logged_in_data' ) ) {
 		}
 		// This filters holds the user information modifications.
 		return apply_filters( 'ersrvr_add_user_information', $users_info, $current_userid );
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrvr_submit_review_button_text' ) ) {
+	/**
+	 * Get setting  of submit button name.
+	 * @return string
+	 * @since 1.0.0
+	 */
+	function ersrvr_submit_review_button_text() {
+		return ersrvr_get_plugin_settings( 'ersrvr_submit_review_button_text' );
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrvr_submit_review_criterias' ) ) {
+	/**
+	 * Get criteria
+	 * @return array
+	 * @since 1.0.0
+	 */
+	function ersrvr_submit_review_criterias() {
+		return ersrvr_get_plugin_settings( 'ersrvr_submit_review_criterias' );
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrvr_enable_reservation_reviews_guest_users' ) ) {
+	/**
+	 * Get setting of enable form display for guest users.
+	 * @return string
+	 * @since 1.0.0
+	 */
+	function ersrvr_enable_reservation_reviews_guest_users() {
+		return ersrvr_get_plugin_settings( 'ersrvr_enable_reservation_reviews_guest_users' );
 	}
 }
