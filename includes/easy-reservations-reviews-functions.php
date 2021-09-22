@@ -299,8 +299,8 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 						<input type="file" id="actual-btn" class="invisible sr-only"/>
 						<!-- our custom upload button -->
 						<div class="d-flex align-items-center flex-wrap cus-btn">
-							<label for="actual-btn" class="btn btn-outline-fill-primary d-inline-bloxk px-3 mb-0"> <span class="fa fa-upload mr-2"></span> Add File</label>
-							<span id="file-chosen" class="font-lato font-size-14 ml-2 font-weight-semibold">No file chosen</span>
+							<label for="actual-btn" class="btn btn-outline-fill-primary d-inline-bloxk px-3 mb-0"> <span class="fa fa-upload mr-2"></span><?php esc_html_e( 'Add File', 'easy-reservations-reviews' ); ?></label>
+							<span id="file-chosen" class="font-lato font-size-14 ml-2 font-weight-semibold"><?php esc_html_e( 'No file chosen', 'easy-reservations-reviews' ); ?></span>
 							<!--
 								for file chosen js code
 								https://codepen.io/wizardofcodez/pen/XWddObO  
@@ -324,8 +324,8 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 					<textarea name="message" id="message" class="form-control mb-2"  placeholder="Message"></textarea>
 				</div>
 				<div class="col-12 text-center">
-					<label class="font-Poppins font-weight-normal text-black font-size-15">Thanks Again For Your Review!</label>
-					<button type="submit" class="btn btn-primary px-4 py-2 font-lato font-size-18 font-weight-bold">Submit</button>
+					<label class="font-Poppins font-weight-normal text-black font-size-15"><?php esc_html_e( 'Thanks Again For Your Review!', 'easy-reservations-reviews' ); ?></label>
+					<button type="submit" class="btn btn-primary px-4 py-2 font-lato font-size-18 font-weight-bold"><?php esc_html_e( 'Submit', 'easy-reservations-reviews' ); ?></button>
 				</div>
 			</div>
 		</form>
