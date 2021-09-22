@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -44,13 +43,13 @@ class Easy_Reservations_Reviews_Admin {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @param      string $plugin_name       The name of this plugin.
+	 * @param      string $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 
 	}
 
@@ -86,25 +85,25 @@ class Easy_Reservations_Reviews_Admin {
 	/**
 	 * Add review setting section on easy reservations setting page.
 	 *
-	 * @param string $sections Holds the existing sections of easy reservations
+	 * @param string $sections Holds the existing sections of easy reservations.
 	 * @return array
 	 * @since 1.0.0
 	 */
-	public function ersrvr_reviews_settings_section( $sections ){
+	public function ersrvr_reviews_settings_section( $sections ) {
 		$sections['reviews'] = esc_html__( 'Reviews', 'easy-reservations-reviews' );
 		return $sections;
 	}
 	/**
 	 * Add Custom fields to review section.
 	 *
-	 * @param array    $settings Holds the array of setting fiels.
+	 * @param array  $settings Holds the array of setting fiels.
 	 * @param string $current_section Holds the current section screen at easy reservations setting section.
 	 * @return array
 	 * @since 1.0.0
 	 */
-	public function ersrvr_reviews_settings_fields( $settings, $current_section ){
-		if( 'reviews' !== $current_section ) {
-			return	$settings;
+	public function ersrvr_reviews_settings_fields( $settings, $current_section ) {
+		if ( 'reviews' !== $current_section ) {
+			return $settings;
 		}
 		$settings = ersrvr_setting_fields();
 		return $settings;
