@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The plugin bootstrap file
  *
@@ -115,7 +114,7 @@ add_action( 'plugins_loaded', 'ersrvr_plugins_loaded_callback' );
 function ersrvr_admin_notices_callback() {
 	$this_plugin_data = get_plugin_data( __FILE__ );
 	$this_plugin      = $this_plugin_data['Name'];
-	$ersrv_plugin        = 'Easy Reservations';
+	$ersrv_plugin     = 'Easy Reservations';
 	?>
 	<div class="error">
 		<p>
