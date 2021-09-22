@@ -326,59 +326,7 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 			</div>
 		</form>
 		<?php 
-		return wp_kses(
-			ob_get_clean(),
-			array(
-				'div'    => array(
-					'class' => array(),
-					'id'	=> array(),
-					'role'  => array(),
-				),
-				'span'   => array(
-					'class' => array(),
-				),
-				'p'      => array(),
-				'a'      => array(
-					'href'          => array(),
-					'class'         => array(),
-					'download'      => array(),
-					'data-toggle'   => array(),
-					'role'          => array(),
-					'aria-expanded' => array(),
-					'aria-controls' => array(),
-				),
-				'h1'     => array(),
-				'button' => array(
-					'type'  => array(),
-					'class' => array(),
-				),
-				'input'  => array(
-					'type'        => array(),
-					'name'        => array(),
-					'id'          => array(),
-					'accept'      => array(),
-					'placeholder' => array(),
-					'class'       => array(),
-					'value'       => array(),
-					'hidden'       => array(),
-				),
-				'form'   => array(
-					'method'  => array(),
-					'enctype' => array(),
-					'action'  => array(),
-				),
-				'label'  => array(
-					'class' => array(),
-					'for'   => array(),
-				),
-				'textarea' => array(
-					'name'        => array(),
-					'id'          => array(),
-					'class'       => array(),
-					'placeholder' => array(),
-				),
-			),
-		);
+		return ob_get_clean();
 	}
 }
 
