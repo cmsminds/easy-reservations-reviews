@@ -232,6 +232,26 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 		ob_start(); ?>
 		<form action="#" method="post" enctype="multipart/form-data">
 			<div class="form-row">
+				<div class="col-12">
+					<label for="">Please reate us 1 (bad) to 5 (excellent) *</label>
+					<div id="full-stars-example-two" class="rating-group-wrapper border">
+						<div class="rating-group">
+							<input disabled checked class="rating__input rating__input--none" name="rating3" id="rating3-none" value="0" type="radio">
+							<label aria-label="1 star" class="rating__label" for="rating3-1"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+							<input class="rating__input" name="rating3" id="rating3-1" value="1" type="radio">
+							<label aria-label="2 stars" class="rating__label" for="rating3-2"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+							<input class="rating__input" name="rating3" id="rating3-2" value="2" type="radio">
+							<label aria-label="3 stars" class="rating__label" for="rating3-3"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+							<input class="rating__input" name="rating3" id="rating3-3" value="3" type="radio">
+							<label aria-label="4 stars" class="rating__label" for="rating3-4"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+							<input class="rating__input" name="rating3" id="rating3-4" value="4" type="radio">
+							<label aria-label="5 stars" class="rating__label" for="rating3-5"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+							<input class="rating__input" name="rating3" id="rating3-5" value="5" type="radio">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-row">
 				<div class="col-12 col-md-6">
 					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="name"><?php esc_html_e( 'Name', 'easy-reservations-reviews' ); ?> <span class="text-danger">*</span></label>
 					<input type="text" class="form-control mb-2" id="name" placeholder="Name" value="<?php esc_html_e( $username, 'easy-reservations-reviews' ); ?>" />
@@ -294,6 +314,9 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 					'role'  => array(),
 				),
 				'span'   => array(
+					'class' => array(),
+				),
+				'i'   => array(
 					'class' => array(),
 				),
 				'p'      => array(),
