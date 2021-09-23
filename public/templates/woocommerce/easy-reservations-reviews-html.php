@@ -45,7 +45,7 @@ $get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_rese
 		<div class="review-form-wrapper">
 			<?php 
 			/**
-			* Function ( ersrvr_prepare_reviews_form_html() ) Map from the file of includes/easy-reservations-reviews-functions.php Line no: 224
+			* Function ersrvr_prepare_reviews_form_html() Map from the file of includes/easy-reservations-reviews-functions.php Line no: 224
 			*/
 			if( empty( $user_info ) ) {
 				if( ! empty( $get_guest_user_enable_Setting ) && 'yes' === $get_guest_user_enable_Setting ) { 
@@ -194,5 +194,3 @@ $get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_rese
 		</div>
 	</div>
 </div>
-
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->

@@ -8,12 +8,18 @@ jQuery( document ).ready( function( $ ) {
 		var closest_criteria = $( this ).closest( '.rating-group' ).data( 'criteria' );
 		$( '#' + criteria_input ).prevUntil( '.rating__input:first' ).removeClass( 'fill_star_hover' );
 	});
-	jQuery(document).on( 'mouseover', '.rating__label', function( evt ) {
-		// evt.preventDefault();
-		var criteria_input   = $( this ).next( 'input[type="radio"]' ).attr( 'id' );
-		var closest_criteria = $( this ).closest( '.rating-group' ).data( 'criteria' );
-		$( '#' + criteria_input ).prevUntil( '.rating__input:first' ).addClass( 'fill_star_hover' );
-	});
+
+	/**
+	 * 
+	 */
+	jQuery( document ).on( 'mouseover', '.rating__label', function( evt ) {
+		var this_label        = $( this );
+		var criteria_input    = this_label.next( 'input[type="radio"]' );
+		var criteria_input_id = criteria_input.attr( 'id' );
+		var closest_criteria  = $( this ).closest( '.rating-group' ).data( 'criteria' );
+		$( '#' + criteria_input_id ).prevUntil( '.rating__input:first' ).addBack().addClass( 'fill_star_hover' );
+		$( 'label.rating__label' ).removeClass( 'fill_star_hover' );
+	} );
 	
 	jQuery(document).on( 'click', '.rating__label', function( evt ) {
 		// evt.preventDefault();

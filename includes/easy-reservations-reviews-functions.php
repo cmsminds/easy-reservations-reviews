@@ -32,10 +32,10 @@ if ( ! function_exists( 'ersrvr_setting_fields' ) ) {
 			array(
 				'name'        => __( 'Submit Review Button Text', 'easy-reservations-reviews' ),
 				'type'        => 'text',
-				'desc'        => __( 'This holds the submit reviews button text. Default: Submit Review', 'easy-reservations-reviews' ),
+				'desc'        => __( 'This holds the submit reviews button text. Default: Submit', 'easy-reservations-reviews' ),
 				'desc_tip'    => true,
 				'id'          => 'ersrvr_submit_review_button_text',
-				'placeholder' => __( 'E.g.: Submit Review', 'easy-reservations-reviews' ),
+				'placeholder' => __( 'Default: Submit', 'easy-reservations-reviews' ),
 			),
 			array(
 				'name'     => __( 'Review Criteria', 'easy-reservations-reviews' ),
@@ -82,11 +82,11 @@ if ( ! function_exists( 'ersrvr_get_plugin_settings' ) ) {
 				break;
 			case 'ersrvr_submit_review_button_text':
 				$data = get_option( $setting );
-				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : array();
+				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : __( 'Submit', 'easy-reservations-reviews' );
 				break;
 			case 'ersrvr_enable_reservation_reviews_guest_users':
 				$data = get_option( $setting );
-				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : array();
+				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? 'yes' : 'no';
 				break;
 			default:
 				$data = -1;
@@ -269,16 +269,17 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 	 * @since 1.0.0
 	 */
 	function ersrvr_prepare_reviews_form_html( $user_email, $username, $user_phone_number ) {
-		$criterias = ersrvr_submit_review_criterias();
-		$btn_text  = ersrvr_submit_review_button_text();
+		$criterias = ersrvr_get_plugin_settings( 'ersrvr_submit_review_criterias' );
+		$btn_text  = ersrvr_get_plugin_settings( 'ersrvr_submit_review_button_text' );
+
+		// Prepare the html now.
 		ob_start(); ?>
-		<form action="#" method="post" enctype="multipart/form-data">
-			<div class="form-row">
-				<div class="col-12">
-					<label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( 'Please reate us 1 (bad) to 5 (excellent)', 'easy-reservations-reviews' ); ?> <span class="text-danger"><?php esc_html_e( '*', 'easy-reservations-reviews' ); ?></span></label>
-					<div id="full-stars-example-two" class="rating-group-wrapper border py-2 px-1 rounded-xl">
-						<!-- rating items starts here -->
-						<?php if ( is_array( $criterias ) && ! empty( $criterias ) ) { ?>
+		<form action="" method="post" enctype="multipart/form-data">
+			<?php if ( ! empty( $criterias ) && is_array( $criterias ) ) { ?>
+				<div class="form-row">
+					<div class="col-12">
+						<label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( 'Please reate us 1 (bad) to 5 (excellent)', 'easy-reservations-reviews' ); ?> <span class="text-danger"><?php esc_html_e( '*', 'easy-reservations-reviews' ); ?></span></label>
+						<div id="full-stars-example-two" class="rating-group-wrapper border py-2 px-1 rounded-xl">
 							<?php $k = 1; ?>
 							<?php foreach ( $criterias as $criteria ) { 
 								$criteria_slug = strtolower( $criteria );
@@ -295,10 +296,11 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 									</div>
 								</div>
 							<?php } ?>
-						<?php } ?>
+						</div>
 					</div>
 				</div>
-			</div>
+			<?php } ?>
+
 			<div class="form-row">
 				<div class="col-12 col-md-6">
 					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="name"><?php echo esc_html( 'Name' ); ?> <span class="text-danger">*</span></label>
@@ -346,7 +348,6 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 					<textarea name="message" id="message" class="form-control mb-2"  placeholder="Message"></textarea>
 				</div>
 				<div class="col-12 text-center">
-					<label class="font-Poppins font-weight-normal text-black font-size-15"><?php esc_html_e( 'Thanks Again For Your Review!', 'easy-reservations-reviews' ); ?></label>
 					<button type="submit" class="btn ersrvr_btn_submit btn-primary px-4 py-2 font-lato font-size-18 font-weight-bold"><?php echo esc_html( $btn_text ); ?></button>
 				</div>
 			</div>
@@ -447,50 +448,5 @@ if ( ! function_exists( 'ersrvr_user_logged_in_data' ) ) {
 		}
 		// This filters holds the user information modifications.
 		return apply_filters( 'ersrvr_add_user_information', $users_info, $current_userid );
-	}
-}
-
-/**
- * Check if the function exists.
- */
-if ( ! function_exists( 'ersrvr_submit_review_button_text' ) ) {
-	/**
-	 * Get setting  of submit button name.
-	 *
-	 * @return string
-	 * @since 1.0.0
-	 */
-	function ersrvr_submit_review_button_text() {
-		return ersrvr_get_plugin_settings( 'ersrvr_submit_review_button_text' );
-	}
-}
-
-/**
- * Check if the function exists.
- */
-if ( ! function_exists( 'ersrvr_submit_review_criterias' ) ) {
-	/**
-	 * Get criteria
-	 *
-	 * @return array
-	 * @since 1.0.0
-	 */
-	function ersrvr_submit_review_criterias() {
-		return ersrvr_get_plugin_settings( 'ersrvr_submit_review_criterias' );
-	}
-}
-
-/**
- * Check if the function exists.
- */
-if ( ! function_exists( 'ersrvr_enable_reservation_reviews_guest_users' ) ) {
-	/**
-	 * Get setting of enable form display for guest users.
-	 *
-	 * @return string
-	 * @since 1.0.0
-	 */
-	function ersrvr_enable_reservation_reviews_guest_users() {
-		return ersrvr_get_plugin_settings( 'ersrvr_enable_reservation_reviews_guest_users' );
 	}
 }
