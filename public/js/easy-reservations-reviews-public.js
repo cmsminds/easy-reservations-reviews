@@ -1,10 +1,12 @@
 jQuery( document ).ready( function( $ ) {
 	'use strict';
+
+	
 	jQuery(document).on( 'click', '.rating__input', function( evt ) {
 		evt.preventDefault();
-		alert("1");
-        $(this).prop("checked", true);
-    });
+		var closest_criteria = $(this).closest('.rating-group').data('criteria');
+		$( this ).attr('checked', 'checked');
+	});
 	jQuery(document).on( 'click', '.ersrvr_btn_submit', function( evt ) {
 		evt.preventDefault();
 		var favorite = [];
