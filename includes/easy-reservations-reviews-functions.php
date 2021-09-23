@@ -265,7 +265,6 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 								</div>
 							<?php } ?>
 						<?php } ?>
-						?>
 					</div>
 				</div>
 			</div>
