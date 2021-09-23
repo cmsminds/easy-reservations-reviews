@@ -1,32 +1,80 @@
-(function( $ ) {
+jQuery( document ).ready( function( $ ) {
 	'use strict';
+	jQuery(document).on( 'click', '.rating__input', function( evt ) {
+		evt.preventDefault();
+		alert("1");
+        $(this).prop("checked", true);
+    });
+	jQuery(document).on( 'click', '.ersrvr_btn_submit', function( evt ) {
+		evt.preventDefault();
+		var favorite = [];
+		var closest_criteria;
+		var criteria_radio_value;
+        $.each($(".rating__input:checked"), function(i, value){
+			closest_criteria = $(this).closest('.rating-group').data('criteria');
+			criteria_radio_value = $(this).val()
+			favorite.push({
+				closest_criteria: closest_criteria, 
+				radio_value:  criteria_radio_value,
+			});
+        });
+		console.log(favorite);
+	} );
+	/**
+	 * Check if a string is valid.
+	 *
+	 * @param {string} $data
+	 */
+	 function is_valid_string( data ) {
+		if ( '' === data || undefined === data || ! isNaN( data ) || 0 === data ) {
+			return -1;
+		} else {
+			return 1;
+		}
+	}
 
 	/**
-	 * All of the code for your public-facing JavaScript source
-	 * should reside in this file.
+	 * Check if a number is valid.
 	 *
-	 * Note: It has been assumed you will write jQuery code here, so the
-	 * $ function reference has been prepared for usage within the scope
-	 * of this function.
-	 *
-	 * This enables you to define handlers, for when the DOM is ready:
-	 *
-	 * $(function() {
-	 *
-	 * });
-	 *
-	 * When the window is loaded:
-	 *
-	 * $( window ).load(function() {
-	 *
-	 * });
-	 *
-	 * ...and/or other possibilities.
-	 *
-	 * Ideally, it is not considered best practise to attach more than a
-	 * single DOM-ready or window-load handler for a particular page.
-	 * Although scripts in the WordPress core, Plugins and Themes may be
-	 * practising this, we should strive to set a better example in our own work.
+	 * @param {number} $data
 	 */
+	function is_valid_number( data ) {
+		if ( '' === data || undefined === data || isNaN( data ) || 0 === data ) {
+			return -1;
+		} else {
+			return 1;
+		}
+	}
 
-})( jQuery );
+	/**
+	 * Block element.
+	 *
+	 * @param {string} element
+	 */
+	function block_element( element ) {
+		element.addClass( 'non-clickable' );
+	}
+
+	/**
+	 * Unblock element.
+	 *
+	 * @param {string} element
+	 */
+	function unblock_element( element ) {
+		element.removeClass( 'non-clickable' );
+	}
+
+	/**
+	 * Get query string parameter value.
+	 *
+	 * @param {string} string
+	 * @return {string} string
+	 */
+	function get_query_string_parameter_value( param_name ) {
+		var url_string = window.location.href;
+		var url        = new URL( url_string );
+		var val        = url.searchParams.get( param_name );
+
+		return val;
+	}
+} );

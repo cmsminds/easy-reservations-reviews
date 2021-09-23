@@ -111,14 +111,17 @@ class Easy_Reservations_Reviews_Public {
 			ersrvr_prepare_reviews_html(),
 			array(
 				'div'      => array(
-					'class' => array(),
-					'id'    => array(),
-					'role'  => array(),
+					'class'         => array(),
+					'id'            => array(),
+					'role'          => array(),
+					'data-criteria' => array(),
 				),
 				'span'     => array(
 					'class' => array(),
 				),
-				'p'        => array(),
+				'p'        => array(
+					'class' => array(),
+				),
 				'a'        => array(
 					'href'          => array(),
 					'class'         => array(),
@@ -141,6 +144,7 @@ class Easy_Reservations_Reviews_Public {
 					'placeholder' => array(),
 					'class'       => array(),
 					'value'       => array(),
+					'checked'	  => array(),
 				),
 				'form'     => array(
 					'method'  => array(),
@@ -201,14 +205,17 @@ class Easy_Reservations_Reviews_Public {
 				ersrvr_prepare_reviews_html(),
 				array(
 					'div'      => array(
-						'class' => array(),
-						'id'    => array(),
-						'role'  => array(),
+						'class'         => array(),
+						'id'            => array(),
+						'role'          => array(),
+						'data-criteria' => array(),
 					),
 					'span'     => array(
 						'class' => array(),
 					),
-					'p'        => array(),
+					'p'        => array(
+						'class' => array(),
+					),
 					'a'        => array(
 						'href'          => array(),
 						'class'         => array(),
@@ -231,6 +238,7 @@ class Easy_Reservations_Reviews_Public {
 						'placeholder' => array(),
 						'class'       => array(),
 						'value'       => array(),
+						'checked'	  => array(),
 					),
 					'form'     => array(
 						'method'  => array(),
@@ -272,6 +280,21 @@ class Easy_Reservations_Reviews_Public {
 					),
 				),
 			);
+		}
+	}
+
+	/**
+	 * Submit Review Form Data
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrvr_submit_review_form_data_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+		// Check if action mismatches.
+		if ( empty( $action ) || 'ersrvr_submit_review_form_data_callback' !== $action ) {
+			echo 0;
+			wp_die();
 		}
 	}
 
