@@ -40,7 +40,7 @@ if ( ! function_exists( 'ersrvr_setting_fields' ) ) {
 			array(
 				'name'     => __( 'Review Criteria', 'easy-reservations-reviews' ),
 				'type'     => 'multiselect',
-				'options'  => __( ersrvr_get_plugin_settings( 'ersrvr_submit_review_criterias' ), 'easy-reservations-reviews' ),
+				'options'  => ersrvr_get_plugin_settings( 'ersrvr_submit_review_criterias' ),
 				'class'    => 'wc-enhanced-select',
 				'desc'     => __( 'This holds the review criteria. If you want to add some more, click on the button besides the selectbox.', 'easy-reservations-reviews' ),
 				'desc_tip' => true,
@@ -251,40 +251,38 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 					<label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( 'Please reate us 1 (bad) to 5 (excellent)', 'easy-reservations-reviews' ); ?> <span class="text-danger"><?php esc_html_e( '*', 'easy-reservations-reviews' ); ?></span></label>
 					<div id="full-stars-example-two" class="rating-group-wrapper border py-2 px-1 rounded-xl">
 						<!-- rating items starts here -->
-						<?php
-						if ( is_array( $criterias ) && ! empty( $criterias ) ) {
-							$i = 0;
-							foreach ( $criterias as $criteria ) { ?>
+						<?php if ( is_array( $criterias ) && ! empty( $criterias ) ) { ?>
+							<?php $i = 0; ?>
+							<?php foreach ( $criterias as $criteria ) { ?>
 								<div class="rating-item d-flex flex-wrap align-items-center">
-									<div class="col-4 col-sm-3"><label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( $criteria, 'easy-reservations-reviews' ); ?> </label></div>
+									<div class="col-4 col-sm-3"><label class="font-Poppins font-weight-semibold text-black font-size-14"><?php echo esc_html( $criteria ); ?> </label></div>
 									<div class="col-8 col-sm-9 rating-group">
-										<?php
-										for ( $i = 1; $i <= 5; $i++ ) { ?>
-											<label aria-label="<?php esc_attr_e( $i, 'easy-reservations-reviews' ); ?> star" class="rating__label" for="rating3-<?php esc_attr_e( $i, 'easy-reservations-reviews' ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-											<input class="rating__input" name="rating3" id="rating3-<?php esc_attr_e( $i, 'easy-reservations-reviews' ); ?>" value="<?php esc_attr_e( $i, 'easy-reservations-reviews' ); ?>" type="radio">
+										<?php for ( $i = 1; $i <= 5; $i++ ) { ?>
+											<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="rating3-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+											<input class="rating__input" name="rating3" id="rating3-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
 										<?php } ?>
 									</div>
 								</div>
-							<?php }
-						}
+							<?php } ?>
+						<?php } ?>
 						?>
 					</div>
 				</div>
 			</div>
 			<div class="form-row">
 				<div class="col-12 col-md-6">
-					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="name"><?php esc_html_e( 'Name', 'easy-reservations-reviews' ); ?> <span class="text-danger">*</span></label>
-					<input type="text" class="form-control mb-2" id="name" placeholder="Name" value="<?php esc_attr_e( $username, 'easy-reservations-reviews' ); ?>" />
+					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="name"><?php echo esc_html( 'Name' ); ?> <span class="text-danger">*</span></label>
+					<input type="text" class="form-control mb-2" id="name" placeholder="Name" value="<?php echo esc_attr( $username ); ?>" />
 				</div>
 				<div class="col-12 col-md-6">
-					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="email"><?php esc_html_e( 'Email', 'easy-reservations-reviews' ); ?> <span class="text-danger">*</span></label>
-					<input type="email" class="form-control mb-2" id="email" placeholder="E-mail" value="<?php esc_html_e( $user_email, 'easy-reservations-reviews' ); ?>" />
+					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="email"><?php echo esc_html( 'Email' ); ?> <span class="text-danger">*</span></label>
+					<input type="email" class="form-control mb-2" id="email" placeholder="E-mail" value="<?php echo esc_html( $user_email ); ?>" />
 				</div>
 			</div>
 			<div class="form-row">
 				<div class="col-12 col-md-6">
 					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="phone"><?php esc_html_e( 'Phone Number', 'easy-reservations-reviews' ); ?> <span class="text-danger">*</span></label>
-					<input type="text" class="form-control mb-2" id="phone" placeholder="Phone Number" value="<?php esc_html_e( $user_phone_number, 'easy-reservations-reviews' ); ?>" />
+					<input type="text" class="form-control mb-2" id="phone" placeholder="Phone Number" value="<?php echo esc_html( $user_phone_number ); ?>" />
 				</div>
 				<div class="col-12 col-md-6">
 					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="message"><?php esc_html_e( 'Upload Something Here', 'easy-reservations-reviews' ); ?> <span class="text-danger">*</span></label>
@@ -407,7 +405,7 @@ if ( ! function_exists( 'ersrvr_user_logged_in_data' ) ) {
 			$first_name        = ! empty( get_user_meta( $current_userid, 'first_name', true ) ) ? get_user_meta( $current_userid, 'first_name', true ) : '';
 			$last_name         = ! empty( get_user_meta( $current_userid, 'last_name', true ) ) ? get_user_meta( $current_userid, 'last_name', true ) : '';
 			$display_name      = ! empty( $user_obj->data->display_name ) ? $user_obj->data->display_name : '';
-			$username          = sprintf( __( '%1$s %2$s', 'easy-reservations-reviews' ), $first_name, $last_name );
+			$username          = $first_name . ' ' . $last_name;
 			$username          = ( ' ' !== $username ) ? $username : $display_name;
 			$user_email        = ! empty( $user_obj->data->user_email ) ? $user_obj->data->user_email : '';
 			$user_phone_number = ! empty( get_user_meta( $current_userid, 'billing_phone', true ) ) ? get_user_meta( $current_userid, 'billing_phone', true ) : '';
