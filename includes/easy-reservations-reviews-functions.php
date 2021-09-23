@@ -208,7 +208,7 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 					'placeholder' => array(),
 					'class'       => array(),
 					'value'       => array(),
-					'checked'	  => array(),
+					'checked'     => array(),
 				),
 				'form'     => array(
 					'method'  => array(),
@@ -281,7 +281,8 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 						<label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( 'Please reate us 1 (bad) to 5 (excellent)', 'easy-reservations-reviews' ); ?> <span class="text-danger"><?php esc_html_e( '*', 'easy-reservations-reviews' ); ?></span></label>
 						<div id="full-stars-example-two" class="rating-group-wrapper border py-2 px-1 rounded-xl">
 							<?php $k = 1; ?>
-							<?php foreach ( $criterias as $criteria ) { 
+							<?php foreach ( $criterias as $criteria ) { ?>
+								<?php
 								$criteria_slug = strtolower( $criteria );
 								$criteria_slug = str_replace( ' ', '-', $criteria_slug );
 								?>
@@ -300,23 +301,31 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 					</div>
 				</div>
 			<?php } ?>
-
-			<div class="form-row">
-				<div class="col-12 col-md-6">
-					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="name"><?php echo esc_html( 'Name' ); ?> <span class="text-danger">*</span></label>
-					<input type="text" class="form-control mb-2" id="name" placeholder="Name" value="<?php echo esc_attr( $username ); ?>" />
+			<?php if ( ! is_user_logged_in() ) { ?>
+				<div class="form-row">
+					<div class="col-12 col-md-6">
+						<label class="font-Poppins font-weight-semibold text-black font-size-16" for="name"><?php echo esc_html( 'Name' ); ?> <span class="text-danger">*</span></label>
+						<input type="text" class="form-control mb-2" id="name" placeholder="Name" value="<?php echo esc_attr( $username ); ?>" />
+					</div>
+					<div class="col-12 col-md-6">
+						<label class="font-Poppins font-weight-semibold text-black font-size-16" for="email"><?php echo esc_html( 'Email' ); ?> <span class="text-danger">*</span></label>
+						<input type="email" class="form-control mb-2" id="email" placeholder="E-mail" value="<?php echo esc_html( $user_email ); ?>" />
+					</div>
 				</div>
-				<div class="col-12 col-md-6">
-					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="email"><?php echo esc_html( 'Email' ); ?> <span class="text-danger">*</span></label>
-					<input type="email" class="form-control mb-2" id="email" placeholder="E-mail" value="<?php echo esc_html( $user_email ); ?>" />
-				</div>
-			</div>
+			<?php } ?>
 			<div class="form-row">
+				<?php if ( ! is_user_logged_in() ) { ?>
 				<div class="col-12 col-md-6">
 					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="phone"><?php esc_html_e( 'Phone Number', 'easy-reservations-reviews' ); ?> <span class="text-danger">*</span></label>
 					<input type="text" class="form-control mb-2" id="phone" placeholder="Phone Number" value="<?php echo esc_html( $user_phone_number ); ?>" />
 				</div>
-				<div class="col-12 col-md-6">
+				<?php } ?>
+				<?php if ( ! is_user_logged_in() ) { ?>
+					<?php $row_size_value = 6; ?>
+				<?php } else { ?> 
+					<?php $row_size_value = 12; ?>
+				<?php } ?>
+				<div class="col-12 col-md-<?php echo esc_attr( $row_size_value ); ?>">
 					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="message"><?php esc_html_e( 'Upload Something Here', 'easy-reservations-reviews' ); ?> <span class="text-danger">*</span></label>
 					<div class="upload-btn-wrapper">
 						<!-- actual upload which is hidden -->
