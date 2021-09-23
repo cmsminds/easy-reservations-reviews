@@ -141,7 +141,6 @@ class Easy_Reservations_Reviews_Public {
 					'placeholder' => array(),
 					'class'       => array(),
 					'value'       => array(),
-					'hidden'      => array(),
 				),
 				'form'     => array(
 					'method'  => array(),
@@ -157,6 +156,29 @@ class Easy_Reservations_Reviews_Public {
 					'id'          => array(),
 					'class'       => array(),
 					'placeholder' => array(),
+				),
+				'h2'       => array(
+					'class' => array(),
+				),
+				'h3'       => array(
+					'class' => array(),
+				),
+				'h4'       => array(
+					'class' => array(),
+				),
+				'h5'       => array(
+					'class' => array(),
+				),
+				'img'      => array(
+					'src'   => array(),
+					'class' => array(),
+					'alt'   => array(),
+				),
+				'ul'      => array(
+					'class' => array(),
+				),
+				'li'      => array(
+					'class' => array(),
 				),
 			),
 		);
@@ -209,7 +231,6 @@ class Easy_Reservations_Reviews_Public {
 						'placeholder' => array(),
 						'class'       => array(),
 						'value'       => array(),
-						'hidden'      => array(),
 					),
 					'form'     => array(
 						'method'  => array(),
@@ -225,6 +246,29 @@ class Easy_Reservations_Reviews_Public {
 						'id'          => array(),
 						'class'       => array(),
 						'placeholder' => array(),
+					),
+					'h2'       => array(
+						'class' => array(),
+					),
+					'h3'       => array(
+						'class' => array(),
+					),
+					'h4'       => array(
+						'class' => array(),
+					),
+					'h5'       => array(
+						'class' => array(),
+					),
+					'img'      => array(
+						'src'   => array(),
+						'class' => array(),
+						'alt'   => array(),
+					),
+					'ul'      => array(
+						'class' => array(),
+					),
+					'li'      => array(
+						'class' => array(),
 					),
 				),
 			);
