@@ -258,17 +258,14 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 								<div class="rating-item d-flex flex-wrap align-items-center">
 									<div class="col-4 col-sm-3"><label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( $criteria, 'easy-reservations-reviews' ); ?> </label></div>
 									<div class="col-8 col-sm-9 rating-group">
-										<?php 
-											for ( $i = 1; $i<=5; $i++ ) { ?>
-												<label aria-label="<?php esc_attr_e( $i, 'easy-reservations-reviews' ); ?> star" class="rating__label" for="rating3-<?php esc_attr_e( $i, 'easy-reservations-reviews' ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-												<input class="rating__input" name="rating3" id="rating3-<?php esc_attr_e( $i, 'easy-reservations-reviews' ); ?>" value="<?php esc_attr_e( $i, 'easy-reservations-reviews' ); ?>" type="radio">
-											<?php
-											}
-										?>
+										<?php
+										for ( $i = 1; $i <= 5; $i++ ) { ?>
+											<label aria-label="<?php esc_attr_e( $i, 'easy-reservations-reviews' ); ?> star" class="rating__label" for="rating3-<?php esc_attr_e( $i, 'easy-reservations-reviews' ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+											<input class="rating__input" name="rating3" id="rating3-<?php esc_attr_e( $i, 'easy-reservations-reviews' ); ?>" value="<?php esc_attr_e( $i, 'easy-reservations-reviews' ); ?>" type="radio">
+										<?php } ?>
 									</div>
 								</div>
-							<?php
-							}
+							<?php }
 						}
 						?>
 					</div>
