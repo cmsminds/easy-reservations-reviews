@@ -221,7 +221,23 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 					'class'       => array(),
 					'placeholder' => array(),
 				),
-
+				'h2'       => array(
+					'class' => array(),
+				),
+				'h3'       => array(
+					'class' => array(),
+				),
+				'h4'       => array(
+					'class' => array(),
+				),
+				'h5'       => array(
+					'class' => array(),
+				),
+				'img'      => array(
+					'src'   => array(),
+					'class' => array(),
+					'alt'   => array(),
+				),
 			),
 		);
 		return $html;
