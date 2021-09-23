@@ -1,23 +1,39 @@
 jQuery( document ).ready( function( $ ) {
 	'use strict';
-	jQuery(document).on( 'click', '.rating__input', function( evt ) {
-		evt.preventDefault();
-		alert("1");
-        $(this).prop("checked", true);
-    });
+
+	var favorite = [];
+	jQuery(document).on( 'mouseout', '.rating__label', function( evt ) {
+		// evt.preventDefault();
+		var criteria_input   = $( this ).next( 'input[type="radio"]' ).attr( 'id' );
+		var closest_criteria = $( this ).closest( '.rating-group' ).data( 'criteria' );
+		$( '#' + criteria_input ).prevUntil( '.rating__input:first' ).removeClass( 'fill_star_hover' );
+	});
+	jQuery(document).on( 'mouseover', '.rating__label', function( evt ) {
+		// evt.preventDefault();
+		var criteria_input   = $( this ).next( 'input[type="radio"]' ).attr( 'id' );
+		var closest_criteria = $( this ).closest( '.rating-group' ).data( 'criteria' );
+		$( '#' + criteria_input ).prevUntil( '.rating__input:first' ).addClass( 'fill_star_hover' );
+	});
+	
+	jQuery(document).on( 'click', '.rating__label', function( evt ) {
+		// evt.preventDefault();
+		var criteria_input   = $( this ).next( 'input[type="radio"]' ).attr( 'id' );
+		var closest_criteria = $( this ).closest( '.rating-group' ).data( 'criteria' );
+		$( '#' + criteria_input ).prevUntil( '.rating__input:first' ).addClass( 'fill_star_click' );
+		
+		console.log( criteria_input );
+
+		
+		
+		// var criteria_radio_value = $(this).val();
+		// favorite.push( {
+		// 	closest_criteria: closest_criteria, 
+		// 	criteria_review_value: criteria_radio_value,
+		// } );
+	});
+	
 	jQuery(document).on( 'click', '.ersrvr_btn_submit', function( evt ) {
 		evt.preventDefault();
-		var favorite = [];
-		var closest_criteria;
-		var criteria_radio_value;
-        $.each($(".rating__input:checked"), function(i, value){
-			closest_criteria = $(this).closest('.rating-group').data('criteria');
-			criteria_radio_value = $(this).val()
-			favorite.push({
-				closest_criteria: closest_criteria, 
-				radio_value:  criteria_radio_value,
-			});
-        });
 		console.log(favorite);
 	} );
 	/**

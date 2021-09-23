@@ -279,14 +279,17 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 					<div id="full-stars-example-two" class="rating-group-wrapper border py-2 px-1 rounded-xl">
 						<!-- rating items starts here -->
 						<?php if ( is_array( $criterias ) && ! empty( $criterias ) ) { ?>
-							<?php $k = 0; ?>
-							<?php foreach ( $criterias as $criteria ) { ?>
+							<?php $k = 1; ?>
+							<?php foreach ( $criterias as $criteria ) { 
+								$criteria_slug = strtolower( $criteria );
+								$criteria_slug = str_replace( ' ', '-', $criteria_slug );
+								?>
 								<div class="rating-item d-flex flex-wrap align-items-center">
 									<div class="col-4 col-sm-3"><label class="font-Poppins font-weight-semibold text-black font-size-14"><?php echo esc_html( $criteria ); ?> </label></div>
 									<div class="col-8 col-sm-9 rating-group" data-criteria="<?php echo esc_attr( $criteria ); ?>">
 										<?php for ( $i = 1; $i <= 5; $i++ ) { ?>
-											<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="rating<?php echo esc_attr( $k ); ?>-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-											<input class="rating__input" name="rating3" id="rating<?php echo esc_attr( $k ); ?>-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
+											<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+											<input class="rating__input" name="rating3" id="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
 											<?php $k++; ?>
 										<?php } ?>
 									</div>
