@@ -253,21 +253,18 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 						<!-- rating items starts here -->
 						<?php
 						if ( is_array( $criterias ) && ! empty( $criterias ) ) {
+							$i = 0;
 							foreach ( $criterias as $criteria ) { ?>
 								<div class="rating-item d-flex flex-wrap align-items-center">
 									<div class="col-4 col-sm-3"><label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( $criteria, 'easy-reservations-reviews' ); ?> </label></div>
 									<div class="col-8 col-sm-9 rating-group">
-										<input disabled checked class="rating__input rating__input--none" name="rating3" id="rating3-none" value="0" type="radio">
-										<label aria-label="1 star" class="rating__label" for="rating3-1"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-										<input class="rating__input" name="rating3" id="rating3-1" value="1" type="radio">
-										<label aria-label="2 stars" class="rating__label" for="rating3-2"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-										<input class="rating__input" name="rating3" id="rating3-2" value="2" type="radio">
-										<label aria-label="3 stars" class="rating__label" for="rating3-3"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-										<input class="rating__input" name="rating3" id="rating3-3" value="3" type="radio">
-										<label aria-label="4 stars" class="rating__label" for="rating3-4"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-										<input class="rating__input" name="rating3" id="rating3-4" value="4" type="radio">
-										<label aria-label="5 stars" class="rating__label" for="rating3-5"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-										<input class="rating__input" name="rating3" id="rating3-5" value="5" type="radio">
+										<?php 
+											for( $i = 1; $i<=5; $i++ ) { ?>
+												<label aria-label="<?php esc_attr_e( $i, 'easy-reservations-reviews' ); ?> star" class="rating__label" for="rating3-<?php esc_attr_e( $i, 'easy-reservations-reviews' ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+												<input class="rating__input" name="rating3" id="rating3-<?php esc_attr_e( $i, 'easy-reservations-reviews' ); ?>" value="<?php esc_attr_e( $i, 'easy-reservations-reviews' ); ?>" type="radio">
+											<?php
+											}
+										?>
 									</div>
 								</div>
 							<?php
