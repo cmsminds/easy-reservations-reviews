@@ -195,12 +195,9 @@ class Easy_Reservations_Reviews_Public {
 	 * @since 1.0.0
 	 */
 	public function ersrvr_after_item_details_callback( $reservation_id ) {
-		$product = get_product( $reservation_id );
+		$product = wc_get_product( $reservation_id );
 		// check product is reservation type or not.
 		if ( $product->is_type( 'reservation' ) ) {
-			$ersrvr_reservation_button_text          = ersrvr_submit_review_button_text();
-			$ersrvr_reservation_review_criteria      = ersrvr_submit_review_criterias();
-			$ersrvr_reservation_review_guest_setting = ersrvr_enable_reservation_reviews_guest_users();
 			echo wp_kses(
 				ersrvr_prepare_reviews_html(),
 				array(
