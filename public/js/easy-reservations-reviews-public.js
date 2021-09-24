@@ -35,15 +35,13 @@ jQuery( document ).ready( function( $ ) {
 		$( '#' + criteria_input_id ).prevUntil( '.rating__input:first' ).addBack().addClass( 'fill_star_click' );
 		var ratings = criteria_input.val();
 		$( 'label.rating__label' ).removeClass( 'fill_star_click' );
+		console.log( ratings );
 		favorite.push( {
 			closest_criteria: closest_criteria, 
 			criteria_review_value: ratings,
 		} );
-		console.log(favorite);
-		console.log(keys);
-
 	});
-	
+	console.log(favorite);
 	jQuery(document).on( 'click', '.ersrvr_btn_submit', function( evt ) {
 		evt.preventDefault();
 		console.log(favorite);
