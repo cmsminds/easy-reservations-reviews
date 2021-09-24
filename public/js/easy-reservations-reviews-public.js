@@ -5,7 +5,7 @@ jQuery( document ).ready( function( $ ) {
 	jQuery(document).on( 'mouseout', '.rating__label', function( evt ) {
 		// evt.preventDefault();
 		var this_label        = $( this );
-		var criteria_input    = this_label.next( 'input[type="radio"]' );
+		var criteria_input    = this_label.prev( 'input[type="radio"]' );
 		var criteria_input_id = criteria_input.attr( 'id' );
 		var closest_criteria  = $( this ).closest( '.rating-group' ).data( 'criteria' );
 		$( '#' + criteria_input_id ).prevUntil( '.rating__input:first' ).addBack().removeClass( 'fill_star_hover' );
@@ -17,7 +17,7 @@ jQuery( document ).ready( function( $ ) {
 	 */
 	jQuery( document ).on( 'mouseover', '.rating__label', function( evt ) {
 		var this_label        = $( this );
-		var criteria_input    = this_label.next( 'input[type="radio"]' );
+		var criteria_input    = this_label.prev( 'input[type="radio"]' );
 		var criteria_input_id = criteria_input.attr( 'id' );
 		var closest_criteria  = $( this ).closest( '.rating-group' ).data( 'criteria' );
 		$( '#' + criteria_input_id ).prevUntil( '.rating__input:first' ).addBack().addClass( 'fill_star_hover' );
@@ -28,7 +28,7 @@ jQuery( document ).ready( function( $ ) {
 		// evt.preventDefault();
 		$( 'label.rating__label' ).removeClass( 'fill_star_click' );
 		var this_label        = $( this );
-		var criteria_input    = this_label.next( 'input[type="radio"]' );
+		var criteria_input    = this_label.prev( 'input[type="radio"]' );
 		var criteria_input_id = criteria_input.attr( 'id' );
 		var closest_criteria  = $( this ).closest( '.rating-group' ).attr( 'id' );
 		$( '#' + closest_criteria + ' .rating__input' ).removeClass( 'fill_star_click' );
