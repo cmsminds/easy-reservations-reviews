@@ -41,20 +41,6 @@ $get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_rese
 				); ?>
 			</div>
 		<?php } ?>
-		<!-- form start here -->
-		<div class="review-form-wrapper">
-			<?php 
-			/**
-			* Function ersrvr_prepare_reviews_form_html() Map from the file of includes/easy-reservations-reviews-functions.php Line no: 224
-			*/
-			if( empty( $user_info ) ) {
-				if( ! empty( $get_guest_user_enable_Setting ) && 'yes' === $get_guest_user_enable_Setting ) { 
-					echo ersrvr_prepare_reviews_form_html( $user_email, $username, $user_phone_number ); 
-				}
-			} else { 
-				echo ersrvr_prepare_reviews_form_html( $user_email, $username, $user_phone_number ); 
-			} ?>
-		</div>
 		<div class="review-listing-wrapper">
 			<div class="list-Of-Review-title">
 				<h2 class="font-popins font-size-24 font-weight-bold">2 Reviews</h2>
@@ -79,7 +65,9 @@ $get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_rese
 			<div class="dropdown-divider"></div>
 			<div id="full-stars-example-two" class="rating-group-wrapper">
 				<div class="rating-item d-flex flex-wrap align-items-center">
-					<div class="col-4 col-sm-3"><label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( 'Communication', 'easy-reservations-reviews' ); ?> </label></div>
+					<div class="col-4 col-sm-3">
+						<label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( 'Communication', 'easy-reservations-reviews' ); ?> </label>
+					</div>
 					<div class="col-8 col-sm-9 rating-group">
 						<input disabled checked class="rating__input rating__input--none" name="rating3" id="rating3-none" value="0" type="radio">
 						<label aria-label="1 star" class="rating__label" for="rating3-1"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
@@ -99,7 +87,7 @@ $get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_rese
 			<div class="sinlgle-review-items-wrapper">
 				<ul class="list-unstyled ml-0">
 					<li class="media mb-4">
-						<img src="http://localhost/cmsminds/easy-reservations-system/wp-content/uploads/2021/08/pexels-jason-boyd-3423147-scaled.jpg" class="mr-3 rounded-circle" alt="user-photo">
+						<img src="http://localhost:8888/woocom-learning/wp-content/uploads/2021/08/pexels-jason-boyd-3423147-scaled.jpg" class="mr-3 rounded-circle" alt="user-photo">
 						<div class="media-body">
 							<div class="media-title">
 								<div id="full-stars-example-two" class="rating-group-wrapper">
@@ -129,7 +117,7 @@ $get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_rese
 						</div>
 					</li>
 					<li class="media mb-4">
-						<img src="http://localhost/cmsminds/easy-reservations-system/wp-content/uploads/2021/08/pexels-jason-boyd-3423147-scaled.jpg" class="mr-3 rounded-circle" alt="user-photo">
+						<img src="http://localhost:8888/woocom-learning/wp-content/uploads/2021/08/pexels-jason-boyd-3423147-scaled.jpg" class="mr-3 rounded-circle" alt="user-photo">
 						<div class="media-body">
 							<div class="media-title">
 								<div id="full-stars-example-two" class="rating-group-wrapper">
@@ -159,7 +147,7 @@ $get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_rese
 						</div>
 					</li>
 					<li class="media">
-						<img src="http://localhost/cmsminds/easy-reservations-system/wp-content/uploads/2021/08/pexels-jason-boyd-3423147-scaled.jpg" class="mr-3 rounded-circle" alt="user-photo">
+						<img src="http://localhost:8888/woocom-learning/wp-content/uploads/2021/08/pexels-jason-boyd-3423147-scaled.jpg" class="mr-3 rounded-circle" alt="user-photo">
 						<div class="media-body">
 							<div class="media-title">
 								<div id="full-stars-example-two" class="rating-group-wrapper">
@@ -191,6 +179,20 @@ $get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_rese
 				</ul>
 			</div>
 
+		</div>
+		<!-- form start here -->
+		<div class="review-form-wrapper">
+			<?php 
+			/**
+			* Function ersrvr_prepare_reviews_form_html() Map from the file of includes/easy-reservations-reviews-functions.php Line no: 224
+			*/
+			if( empty( $user_info ) ) {
+				if( ! empty( $get_guest_user_enable_Setting ) && 'yes' === $get_guest_user_enable_Setting ) { 
+					echo ersrvr_prepare_reviews_form_html( $user_email, $username, $user_phone_number ); 
+				}
+			} else { 
+				echo ersrvr_prepare_reviews_form_html( $user_email, $username, $user_phone_number ); 
+			} ?>
 		</div>
 	</div>
 </div>
