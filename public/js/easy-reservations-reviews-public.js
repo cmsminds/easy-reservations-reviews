@@ -33,16 +33,15 @@ jQuery( document ).ready( function( $ ) {
 		var closest_criteria  = $( this ).closest( '.rating-group' ).attr( 'id' );
 		$( '#' + closest_criteria + ' .rating__input' ).removeClass( 'fill_star_click' );
 		$( '#' + criteria_input_id ).prevUntil( '.rating__input:first' ).addBack().addClass( 'fill_star_click' );
+		var ratings = criteria_input.val();
 		$( 'label.rating__label' ).removeClass( 'fill_star_click' );
-		// console.log( criteria_input );
+		favorite.push( {
+			closest_criteria: closest_criteria, 
+			criteria_review_value: ratings,
+		} );
+		console.log(favorite);
+		console.log(keys);
 
-		
-		
-		// var criteria_radio_value = $(this).val();
-		// favorite.push( {
-		// 	closest_criteria: closest_criteria, 
-		// 	criteria_review_value: criteria_radio_value,
-		// } );
 	});
 	
 	jQuery(document).on( 'click', '.ersrvr_btn_submit', function( evt ) {
