@@ -90,6 +90,19 @@ class Easy_Reservations_Reviews_Public {
 			array(),
 			filemtime( ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-reviews-common.css' )
 		);
+		if( is_user_logged_in() ) {
+			$user_id   = get_current_user_id();
+		}
+		// Localize variables.
+		wp_localize_script(
+			$this->plugin_name,
+			'ERSRVR_Reviews_Public_Script_Vars',
+			array(
+				'ajaxurl'                      => admin_url( 'admin-ajax.php' ),
+				'user_logged_in'               => ( is_user_logged_in() ) ?  'Yes' : 'No',
+				''
+			)
+		);
 
 	}
 
