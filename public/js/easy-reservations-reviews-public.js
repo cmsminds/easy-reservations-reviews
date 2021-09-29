@@ -1,6 +1,10 @@
 jQuery( document ).ready( function( $ ) {
 	'use strict';
-
+	
+	// Localized variables.
+	var ajaxurl        = ERSRVR_Reviews_Public_Script_Vars.ajaxurl;
+	var user_logged_in = ERSRVR_Reviews_Public_Script_Vars.user_logged_in;
+	var user_email     = ERSRVR_Reviews_Public_Script_Vars.user_email;
 	var user_criteria_ratings = [];
 	jQuery(document).on( 'mouseout', '.rating__label', function( evt ) {
 		// evt.preventDefault();
@@ -12,9 +16,7 @@ jQuery( document ).ready( function( $ ) {
 		$( 'label.rating__label' ).removeClass( 'fill_star_hover' );
 	});
 
-	/**
-	 * 
-	 */
+	// check user hover on which star and add class till starts
 	jQuery( document ).on( 'mouseover', '.rating__label', function( evt ) {
 		var this_label        = $( this );
 		var criteria_input    = this_label.prev( 'input[type="radio"]' );
@@ -24,9 +26,7 @@ jQuery( document ).ready( function( $ ) {
 		$( 'label.rating__label' ).removeClass( 'fill_star_hover' );
 	} );
 
-	/**
-	 * Add the star rating.
-	 */
+	// check user click on which star and add class till starts
 	jQuery( document ).on( 'click', '.rating__label', function() {
 		// evt.preventDefault();
 		$( 'label.rating__label' ).removeClass( 'fill_star_click' );
@@ -59,10 +59,32 @@ jQuery( document ).ready( function( $ ) {
 
 		console.log( 'user_criteria_ratings', user_criteria_ratings );
 	} );
-
+	// submit revie form.
 	jQuery(document).on( 'click', '.ersrvr_btn_submit', function( evt ) {
 		evt.preventDefault();
-		console.log(user_criteria_ratings);
+		var this_button = $( this );
+		var useremail = user_email;
+		var given_rating_star_array = user_criteria_ratings;
+		// Send the AJAX now.
+		block_element( this_button );
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'ersrvr_submit_reviews',
+				useremail: useremail,
+				user_criteria_ratings: given_rating_star_array,
+			},
+			success: function ( response ) {
+				// Check for invalid ajax request.
+				if ( 0 === response ) {
+					console.log( 'easy reservations: invalid ajax request' );
+					return false;
+				}
+
+			},
+		} );
 	} );
 	/**
 	 * Check if a string is valid.

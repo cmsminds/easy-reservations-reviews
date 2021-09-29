@@ -90,17 +90,19 @@ class Easy_Reservations_Reviews_Public {
 			array(),
 			filemtime( ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-reviews-common.css' )
 		);
+		$user_email = '';
 		if( is_user_logged_in() ) {
-			$user_id   = get_current_user_id();
+			$user_data   = ersrvr_user_logged_in_data();
+			$user_email  = $user_data['user_email'];
 		}
 		// Localize variables.
 		wp_localize_script(
 			$this->plugin_name,
 			'ERSRVR_Reviews_Public_Script_Vars',
 			array(
-				'ajaxurl'                      => admin_url( 'admin-ajax.php' ),
-				'user_logged_in'               => ( is_user_logged_in() ) ?  'Yes' : 'No',
-				''
+				'ajaxurl'        => admin_url( 'admin-ajax.php' ),
+				'user_logged_in' => ( is_user_logged_in() ) ?  'yes' : 'no',
+				'user_email'     => $user_email,
 			)
 		);
 
@@ -298,14 +300,15 @@ class Easy_Reservations_Reviews_Public {
 	 *
 	 * @since 1.0.0
 	 */
-	public function ersrvr_submit_review_form_data_callback() {
-		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+	public function ersrvr_submit_reviews() {
 		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
 		// Check if action mismatches.
-		if ( empty( $action ) || 'ersrvr_submit_review_form_data_callback' !== $action ) {
+		if ( empty( $action ) || 'ersrvr_submit_reviews' !== $action ) {
 			echo 0;
 			wp_die();
 		}
+		die("poop");
 	}
+	
 
 }
