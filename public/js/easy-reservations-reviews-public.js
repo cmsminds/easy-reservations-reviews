@@ -11,7 +11,7 @@ jQuery( document ).ready( function( $ ) {
 		var this_label        = $( this );
 		var criteria_input    = this_label.prev( 'input[type="radio"]' );
 		var criteria_input_id = criteria_input.attr( 'id' );
-		var closest_criteria  = $( this ).closest( '.rating-group' ).data( 'criteria' );
+		// var closest_criteria  = $( this ).closest( '.rating-group' ).data( 'criteria' );
 		$( '#' + criteria_input_id ).prevUntil( '.rating__input:first' ).addBack().removeClass( 'fill_star_hover' );
 		$( 'label.rating__label' ).removeClass( 'fill_star_hover' );
 	});
@@ -21,7 +21,6 @@ jQuery( document ).ready( function( $ ) {
 		var this_label        = $( this );
 		var criteria_input    = this_label.prev( 'input[type="radio"]' );
 		var criteria_input_id = criteria_input.attr( 'id' );
-		var closest_criteria  = $( this ).closest( '.rating-group' ).data( 'criteria' );
 		$( '#' + criteria_input_id ).prevUntil( '.rating__input:first' ).addBack().addClass( 'fill_star_hover' );
 		$( 'label.rating__label' ).removeClass( 'fill_star_hover' );
 	} );
@@ -30,14 +29,16 @@ jQuery( document ).ready( function( $ ) {
 	jQuery( document ).on( 'click', '.rating__label', function() {
 		// evt.preventDefault();
 		$( 'label.rating__label' ).removeClass( 'fill_star_click' );
+		
 		var this_label        = $( this );
 		var criteria_input    = this_label.prev( 'input[type="radio"]' );
 		var criteria_input_id = criteria_input.attr( 'id' );
 		var closest_criteria  = $( this ).closest( '.rating-group' ).attr( 'id' );
+		console.log( $( '#' + closest_criteria + ' input' ) );
 		$( '#' + closest_criteria + ' .rating__input' ).removeClass( 'fill_star_click' );
 		$( '#' + criteria_input_id ).prevUntil( '.rating__input:first' ).addBack().addClass( 'fill_star_click' );
 		var rating = parseInt( criteria_input.val() );
-		$( 'label.rating__label' ).removeClass( 'fill_star_click' );
+		// $( 'label.rating__label' ).removeClass( 'fill_star_click' );
 
 		// Check if criteria to add already exists in the array.
 		var existing_criteria_key = $.map( user_criteria_ratings, function( val, i ) {

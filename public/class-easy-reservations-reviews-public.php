@@ -304,10 +304,12 @@ class Easy_Reservations_Reviews_Public {
 		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
 		// Check if action mismatches.
 		if ( empty( $action ) || 'ersrvr_submit_reviews' !== $action ) {
-			echo 0;
 			wp_die();
 		}
-		die("poop");
+		$user_email = filter_input( INPUT_POST, 'useremail', FILTER_SANITIZE_STRING );
+		debug( $user_email );
+		die( "pooop" );
+
 	}
 	
 
