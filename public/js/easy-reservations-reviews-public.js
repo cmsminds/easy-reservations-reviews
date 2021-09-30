@@ -2,9 +2,10 @@ jQuery( document ).ready( function( $ ) {
 	'use strict';
 	
 	// Localized variables.
-	var ajaxurl        = ERSRVR_Reviews_Public_Script_Vars.ajaxurl;
-	var user_logged_in = ERSRVR_Reviews_Public_Script_Vars.user_logged_in;
-	var user_email     = ERSRVR_Reviews_Public_Script_Vars.user_email;
+	var ajaxurl         = ERSRVR_Reviews_Public_Script_Vars.ajaxurl;
+	var user_logged_in  = ERSRVR_Reviews_Public_Script_Vars.user_logged_in;
+	var user_email      = ERSRVR_Reviews_Public_Script_Vars.user_email;
+	var current_post_id = ERSRVR_Reviews_Public_Script_Vars.current_post_id;
 	var user_criteria_ratings = [];
 	jQuery(document).on( 'mouseout', '.rating__label', function( evt ) {
 		// evt.preventDefault();
@@ -33,7 +34,7 @@ jQuery( document ).ready( function( $ ) {
 		var criteria_input    = this_label.prev( 'input[type="radio"]' );
 		var criteria_input_id = criteria_input.attr( 'id' );
 		var closest_criteria  = criteria_input.closest( '.rating-group' ).attr( 'id' );
-		console.log( $( '#' + closest_criteria ) );
+		// console.log( $( '#' + closest_criteria ) );
 		$( '#' + closest_criteria + ' .rating__input' ).removeClass( 'fill_star_click' );
 		$( '#' + criteria_input_id ).prevUntil( '.rating__input:first' ).addBack().addClass( 'fill_star_click' );
 		var rating = parseInt( criteria_input.val() );
@@ -57,7 +58,7 @@ jQuery( document ).ready( function( $ ) {
 			rating: rating,
 		} );
 
-		console.log( 'user_criteria_ratings', user_criteria_ratings );
+		// console.log( 'user_criteria_ratings', user_criteria_ratings );
 	} );
 	// submit revie form.
 	jQuery(document).on( 'click', '.ersrvr_btn_submit', function( evt ) {
@@ -75,6 +76,7 @@ jQuery( document ).ready( function( $ ) {
 				action: 'ersrvr_submit_reviews',
 				useremail: useremail,
 				user_criteria_ratings: given_rating_star_array,
+				current_post_id: current_post_id
 			},
 			success: function ( response ) {
 				// Check for invalid ajax request.

@@ -60,6 +60,7 @@ class Easy_Reservations_Reviews_Public {
 	 */
 	public function enqueue_scripts() {
 		global $wp_registered_widgets, $post, $wp_query;
+		$post_id = ! empty( $post->ID ) ? $post->ID : 0;
 		// Active style file based on the active theme.
 		$current_theme     = get_option( 'stylesheet' );
 		$active_style      = ersrvr_get_active_stylesheet( $current_theme );
@@ -91,18 +92,19 @@ class Easy_Reservations_Reviews_Public {
 			filemtime( ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-reviews-common.css' )
 		);
 		$user_email = '';
-		if( is_user_logged_in() ) {
-			$user_data   = ersrvr_user_logged_in_data();
-			$user_email  = $user_data['user_email'];
+		if ( is_user_logged_in() ) {
+			$user_data  = ersrvr_user_logged_in_data();
+			$user_email = $user_data['user_email'];
 		}
 		// Localize variables.
 		wp_localize_script(
 			$this->plugin_name,
 			'ERSRVR_Reviews_Public_Script_Vars',
 			array(
-				'ajaxurl'        => admin_url( 'admin-ajax.php' ),
-				'user_logged_in' => ( is_user_logged_in() ) ?  'yes' : 'no',
-				'user_email'     => $user_email,
+				'ajaxurl'         => admin_url( 'admin-ajax.php' ),
+				'user_logged_in'  => ( is_user_logged_in() ) ? 'yes' : 'no',
+				'user_email'      => $user_email,
+				'current_post_id' => $post_id,
 			)
 		);
 
@@ -159,7 +161,7 @@ class Easy_Reservations_Reviews_Public {
 					'placeholder' => array(),
 					'class'       => array(),
 					'value'       => array(),
-					'checked'	  => array(),
+					'checked'     => array(),
 				),
 				'form'     => array(
 					'method'  => array(),
@@ -193,10 +195,10 @@ class Easy_Reservations_Reviews_Public {
 					'class' => array(),
 					'alt'   => array(),
 				),
-				'ul'      => array(
+				'ul'       => array(
 					'class' => array(),
 				),
-				'li'      => array(
+				'li'       => array(
 					'class' => array(),
 				),
 			),
@@ -250,7 +252,7 @@ class Easy_Reservations_Reviews_Public {
 						'placeholder' => array(),
 						'class'       => array(),
 						'value'       => array(),
-						'checked'	  => array(),
+						'checked'     => array(),
 					),
 					'form'     => array(
 						'method'  => array(),
@@ -306,10 +308,44 @@ class Easy_Reservations_Reviews_Public {
 		if ( empty( $action ) || 'ersrvr_submit_reviews' !== $action ) {
 			wp_die();
 		}
-		$user_email = filter_input( INPUT_POST, 'useremail', FILTER_SANITIZE_STRING );
-		debug( $user_email );
-		die( "pooop" );
-
+		$user_email   = filter_input( INPUT_POST, 'useremail', FILTER_SANITIZE_STRING );
+		$user_email   = ( ! empty( $user_email ) ) ? $user_email : '';
+		$post_id      = filter_input( INPUT_POST, 'current_post_id', FILTER_SANITIZE_NUMBER_INT );
+		$user         = get_user_by( 'email', $user_email );
+		$user_id      = ( !empty( $user->ID ) ) ? $user->ID : 0;
+		$user_name    = ( ! empty( $user->data->display_name ) ) ? $user->data->display_name : '';
+		$author_url   = ( !empty( get_author_posts_url( $user_id ) ) ) ? get_author_posts_url( $user_id ) : '';
+		
+		$posted_array = filter_input_array( INPUT_POST );
+		$all_criteria =  ( ! empty( $posted_array['user_criteria_ratings'] ) ) ? $posted_array['user_criteria_ratings'] : array();
+		
+		foreach ( $all_criteria as $key => $criteria ) {
+			$closest_criteria  = $criteria['closest_criteria'];
+			$rating            = $criteria['rating'];
+			$combine_ratings[] = $rating;
+		}
+		$total_ratings  = array_sum( $combine_ratings );
+		$avrage_ratings = $total_ratings / count( $combine_ratings );
+		$save_option    = array(
+			'average_ratings' => $avrage_ratings
+		);
+		$comment_data =  array(
+			'comment_post_ID'      => $post_id,
+			'comment_author'       => $user_name,
+			'comment_author_email' => $user_email,
+			'comment_author_url'   => $author_url,
+			'comment_content'      => 'abc',
+			'user_id'              => $user_id,
+			'comment_author_IP'    => '127.0.0.1',
+			'comment_agent'        => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.10) Gecko/2009042316 Firefox/3.0.10 (.NET CLR 3.5.30729)',
+			'comment_date'         => date('m/d/Y h:i:s', time()),
+			'comment_approved'     => 1,
+		);
+		$comment_id = wp_insert_comment($comment_data);
+		add_comment_meta( $comment_id, 'average_ratings', $avrage_ratings );
+		add_comment_meta( $comment_id, 'user_criteria_ratings', $all_criteria );
+		
+		die("poop");
 	}
 	
 

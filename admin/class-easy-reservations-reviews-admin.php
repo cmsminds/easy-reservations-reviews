@@ -68,6 +68,12 @@ class Easy_Reservations_Reviews_Admin {
 			$this->version,
 			true
 		);
+		wp_enqueue_style(
+			$this->plugin_name . '-common',
+			ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-reviews-common.css',
+			array(),
+			filemtime( ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-reviews-common.css' )
+		);
 
 		// Localize variables.
 		wp_localize_script(
@@ -107,5 +113,70 @@ class Easy_Reservations_Reviews_Admin {
 		}
 		$settings = ersrvr_setting_fields();
 		return $settings;
+	}
+	/**
+	 * Add Custom meta in comment for reviews.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrvr_add_metabox_in_comment_screen() {
+		$get_comment_id = filter_input( INPUT_GET, 'c', FILTER_SANITIZE_NUMBER_INT );
+		if ( ! empty( $get_comment_id ) && isset( $get_comment_id ) ) {
+			$get_average_ratings       = get_comment_meta( $get_comment_id, 'average_ratings', true );
+			$get_user_criteria_ratings = get_comment_meta( $get_comment_id, 'user_criteria_ratings', true );
+			if ( ! empty( $get_user_criteria_ratings ) && is_array( $get_user_criteria_ratings ) ) {
+				add_meta_box( 'ersrvr_add_reviews_data', __( 'Reviews' ), 'ersrvr_add_reviews_data', 'comment', 'normal' );
+			}
+		}
+		/**
+		 * Function to add output data.
+		 */
+		function ersrvr_add_reviews_data() {
+			$get_comment_id            = filter_input( INPUT_GET, 'c', FILTER_SANITIZE_NUMBER_INT );
+			$get_average_ratings       = get_comment_meta( $get_comment_id, 'average_ratings', true );
+			$get_user_criteria_ratings = get_comment_meta( $get_comment_id, 'user_criteria_ratings', true ); ?>
+			<?php if ( ! empty( $get_user_criteria_ratings ) && is_array( $get_user_criteria_ratings ) ) { ?>
+				<div class="form-row">
+					<div class="col-12">
+						<div id="full-stars-example-two" class="rating-group-wrapper border py-2 px-1 rounded-xl">
+							<?php $k = 1; ?>
+							<?php foreach ( $get_user_criteria_ratings as $get_user_criteria_rating ) { ?>
+								<?php
+								$criteria_name = ucfirst( $get_user_criteria_rating['closest_criteria'] );
+								$criteria_name = str_replace( '-', ' ', $criteria_name );
+								$criteria_slug = $get_user_criteria_rating['closest_criteria'];
+								?>
+								<div class="rating-item d-flex flex-wrap align-items-center">
+									<div class="col-4 col-sm-3"><label class="font-Poppins font-weight-semibold text-black font-size-14"><?php echo esc_html( $criteria_name ); ?> </label></div>
+									<div class="col-8 col-sm-9 rating-group" id="<?php echo esc_attr( $criteria_slug ); ?>" data-criteria="<?php echo esc_attr( $criteria_name ); ?>">
+										<?php for ( $i = 1; $i <= 5; $i++ ) { ?>
+											<input class="rating__input" name="rating3" id="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
+											<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+											<?php $k++; ?>
+										<?php } ?>
+									</div>
+								</div>
+							<?php } ?>
+						</div>
+					</div>
+				</div>
+			<?php } ?>
+			<div class="col-4 col-sm-3">
+				<label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( 'Avrage Ratings', 'easy-reservations-reviews' ); ?> </label>
+			</div>
+			<div class="col-8 col-sm-9 rating-group">
+				<h2><?php echo esc_html( $get_average_ratings ); ?></h2>
+				<!-- <input class="rating__input" name="rating3" id="rating3-1" value="1" type="radio">
+				<label aria-label="1 star" class="rating__label" for="rating3-1"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+				<input class="rating__input" name="rating3" id="rating3-2" value="2" type="radio">
+				<label aria-label="2 stars" class="rating__label" for="rating3-2"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+				<input class="rating__input" name="rating3" id="rating3-3" value="3" type="radio">
+				<label aria-label="3 stars" class="rating__label" for="rating3-3"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+				<input class="rating__input" name="rating3" id="rating3-4" value="4" type="radio">
+				<label aria-label="4 stars" class="rating__label" for="rating3-4"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+				<input class="rating__input" name="rating3" id="rating3-5" value="5" type="radio">
+				<label aria-label="5 stars" class="rating__label" for="rating3-5"><span class="rating__icon rating__icon--star fa fa-star"></span></label> -->
+			</div>
+		<?php }
 	}
 }
