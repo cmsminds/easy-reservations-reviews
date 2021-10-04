@@ -338,7 +338,7 @@ class Easy_Reservations_Reviews_Public {
 			'user_id'              => $user_id,
 			'comment_author_IP'    => '127.0.0.1',
 			'comment_agent'        => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.10) Gecko/2009042316 Firefox/3.0.10 (.NET CLR 3.5.30729)',
-			'comment_date'         => date('m/d/Y h:i:s', time()),
+			'comment_date'         => date('Y/m/d h:i:s'),
 			'comment_approved'     => 1,
 		);
 		$comment_id = wp_insert_comment($comment_data);

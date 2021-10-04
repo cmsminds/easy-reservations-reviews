@@ -84,6 +84,7 @@ jQuery( document ).ready( function( $ ) {
 					console.log( 'easy reservations: invalid ajax request' );
 					return false;
 				}
+				unblock_element( this_button );
 
 			},
 		} );

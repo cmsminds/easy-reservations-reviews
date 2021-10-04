@@ -60,6 +60,13 @@ class Easy_Reservations_Reviews_Admin {
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/easy-reservations-reviews-admin.css', array(), $this->version, 'all' );
+
+		wp_enqueue_style(
+			$this->plugin_name . '-font-awesome-style',
+			'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css',
+			array(),
+			time(),
+		);
 		// Custom admin script.
 		wp_enqueue_script(
 			$this->plugin_name,
@@ -140,22 +147,39 @@ class Easy_Reservations_Reviews_Admin {
 					<div class="col-12">
 						<div id="full-stars-example-two" class="rating-group-wrapper border py-2 px-1 rounded-xl">
 							<?php $k = 1; ?>
+							<?php $rating_by_criteria = array(); ?>
 							<?php foreach ( $get_user_criteria_ratings as $get_user_criteria_rating ) { ?>
 								<?php
-								$criteria_name = ucfirst( $get_user_criteria_rating['closest_criteria'] );
-								$criteria_name = str_replace( '-', ' ', $criteria_name );
-								$criteria_slug = $get_user_criteria_rating['closest_criteria'];
+								$rating_by_criteria[] = array(
+									$get_user_criteria_rating['closest_criteria'] => $get_user_criteria_rating['rating'],
+								);
+								$final_ratings_array  = array();
+								foreach ( $rating_by_criteria as $key => $formatted_data ) {
+									foreach ( $formatted_data as $key => $value ) {
+										$final_ratings_array[ $key ] = $value;
+									}
+								}
+							}
+							$k = 1;
+							foreach ( $final_ratings_array as $criteria_key => $criteria_rating ) {
+								$criteria_rating = (int) $criteria_rating;
+								$criteria_name   = ucfirst( $criteria_key );
+								$criteria_name   = str_replace( '-', ' ', $criteria_name );
+								$criteria_slug   = $criteria_key;
 								?>
 								<div class="rating-item d-flex flex-wrap align-items-center">
-									<div class="col-4 col-sm-3"><label class="font-Poppins font-weight-semibold text-black font-size-14"><?php echo esc_html( $criteria_name ); ?> </label></div>
+									<div class="col-4 col-sm-3">
+										<label class="font-Poppins font-weight-semibold text-black font-size-14"><?php echo esc_html( $criteria_name ); ?> </label>
+									</div>
 									<div class="col-8 col-sm-9 rating-group" id="<?php echo esc_attr( $criteria_slug ); ?>" data-criteria="<?php echo esc_attr( $criteria_name ); ?>">
 										<?php for ( $i = 1; $i <= 5; $i++ ) { ?>
-											<input class="rating__input" name="rating3" id="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
+											<?php $filled_star_class = ( $criteria_rating >= $i ) ? 'fill_star_click' : ''; ?>
+											<input class="rating__input <?php echo esc_attr( $filled_star_class ); ?>" name="rating3" id="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
 											<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-											<?php $k++; ?>
 										<?php } ?>
 									</div>
 								</div>
+								<?php $k++; ?>
 							<?php } ?>
 						</div>
 					</div>
@@ -177,6 +201,7 @@ class Easy_Reservations_Reviews_Admin {
 				<input class="rating__input" name="rating3" id="rating3-5" value="5" type="radio">
 				<label aria-label="5 stars" class="rating__label" for="rating3-5"><span class="rating__icon rating__icon--star fa fa-star"></span></label> -->
 			</div>
-		<?php }
+			<?php
+		}
 	}
 }
