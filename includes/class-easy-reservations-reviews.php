@@ -160,6 +160,7 @@ class Easy_Reservations_Reviews {
 		$this->loader->add_filter( 'woocommerce_get_sections_easy-reservations', $plugin_admin, 'ersrvr_reviews_settings_section' );
 		$this->loader->add_filter( 'woocommerce_get_settings_easy-reservations', $plugin_admin, 'ersrvr_reviews_settings_fields', 99, 2 );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'ersrvr_add_metabox_in_comment_screen' );
+		$this->loader->add_action( 'wp_ajax_ersrvr_submit_reviews_current_comment', $plugin_admin, 'ersrvr_submit_reviews_current_comment' );
 	}
 
 	/**
@@ -176,8 +177,7 @@ class Easy_Reservations_Reviews {
 		$this->loader->add_action( 'ersrv_after_item_details', $plugin_public, 'ersrvr_after_item_details_callback' );
 		$this->loader->add_shortcode( 'ersrvr_review_form_shortcode', $plugin_public, 'ersrvr_review_form_shortcode_callback' );
 		$this->loader->add_action( 'wp_ajax_ersrvr_submit_reviews', $plugin_public, 'ersrvr_submit_reviews' );
-		$this->loader->add_action( 'wp_ajax_nopriv_ersrvr_submit_reviews', $plugin_public, 'ersrvr_submit_reviews' )
-		;
+		$this->loader->add_action( 'wp_ajax_nopriv_ersrvr_submit_reviews', $plugin_public, 'ersrvr_submit_reviews' );
 	}
 
 	/**

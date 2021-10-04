@@ -5,6 +5,9 @@ jQuery( document ).ready( function( $ ) {
 	var add_criteria_button_text     = ERSRVR_Reviews_Script_Vars.add_criteria_button_text;
 	var add_criterias_promptbox_text = ERSRVR_Reviews_Script_Vars.add_criterias_promptbox_text;
 	var add_same_criteria_error      = ERSRVR_Reviews_Script_Vars.add_same_criteria_error;
+	var existing_criteria_result     = ERSRVR_Reviews_Script_Vars.existing_criteria_result;
+	var ajaxurl                      = ERSRVR_Reviews_Script_Vars.ajaxurl;
+	
 
 	// Get the current section.
 	var current_section = get_query_string_parameter_value( 'section' );
@@ -81,18 +84,20 @@ jQuery( document ).ready( function( $ ) {
 	jQuery( document ).on( 'click', '.rating__label', function() {
 		// evt.preventDefault();
 		$( 'label.rating__label' ).removeClass( 'fill_star_click' );
+		block_element( $( '.comment-php #publishing-action input[type="submit"]' ) );
 		var this_label        = $( this );
 		var criteria_input    = this_label.prev( 'input[type="radio"]' );
+		console.log( criteria_input );
 		var criteria_input_id = criteria_input.attr( 'id' );
 		var closest_criteria  = criteria_input.closest( '.rating-group' ).attr( 'id' );
 		// console.log( $( '#' + closest_criteria ) );
 		$( '#' + closest_criteria + ' .rating__input' ).removeClass( 'fill_star_click' );
-		$( '#' + criteria_input_id ).prevUntil( '.rating__input:first' ).addBack().addClass( 'fill_star_click' );
+		$( '#' + criteria_input_id ).prevUntil( 'input[type="radio"]:first' ).addBack().addClass( 'fill_star_click' );
 		var rating = parseInt( criteria_input.val() );
 		// $( 'label.rating__label' ).removeClass( 'fill_star_click' );
 
 		// Check if criteria to add already exists in the array.
-		var existing_criteria_key = $.map( user_criteria_ratings, function( val, i ) {
+		var existing_criteria_key = $.map( existing_criteria_result, function( val, i ) {
 			if ( val.closest_criteria === closest_criteria ) {
 				return i;
 			}
@@ -100,18 +105,49 @@ jQuery( document ).ready( function( $ ) {
 
 		// If the key is found.
 		if ( 0 < existing_criteria_key.length ) {
-			user_criteria_ratings.splice( existing_criteria_key[0], 1 );
+			existing_criteria_result.splice( existing_criteria_key[0], 1 );
 		}
 
 		// Push the element in the array.
-		user_criteria_ratings.push( {
+		existing_criteria_result.push( {
 			closest_criteria: closest_criteria,
-			rating: rating,
+			rating: parseInt( rating ),
 		} );
 
 		// console.log( 'user_criteria_ratings', user_criteria_ratings );
 	} );
-	
+	// save review ratings
+	$( document ).on( 'click', '.ersrvr_submit_review', function( evt ) {
+		evt.preventDefault();
+		var this_btn = $( this );
+		var comment_id = this_btn.data( 'commentid' );
+		var updated_results = existing_criteria_result;
+		// Send the AJAX now.
+		block_element( this_btn );
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'ersrvr_submit_reviews_current_comment',
+				comment_id: comment_id,
+				updated_results: updated_results,
+			},
+			success: function ( response ) {
+				// Check for invalid ajax request.
+				if ( 0 === response ) {
+					console.log( 'easy reservations: invalid ajax request' );
+					return false;
+				}
+				unblock_element( this_btn );
+				unblock_element( $( '.comment-php #publishing-action input[type="submit"]' ) );
+				if( 'ersrvr_ratings_submitted' === response.data.code ) {
+					$('.ersrvr_average_ratings').text( response.data.ersrvr_average_ratings );
+				}
+
+			},
+		} );
+	} );
 
 	/**
 	 * Check if a string is valid.

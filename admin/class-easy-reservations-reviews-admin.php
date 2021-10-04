@@ -59,6 +59,8 @@ class Easy_Reservations_Reviews_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
+		$comment_id              = filter_input( INPUT_GET, 'c', FILTER_SANITIZE_NUMBER_INT );
+		$existed_criteria_result = ( ! empty( $comment_id ) ) ? get_comment_meta( $comment_id, 'user_criteria_ratings', true ) : array();
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/easy-reservations-reviews-admin.css', array(), $this->version, 'all' );
 
 		wp_enqueue_style(
@@ -91,6 +93,7 @@ class Easy_Reservations_Reviews_Admin {
 				'add_criteria_button_text'     => __( 'Add Criteria', 'easy-reservations-reviews' ),
 				'add_criterias_promptbox_text' => __( 'New Criteria', 'easy-reservations-reviews' ),
 				'add_same_criteria_error'      => __( 'The criteria already exists. Please add a different criteria.', 'easy-reservations-reviews' ),
+				'existing_criteria_result'     => $existed_criteria_result,
 			)
 		);
 
@@ -185,11 +188,16 @@ class Easy_Reservations_Reviews_Admin {
 					</div>
 				</div>
 			<?php } ?>
+			<br/>
+			<div class="col-4 col-sm-3">
+				<button type="button" class="button ersrvr_submit_review" data-commentid = "<?php echo esc_attr( $get_comment_id ); ?>" >Submit Review</button>
+			</div>
+			<div class="col-8 col-sm-9 rating-group"></div>
 			<div class="col-4 col-sm-3">
 				<label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( 'Avrage Ratings', 'easy-reservations-reviews' ); ?> </label>
 			</div>
 			<div class="col-8 col-sm-9 rating-group">
-				<h2><?php echo esc_html( $get_average_ratings ); ?></h2>
+				<h2 class="ersrvr_average_ratings"><?php echo esc_html( $get_average_ratings ); ?></h2>
 				<!-- <input class="rating__input" name="rating3" id="rating3-1" value="1" type="radio">
 				<label aria-label="1 star" class="rating__label" for="rating3-1"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
 				<input class="rating__input" name="rating3" id="rating3-2" value="2" type="radio">
@@ -203,5 +211,38 @@ class Easy_Reservations_Reviews_Admin {
 			</div>
 			<?php
 		}
+	}
+	/**
+	 * Function to return save comment hook.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrvr_submit_reviews_current_comment() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+		// Check if action mismatches.
+		if ( empty( $action ) || 'ersrvr_submit_reviews_current_comment' !== $action ) {
+			wp_die();
+		}
+		$comment_id   = filter_input( INPUT_POST, 'comment_id', FILTER_SANITIZE_NUMBER_INT );
+		$posted_array = filter_input_array( INPUT_POST );
+		$all_criteria = ( ! empty( $posted_array['updated_results'] ) ) ? $posted_array['updated_results'] : array();
+		foreach ( $all_criteria as $key => $criteria ) {
+			$closest_criteria  = $criteria['closest_criteria'];
+			$rating            = $criteria['rating'];
+			$combine_ratings[] = $rating;
+		}
+		$total_ratings  = array_sum( $combine_ratings );
+		$avrage_ratings = round( $total_ratings / count( $combine_ratings ), 2 );
+		$save_option    = array(
+			'average_ratings' => $avrage_ratings,
+		);
+		update_comment_meta( $comment_id, 'average_ratings', $avrage_ratings );
+		update_comment_meta( $comment_id, 'user_criteria_ratings', $all_criteria );
+		$response = array(
+			'code'                   => 'ersrvr_ratings_submitted',
+			'ersrvr_average_ratings' => $avrage_ratings,
+		);
+		wp_send_json_success( $response );
+		wp_die();
 	}
 }
