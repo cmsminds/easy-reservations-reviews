@@ -101,10 +101,13 @@ class Easy_Reservations_Reviews_Public {
 			$this->plugin_name,
 			'ERSRVR_Reviews_Public_Script_Vars',
 			array(
-				'ajaxurl'         => admin_url( 'admin-ajax.php' ),
-				'user_logged_in'  => ( is_user_logged_in() ) ? 'yes' : 'no',
-				'user_email'      => $user_email,
-				'current_post_id' => $post_id,
+				'ajaxurl'                           => admin_url( 'admin-ajax.php' ),
+				'user_logged_in'                    => ( is_user_logged_in() ) ? 'yes' : 'no',
+				'user_email'                        => $user_email,
+				'current_post_id'                   => $post_id,
+				'toast_error_heading'               => __( 'Ooops! Error..', 'easy-reservations-reviews' ),
+				'invalid_reviews_fillup_error_text' => __( 'Please add review message ..', 'easy-reservations-reviews' ),
+				
 			)
 		);
 
@@ -347,5 +350,16 @@ class Easy_Reservations_Reviews_Public {
 		
 	}
 	
+
+	/**
+	 * Add custom assets to footer section.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrvr_wp_footer_callback() {
+		global $post, $wp_query;
+			// Include the notification html.
+			require_once ERSRVR_PLUGIN_PATH . 'public/templates/notifications/notification.php';
+	}
 
 }

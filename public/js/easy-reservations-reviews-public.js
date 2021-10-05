@@ -2,10 +2,12 @@ jQuery( document ).ready( function( $ ) {
 	'use strict';
 	
 	// Localized variables.
-	var ajaxurl         = ERSRVR_Reviews_Public_Script_Vars.ajaxurl;
-	var user_logged_in  = ERSRVR_Reviews_Public_Script_Vars.user_logged_in;
-	var user_email      = ERSRVR_Reviews_Public_Script_Vars.user_email;
-	var current_post_id = ERSRVR_Reviews_Public_Script_Vars.current_post_id;
+	var ajaxurl                           = ERSRVR_Reviews_Public_Script_Vars.ajaxurl;
+	var user_logged_in                    = ERSRVR_Reviews_Public_Script_Vars.user_logged_in;
+	var user_email                        = ERSRVR_Reviews_Public_Script_Vars.user_email;
+	var current_post_id                   = ERSRVR_Reviews_Public_Script_Vars.current_post_id;
+	var toast_error_heading               = ERSRVR_Reviews_Public_Script_Vars.toast_error_heading;
+	var invalid_reviews_fillup_error_text = ERSRVR_Reviews_Public_Script_Vars.invalid_reviews_fillup_error_text;
 	var user_criteria_ratings = [];
 	jQuery(document).on( 'mouseout', '.rating__label', function( evt ) {
 		// evt.preventDefault();
@@ -63,9 +65,14 @@ jQuery( document ).ready( function( $ ) {
 	// submit revie form.
 	jQuery(document).on( 'click', '.ersrvr_btn_submit', function( evt ) {
 		evt.preventDefault();
-		var this_button = $( this );
-		var useremail = user_email;
+		var this_button             = $( this );
+		var useremail               = user_email;
 		var given_rating_star_array = user_criteria_ratings;
+		var review_message          = $( '#ersrvr_message' ).val();
+		if ( -1 === is_valid_string( review_message ) ) {
+			ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, invalid_reviews_fillup_error_text );
+			return false;
+		}
 		// Send the AJAX now.
 		block_element( this_button );
 		$.ajax( {
@@ -145,5 +152,21 @@ jQuery( document ).ready( function( $ ) {
 		var val        = url.searchParams.get( param_name );
 
 		return val;
+	}
+	/**
+	 * Show the notification text.
+	 *
+	 * @param {string} bg_color Holds the toast background color.
+	 * @param {string} icon Holds the toast icon.
+	 * @param {string} heading Holds the toast heading.
+	 * @param {string} message Holds the toast body message.
+	 */
+	 function ersrvr_show_toast( bg_color, icon, heading, message ) {
+		$( '.ersrv-notification' ).removeClass( 'bg-success bg-warning bg-danger' );
+		$( '.ersrv-notification' ).addClass( bg_color ).toast( 'show' );
+		$( '.ersrv-notification .ersrv-notification-icon' ).removeClass( 'fa-skull-crossbones fa-check-circle fa-exclamation-circle' );
+		$( '.ersrv-notification .ersrv-notification-icon' ).addClass( icon );
+		$( '.ersrv-notification .ersrv-notification-heading' ).text( heading );
+		$( '.ersrv-notification .ersrv-notification-message' ).html( message );
 	}
 } );

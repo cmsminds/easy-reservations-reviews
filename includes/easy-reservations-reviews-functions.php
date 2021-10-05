@@ -278,7 +278,7 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 			<?php if ( ! empty( $criterias ) && is_array( $criterias ) ) { ?>
 				<div class="form-row">
 					<div class="col-12">
-						<label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( 'Please reate us 1 (bad) to 5 (excellent)', 'easy-reservations-reviews' ); ?> <span class="text-danger"><?php esc_html_e( '*', 'easy-reservations-reviews' ); ?></span></label>
+						<label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( 'Please reate us 1 (bad) to 5 (excellent)', 'easy-reservations-reviews' ); ?></label>
 						<div id="full-stars-example-two" class="rating-group-wrapper border py-2 px-1 rounded-xl">
 							<?php $k = 1; ?>
 							<?php foreach ( $criterias as $criteria ) { ?>
@@ -326,7 +326,7 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 					<?php $row_size_value = 12; ?>
 				<?php } ?>
 				<div class="col-12 col-md-<?php echo esc_attr( $row_size_value ); ?>">
-					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="message"><?php esc_html_e( 'Upload Something Here', 'easy-reservations-reviews' ); ?> <span class="text-danger">*</span></label>
+					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="message"><?php esc_html_e( 'Upload Something Here', 'easy-reservations-reviews' ); ?></label>
 					<div class="upload-btn-wrapper">
 						<!-- actual upload which is hidden -->
 						<input type="file" id="actual-btn" class="invisible sr-only"/>
@@ -354,7 +354,7 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 			<div class="form-row">
 				<div class="col-12 col-md-12">
 					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="message"><?php esc_html_e( 'Review', 'easy-reservations-reviews' ); ?> <span class="text-danger">*</span></label>
-					<textarea name="message" id="message" class="form-control mb-2"  placeholder="Message"></textarea>
+					<textarea name="message" id="ersrvr_message" class="form-control mb-2"  placeholder="Message"></textarea>
 				</div>
 				<div class="col-12 text-center">
 					<button type="submit" class="btn ersrvr_btn_submit btn-primary px-4 py-2 font-lato font-size-18 font-weight-bold"><?php echo esc_html( $btn_text ); ?></button>
