@@ -345,7 +345,6 @@ class Easy_Reservations_Reviews_Public {
 		add_comment_meta( $comment_id, 'average_ratings', $avrage_ratings );
 		add_comment_meta( $comment_id, 'user_criteria_ratings', $all_criteria );
 		
-		die("poop");
 	}
 	
 
