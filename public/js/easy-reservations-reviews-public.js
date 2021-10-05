@@ -2,13 +2,18 @@ jQuery( document ).ready( function( $ ) {
 	'use strict';
 	
 	// Localized variables.
-	var ajaxurl                           = ERSRVR_Reviews_Public_Script_Vars.ajaxurl;
-	var user_logged_in                    = ERSRVR_Reviews_Public_Script_Vars.user_logged_in;
-	var user_email                        = ERSRVR_Reviews_Public_Script_Vars.user_email;
-	var current_post_id                   = ERSRVR_Reviews_Public_Script_Vars.current_post_id;
-	var toast_error_heading               = ERSRVR_Reviews_Public_Script_Vars.toast_error_heading;
-	var invalid_reviews_fillup_error_text = ERSRVR_Reviews_Public_Script_Vars.invalid_reviews_fillup_error_text;
+	var ajaxurl                                = ERSRVR_Reviews_Public_Script_Vars.ajaxurl;
+	var user_logged_in                         = ERSRVR_Reviews_Public_Script_Vars.user_logged_in;
+	var user_email                             = ERSRVR_Reviews_Public_Script_Vars.user_email;
+	var current_post_id                        = ERSRVR_Reviews_Public_Script_Vars.current_post_id;
+	var toast_error_heading                    = ERSRVR_Reviews_Public_Script_Vars.toast_error_heading;
+	var invalid_reviews_message_error_text     = ERSRVR_Reviews_Public_Script_Vars.invalid_reviews_message_error_text;
+	var invalid_reviews_email_error_text       = ERSRVR_Reviews_Public_Script_Vars.invalid_reviews_email_error_text;
+	var invalid_reviews_phone_error_text       = ERSRVR_Reviews_Public_Script_Vars.invalid_reviews_phone_error_text;
+	var invalid_reviews_name_error_text        = ERSRVR_Reviews_Public_Script_Vars.invalid_reviews_name_error_text;
+	var invalid_reviews_email_regex_error_text = ERSRVR_Reviews_Public_Script_Vars.invalid_reviews_email_regex_error_text;
 	var user_criteria_ratings = [];
+	// console.log('useremail', user_email);
 	jQuery(document).on( 'mouseout', '.rating__label', function( evt ) {
 		// evt.preventDefault();
 		var this_label        = $( this );
@@ -67,10 +72,30 @@ jQuery( document ).ready( function( $ ) {
 		evt.preventDefault();
 		var this_button             = $( this );
 		var useremail               = user_email;
+		useremail                   = ( -1 === is_valid_string( useremail ) ) ? $( '#ersrvr_email' ).val() : useremail;
 		var given_rating_star_array = user_criteria_ratings;
 		var review_message          = $( '#ersrvr_message' ).val();
+		if( 'no' === user_logged_in ) {
+			var username = $( '#ersrvr_name'  ).val();
+			var phone    = $( '#ersrvr_phone' ).val();
+			if ( -1 === is_valid_string( username ) ) {
+				ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, invalid_reviews_name_error_text );
+				return false;
+			} 
+			if( -1 === is_valid_string( useremail ) ) {
+				ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, invalid_reviews_email_error_text );	
+				return false;
+			} else if ( -1 === is_valid_email( useremail ) ) {
+				ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, invalid_reviews_email_regex_error_text );	
+				return false;
+			}
+			if( -1 === is_valid_number( phone ) ) {
+				ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, invalid_reviews_phone_error_text );
+				return false;
+			}
+		}
 		if ( -1 === is_valid_string( review_message ) ) {
-			ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, invalid_reviews_fillup_error_text );
+			ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, invalid_reviews_message_error_text );
 			return false;
 		}
 		// Send the AJAX now.
@@ -120,6 +145,17 @@ jQuery( document ).ready( function( $ ) {
 		} else {
 			return 1;
 		}
+	}
+
+	/**
+	 * Check if a email is valid.
+	 *
+	 * @param {string} email
+	 */
+	 function is_valid_email( email ) {
+		var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+		return ( ! regex.test( email ) ) ? -1 : 1;
 	}
 
 	/**

@@ -305,11 +305,11 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 				<div class="form-row">
 					<div class="col-12 col-md-6">
 						<label class="font-Poppins font-weight-semibold text-black font-size-16" for="name"><?php echo esc_html( 'Name' ); ?> <span class="text-danger">*</span></label>
-						<input type="text" class="form-control mb-2" id="name" placeholder="Name" value="<?php echo esc_attr( $username ); ?>" />
+						<input type="text" class="form-control mb-2" id="ersrvr_name" placeholder="Name" value="<?php echo esc_attr( $username ); ?>" />
 					</div>
 					<div class="col-12 col-md-6">
 						<label class="font-Poppins font-weight-semibold text-black font-size-16" for="email"><?php echo esc_html( 'Email' ); ?> <span class="text-danger">*</span></label>
-						<input type="email" class="form-control mb-2" id="email" placeholder="E-mail" value="<?php echo esc_html( $user_email ); ?>" />
+						<input type="email" class="form-control mb-2" id="ersrvr_email" placeholder="E-mail" value="<?php echo esc_html( $user_email ); ?>" />
 					</div>
 				</div>
 			<?php } ?>
@@ -317,7 +317,7 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 				<?php if ( ! is_user_logged_in() ) { ?>
 				<div class="col-12 col-md-6">
 					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="phone"><?php esc_html_e( 'Phone Number', 'easy-reservations-reviews' ); ?> <span class="text-danger">*</span></label>
-					<input type="text" class="form-control mb-2" id="phone" placeholder="Phone Number" value="<?php echo esc_html( $user_phone_number ); ?>" />
+					<input type="text" class="form-control mb-2" id="ersrvr_phone" placeholder="Phone Number" value="<?php echo esc_html( $user_phone_number ); ?>" />
 				</div>
 				<?php } ?>
 				<?php if ( ! is_user_logged_in() ) { ?>

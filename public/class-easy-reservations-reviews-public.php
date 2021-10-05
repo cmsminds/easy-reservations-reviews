@@ -101,12 +101,16 @@ class Easy_Reservations_Reviews_Public {
 			$this->plugin_name,
 			'ERSRVR_Reviews_Public_Script_Vars',
 			array(
-				'ajaxurl'                           => admin_url( 'admin-ajax.php' ),
-				'user_logged_in'                    => ( is_user_logged_in() ) ? 'yes' : 'no',
-				'user_email'                        => $user_email,
-				'current_post_id'                   => $post_id,
-				'toast_error_heading'               => __( 'Ooops! Error..', 'easy-reservations-reviews' ),
-				'invalid_reviews_fillup_error_text' => __( 'Please add review message ..', 'easy-reservations-reviews' ),
+				'ajaxurl'                                => admin_url( 'admin-ajax.php' ),
+				'user_logged_in'                         => ( is_user_logged_in() ) ? 'yes' : 'no',
+				'user_email'                             => $user_email,
+				'current_post_id'                        => $post_id,
+				'toast_error_heading'                    => __( 'Ooops! Error..', 'easy-reservations-reviews' ),
+				'invalid_reviews_message_error_text'     => __( 'Please add review message', 'easy-reservations-reviews' ),
+				'invalid_reviews_email_error_text'       => __( 'Please add email ID', 'easy-reservations-reviews' ),
+				'invalid_reviews_email_regex_error_text' => __( 'Please add valid email ID', 'easy-reservations-reviews' ),
+				'invalid_reviews_phone_error_text'       => __( 'Please add valid phone number', 'easy-reservations-reviews' ),
+				'invalid_reviews_name_error_text'        => __( 'Please add name', 'easy-reservations-reviews' ),
 				
 			)
 		);
