@@ -12,6 +12,7 @@ jQuery( document ).ready( function( $ ) {
 	var invalid_reviews_phone_error_text       = ERSRVR_Reviews_Public_Script_Vars.invalid_reviews_phone_error_text;
 	var invalid_reviews_name_error_text        = ERSRVR_Reviews_Public_Script_Vars.invalid_reviews_name_error_text;
 	var invalid_reviews_email_regex_error_text = ERSRVR_Reviews_Public_Script_Vars.invalid_reviews_email_regex_error_text;
+	var toast_success_heading                  = ERSRVR_Reviews_Public_Script_Vars.toast_success_heading;
 	var user_criteria_ratings = [];
 	// console.log('useremail', user_email);
 	jQuery(document).on( 'mouseout', '.rating__label', function( evt ) {
@@ -74,10 +75,10 @@ jQuery( document ).ready( function( $ ) {
 		var useremail               = user_email;
 		useremail                   = ( -1 === is_valid_string( useremail ) ) ? $( '#ersrvr_email' ).val() : useremail;
 		var given_rating_star_array = user_criteria_ratings;
+		var username                = $( '#ersrvr_name'  ).val();
+		var phone                   = $( '#ersrvr_phone' ).val();
 		var review_message          = $( '#ersrvr_message' ).val();
 		if( 'no' === user_logged_in ) {
-			var username = $( '#ersrvr_name'  ).val();
-			var phone    = $( '#ersrvr_phone' ).val();
 			if ( -1 === is_valid_string( username ) ) {
 				ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, invalid_reviews_name_error_text );
 				return false;
@@ -108,7 +109,11 @@ jQuery( document ).ready( function( $ ) {
 				action: 'ersrvr_submit_reviews',
 				useremail: useremail,
 				user_criteria_ratings: given_rating_star_array,
-				current_post_id: current_post_id
+				current_post_id: current_post_id,
+				username: username,
+				phone: phone,
+				review_message: review_message
+
 			},
 			success: function ( response ) {
 				// Check for invalid ajax request.
@@ -117,6 +122,11 @@ jQuery( document ).ready( function( $ ) {
 					return false;
 				}
 				unblock_element( this_button );
+				if( 'ersrvr_submit_reviews_success' === response.data.code ) {
+					// Show the toast now.
+					ersrvr_show_toast( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
+				}
+				
 
 			},
 		} );

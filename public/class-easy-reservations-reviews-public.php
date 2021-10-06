@@ -111,6 +111,7 @@ class Easy_Reservations_Reviews_Public {
 				'invalid_reviews_email_regex_error_text' => __( 'Please add valid email ID', 'easy-reservations-reviews' ),
 				'invalid_reviews_phone_error_text'       => __( 'Please add valid phone number', 'easy-reservations-reviews' ),
 				'invalid_reviews_name_error_text'        => __( 'Please add name', 'easy-reservations-reviews' ),
+				'toast_success_heading'                  => __( 'Woohhoooo! Success..', 'easy-reservations-reviews' ),
 				
 			)
 		);
@@ -315,13 +316,16 @@ class Easy_Reservations_Reviews_Public {
 		if ( empty( $action ) || 'ersrvr_submit_reviews' !== $action ) {
 			wp_die();
 		}
-		$user_email   = filter_input( INPUT_POST, 'useremail', FILTER_SANITIZE_STRING );
-		$user_email   = ( ! empty( $user_email ) ) ? $user_email : '';
-		$post_id      = filter_input( INPUT_POST, 'current_post_id', FILTER_SANITIZE_NUMBER_INT );
-		$user         = get_user_by( 'email', $user_email );
-		$user_id      = ( !empty( $user->ID ) ) ? $user->ID : 0;
-		$user_name    = ( ! empty( $user->data->display_name ) ) ? $user->data->display_name : '';
-		$author_url   = ( !empty( get_author_posts_url( $user_id ) ) ) ? get_author_posts_url( $user_id ) : '';
+		$user_email     = filter_input( INPUT_POST, 'useremail', FILTER_SANITIZE_STRING );
+		$username       = filter_input( INPUT_POST, 'username', FILTER_SANITIZE_STRING );
+		$phone          = filter_input( INPUT_POST, 'phone', FILTER_SANITIZE_STRING );
+		$review_message = filter_input( INPUT_POST, 'review_message', FILTER_SANITIZE_STRING );
+		$user_email     = ( ! empty( $user_email ) ) ? $user_email : '';
+		$post_id        = filter_input( INPUT_POST, 'current_post_id', FILTER_SANITIZE_NUMBER_INT );
+		$user           = get_user_by( 'email', $user_email );
+		$user_id        = ( !empty( $user->ID ) ) ? $user->ID : 0;
+		$user_name      = ( ! empty( $user->data->display_name ) ) ? $user->data->display_name : $username;
+		$author_url     = ( !empty( get_author_posts_url( $user_id ) ) ) ? get_author_posts_url( $user_id ) : '';
 		
 		$posted_array = filter_input_array( INPUT_POST );
 		$all_criteria =  ( ! empty( $posted_array['user_criteria_ratings'] ) ) ? $posted_array['user_criteria_ratings'] : array();
@@ -351,6 +355,12 @@ class Easy_Reservations_Reviews_Public {
 		$comment_id = wp_insert_comment($comment_data);
 		add_comment_meta( $comment_id, 'average_ratings', $avrage_ratings );
 		add_comment_meta( $comment_id, 'user_criteria_ratings', $all_criteria );
+		$response = array(
+			'code'                   => 'ersrvr_submit_reviews_success',
+			'toast_message'          => __( 'Your Reviews Submitted.', 'easy-reservations-reviews' ),
+		);
+		wp_send_json_success( $response );
+		wp_die();
 		
 	}
 	
