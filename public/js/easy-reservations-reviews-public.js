@@ -13,7 +13,10 @@ jQuery( document ).ready( function( $ ) {
 	var invalid_reviews_name_error_text        = ERSRVR_Reviews_Public_Script_Vars.invalid_reviews_name_error_text;
 	var invalid_reviews_email_regex_error_text = ERSRVR_Reviews_Public_Script_Vars.invalid_reviews_email_regex_error_text;
 	var toast_success_heading                  = ERSRVR_Reviews_Public_Script_Vars.toast_success_heading;
+	var review_file_allowed_extensions         = ERSRVR_Reviews_Public_Script_Vars.review_file_allowed_extensions;
+	var review_file_invalid_file_error         = ERSRVR_Reviews_Public_Script_Vars.review_file_invalid_file_error;
 	var user_criteria_ratings = [];
+	var file_array = [];
 	// console.log('useremail', user_email);
 	jQuery(document).on( 'mouseout', '.rating__label', function( evt ) {
 		// evt.preventDefault();
@@ -68,6 +71,35 @@ jQuery( document ).ready( function( $ ) {
 
 		// console.log( 'user_criteria_ratings', user_criteria_ratings );
 	} );
+
+	/**
+	 * Validate the file.
+	 */
+	 $( document ).on( 'change', 'input[name="ersrvr_actual_btn"]', function( evt ) {
+		var file = $( this ).val();
+		var file_name = evt.target.files[0].name;
+		var ext  = file.split( '.' ).pop();
+		ext      = '.' + ext;
+		file_array.push( {
+			'files': evt.target.files[0],
+		});
+		// this.files[0].name
+		
+		$('.ersrvr_file_chosen').text(file_name);
+
+		// Check if this extension is among the extensions allowed.
+		if ( 0 < review_file_allowed_extensions.length && -1 === $.inArray( ext, review_file_allowed_extensions ) ) {
+			ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, review_file_invalid_file_error );
+
+			// Reset the file input type.
+			$('input[name="ersrvr_actual_btn"]').val('');
+			$('.ersrvr_file_chosen').text('No file chosen');
+			return false;
+		}
+	} );
+
+	
+
 	// submit revie form.
 	jQuery(document).on( 'click', '.ersrvr_btn_submit', function( evt ) {
 		evt.preventDefault();
@@ -78,6 +110,11 @@ jQuery( document ).ready( function( $ ) {
 		var username                = $( '#ersrvr_name'  ).val();
 		var phone                   = $( '#ersrvr_phone' ).val();
 		var review_message          = $( '#ersrvr_message' ).val();
+		var oFReader                = new FileReader();
+		oFReader.readAsDataURL( file_array[0]['files'] );
+		
+		// Prepare the form data.
+		var fd                      = new FormData();
 		if( 'no' === user_logged_in ) {
 			if ( -1 === is_valid_string( username ) ) {
 				ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, invalid_reviews_name_error_text );
@@ -99,22 +136,22 @@ jQuery( document ).ready( function( $ ) {
 			ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, invalid_reviews_message_error_text );
 			return false;
 		}
-		// Send the AJAX now.
+		fd.append( 'files',file_array[0]['files'] );
+		fd.append( 'action', 'ersrvr_submit_reviews' );
+		fd.append( 'useremail', useremail );
+		fd.append( 'user_criteria_ratings', user_criteria_ratings );
+		fd.append( 'current_post_id', current_post_id );
+		fd.append( 'username', username );
+		fd.append( 'phone', phone );
+		fd.append( 'review_message', review_message );
 		block_element( this_button );
 		$.ajax( {
-			dataType: 'JSON',
-			url: ajaxurl,
 			type: 'POST',
-			data: {
-				action: 'ersrvr_submit_reviews',
-				useremail: useremail,
-				user_criteria_ratings: given_rating_star_array,
-				current_post_id: current_post_id,
-				username: username,
-				phone: phone,
-				review_message: review_message
-
-			},
+			url: ajaxurl,
+			data: fd,
+			contentType: false,
+			processData: false,
+			dataType: 'JSON',
 			success: function ( response ) {
 				// Check for invalid ajax request.
 				if ( 0 === response ) {

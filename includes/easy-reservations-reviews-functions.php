@@ -329,11 +329,11 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="message"><?php esc_html_e( 'Upload Something Here', 'easy-reservations-reviews' ); ?></label>
 					<div class="upload-btn-wrapper">
 						<!-- actual upload which is hidden -->
-						<input type="file" id="actual-btn" class="invisible sr-only"/>
+						<input type="file" id="actual-btn" name="ersrvr_actual_btn" class="invisible sr-only ersrvr_actual_btn"/>
 						<!-- our custom upload button -->
 						<div class="d-flex align-items-center flex-wrap cus-btn">
 							<label for="actual-btn" class="btn btn-outline-fill-primary d-inline-bloxk px-3 mb-0"> <span class="fa fa-upload mr-2"></span><?php esc_html_e( 'Add File', 'easy-reservations-reviews' ); ?></label>
-							<span id="file-chosen" class="font-lato font-size-14 ml-2 font-weight-semibold"><?php esc_html_e( 'No file chosen', 'easy-reservations-reviews' ); ?></span>
+							<span id="file-chosen" class="ersrvr_file_chosen font-lato font-size-14 ml-2 font-weight-semibold"><?php esc_html_e( 'No file chosen', 'easy-reservations-reviews' ); ?></span>
 							<!--
 								for file chosen js code
 								https://codepen.io/wizardofcodez/pen/XWddObO  
@@ -457,5 +457,30 @@ if ( ! function_exists( 'ersrvr_user_logged_in_data' ) ) {
 		}
 		// This filters holds the user information modifications.
 		return apply_filters( 'ersrvr_add_user_information', $users_info, $current_userid );
+	}
+}
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrvr_get_review_file_allowed_file_types' ) ) {
+	/**
+	 * Get the allowed file types for driving license.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	function ersrvr_get_review_file_allowed_file_types() {
+		$file_types = array( '.jpeg', '.jpg', '.pdf', '.png' );
+
+		/**
+		 * This hook runs on the checkout page and the order edit page.
+		 *
+		 * This filter helps in managing the allowed file types for the driving license.
+		 *
+		 * @param array $file_types File types array.
+		 * @return array
+		 * @since 1.0.0
+		 */
+		return apply_filters( 'ersrvr_allowed_file_types_review_file', $file_types );
 	}
 }

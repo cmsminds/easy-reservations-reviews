@@ -96,6 +96,7 @@ class Easy_Reservations_Reviews_Public {
 			$user_data  = ersrvr_user_logged_in_data();
 			$user_email = $user_data['user_email'];
 		}
+		$review_file_allowed_extensions = ersrvr_get_review_file_allowed_file_types();
 		// Localize variables.
 		wp_localize_script(
 			$this->plugin_name,
@@ -112,6 +113,9 @@ class Easy_Reservations_Reviews_Public {
 				'invalid_reviews_phone_error_text'       => __( 'Please add valid phone number', 'easy-reservations-reviews' ),
 				'invalid_reviews_name_error_text'        => __( 'Please add name', 'easy-reservations-reviews' ),
 				'toast_success_heading'                  => __( 'Woohhoooo! Success..', 'easy-reservations-reviews' ),
+				'review_file_allowed_extensions'         => $review_file_allowed_extensions,
+				'review_file_invalid_file_error'         => sprintf( __( 'Invalid file selected. Allowed extensions are: %1$s', 'easy-reservations' ), implode( ', ', $review_file_allowed_extensions ) ),
+				
 				
 			)
 		);
@@ -316,19 +320,42 @@ class Easy_Reservations_Reviews_Public {
 		if ( empty( $action ) || 'ersrvr_submit_reviews' !== $action ) {
 			wp_die();
 		}
-		$user_email     = filter_input( INPUT_POST, 'useremail', FILTER_SANITIZE_STRING );
-		$username       = filter_input( INPUT_POST, 'username', FILTER_SANITIZE_STRING );
-		$phone          = filter_input( INPUT_POST, 'phone', FILTER_SANITIZE_STRING );
-		$review_message = filter_input( INPUT_POST, 'review_message', FILTER_SANITIZE_STRING );
-		$user_email     = ( ! empty( $user_email ) ) ? $user_email : '';
-		$post_id        = filter_input( INPUT_POST, 'current_post_id', FILTER_SANITIZE_NUMBER_INT );
-		$user           = get_user_by( 'email', $user_email );
-		$user_id        = ( !empty( $user->ID ) ) ? $user->ID : 0;
-		$user_name      = ( ! empty( $user->data->display_name ) ) ? $user->data->display_name : $username;
-		$author_url     = ( !empty( get_author_posts_url( $user_id ) ) ) ? get_author_posts_url( $user_id ) : '';
-		
-		$posted_array = filter_input_array( INPUT_POST );
-		$all_criteria =  ( ! empty( $posted_array['user_criteria_ratings'] ) ) ? $posted_array['user_criteria_ratings'] : array();
+		$posted_array          = filter_input_array( INPUT_POST );
+		$user_email            = ( ! empty( $posted_array['useremail'] ) ) ? $posted_array['useremail'] : '';
+		$username              = ( ! empty( $posted_array['username'] ) ) ? $posted_array['username'] : '';
+		$phone                 = ( ! empty( $posted_array['phone'] ) ) ? $posted_array['phone'] : '';
+		$review_message        = ( ! empty( $posted_array['review_message'] ) ) ? $posted_array['review_message'] : '';
+		$post_id               = ( ! empty( $posted_array['current_post_id'] ) ) ? $posted_array['current_post_id'] : '';
+		$user                  = get_user_by( 'email', $user_email );
+		$user_id               = ( !empty( $user->ID ) ) ? $user->ID : 0;
+		$user_name             = ( ! empty( $user->data->display_name ) ) ? $user->data->display_name : $username;
+		$author_url            = ( !empty( get_author_posts_url( $user_id ) ) ) ? get_author_posts_url( $user_id ) : '';
+		$all_criteria          =  ( ! empty( $posted_array['user_criteria_ratings'] ) ) ? $posted_array['user_criteria_ratings'] : array();
+		// Upload the file now.
+		$review_file_name      = $_FILES['files']['name'];
+		$review_file_file_temp = $_FILES['files']['tmp_name'];
+		$file_data             = file_get_contents( $review_file_file_temp );
+		$filename              = basename( $review_file_name );
+		$upload_dir            = wp_upload_dir();
+		$file_path             = ( ! empty( $upload_dir['path'] ) ) ? $upload_dir['path'] . '/' . $filename : $upload_dir['basedir'] . '/' . $filename;
+		file_put_contents( $file_path, $file_data );
+
+		// Upload it as WP attachment.
+		$wp_filetype = wp_check_filetype( $filename, null );
+		$attachment  = array(
+			'post_mime_type' => $wp_filetype['type'],
+			'post_title'     => sanitize_file_name( $filename ),
+			'post_content'   => '',
+			'post_status'    => 'inherit'
+		);
+		$attach_id   = wp_insert_attachment( $attachment, $file_path );
+		$image_url   = wp_get_attachment_url( $attach_id );
+		if( ! empty( $image_url ) ) {
+			$image_tag = '<img src = "' . $image_url . '">';
+			$review_message = sprintf( __( '%1$s %2$s', 'easy-reservations' ), $review_message, $image_tag );
+		}
+		// debug($attach_id);
+		// die;
 		
 		foreach ( $all_criteria as $key => $criteria ) {
 			$closest_criteria  = $criteria['closest_criteria'];
@@ -345,7 +372,7 @@ class Easy_Reservations_Reviews_Public {
 			'comment_author'       => $user_name,
 			'comment_author_email' => $user_email,
 			'comment_author_url'   => $author_url,
-			'comment_content'      => 'abc',
+			'comment_content'      => $review_message,
 			'user_id'              => $user_id,
 			'comment_author_IP'    => '127.0.0.1',
 			'comment_agent'        => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.10) Gecko/2009042316 Firefox/3.0.10 (.NET CLR 3.5.30729)',
