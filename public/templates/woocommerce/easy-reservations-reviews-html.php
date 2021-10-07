@@ -105,6 +105,10 @@ $getallComments                = get_comments( array(
 							$username        = $first_name . ' ' . $last_name;
 							$username        = ( ' ' !== $username ) ? $username : $display_name; 
 							$comment_content = $getallComment->comment_content;
+							$average_rating  = get_comment_meta( $commnet_id, 'average_ratings', true );
+							$average_rating  = (int) $average_rating;
+							$criteria        = get_comment_meta( $commnet_id, 'user_criteria_ratings', true );
+							
 							?>
 							<li class="media mb-4">
 								<img src="http://localhost:8888/woocom-learning/wp-content/uploads/2021/08/pexels-jason-boyd-3423147-scaled.jpg" class="mr-3 rounded-circle" alt="user-photo">
@@ -113,16 +117,12 @@ $getallComments                = get_comments( array(
 										<div id="full-stars-example-two" class="rating-group-wrapper">
 											<div class="rating-item d-flex flex-wrap align-items-center">
 												<div class="col-auto rating-group px-0">
-													<input class="rating__input" name="rating3" id="rating3-1" value="1" type="radio">
-													<label aria-label="1 star" class="rating__label" for="rating3-1"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-													<input class="rating__input" name="rating3" id="rating3-2" value="2" type="radio">
-													<label aria-label="2 stars" class="rating__label" for="rating3-2"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-													<input class="rating__input" name="rating3" id="rating3-3" value="3" type="radio">
-													<label aria-label="3 stars" class="rating__label" for="rating3-3"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-													<input class="rating__input" name="rating3" id="rating3-4" value="4" type="radio">
-													<label aria-label="4 stars" class="rating__label" for="rating3-4"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-													<input class="rating__input" name="rating3" id="rating3-5" value="5" type="radio">
-													<label aria-label="5 stars" class="rating__label" for="rating3-5"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+													<?php for ( $i = 1; $i <= 5; $i++ ) {
+															$filled_star_class = ( $average_rating >= $i ) ? 'fill_star_click' : '';
+														?>
+														<input class="rating__input" name="rating3" id="rating3-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
+														<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label <?php echo esc_attr( $filled_star_class ); ?>" for="rating3-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+													<?php } ?>
 												</div>
 												<div class="col-auto"><label class="font-Poppins font-weight-semibold text-muted font-size-14"><?php esc_html_e( '( 5 of 5 )', 'easy-reservations-reviews' ); ?> </label></div>
 											</div>
