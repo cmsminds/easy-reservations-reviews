@@ -83,6 +83,13 @@ class Easy_Reservations_Reviews_Public {
 			filemtime( ERSRVR_PLUGIN_PATH . 'public/js/easy-reservations-reviews-public.js' ),
 			true
 		);
+		wp_enqueue_script(
+			$this->plugin_name . '-fileinput',
+			ERSRVR_PLUGIN_URL . 'public/js/fileinput.js',
+			array(),
+			filemtime( ERSRVR_PLUGIN_PATH . 'public/js/fileinput.js' ),
+			true
+		);
 
 		// Enqueue the common public style.
 		wp_enqueue_style(
@@ -90,6 +97,12 @@ class Easy_Reservations_Reviews_Public {
 			ERSRVR_PLUGIN_URL . 'public/css/core/easy-reservations-reviews-common.css',
 			array(),
 			filemtime( ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-reviews-common.css' )
+		);
+		wp_enqueue_style(
+			$this->plugin_name . '-fileinput',
+			ERSRVR_PLUGIN_URL . 'public/css/fileinput.css',
+			array(),
+			filemtime( ERSRVR_PLUGIN_PATH . 'public/css/fileinput.css' )
 		);
 		$user_email = '';
 		if ( is_user_logged_in() ) {
