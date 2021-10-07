@@ -328,6 +328,9 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 				<div class="col-12 col-md-<?php echo esc_attr( $row_size_value ); ?>">
 					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="message"><?php esc_html_e( 'Upload Something Here', 'easy-reservations-reviews' ); ?></label>
 					<div class="upload-btn-wrapper">
+							<span class="btn btn-default btn-file">
+                                <input id="input-2" name="input2[]" type="file" class="file" multiple data-show-upload="true" data-show-caption="true">
+                            </span>
 						<!-- actual upload which is hidden -->
 						<input type="file" id="actual-btn" name="ersrvr_actual_btn" class="invisible sr-only ersrvr_actual_btn"/>
 						<!-- our custom upload button -->

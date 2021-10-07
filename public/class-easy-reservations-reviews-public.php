@@ -328,7 +328,19 @@ class Easy_Reservations_Reviews_Public {
 		$user_id        = ( ! empty( $user->ID ) ) ? $user->ID : 0;
 		$user_name      = ( ! empty( $user->data->display_name ) ) ? $user->data->display_name : $username;
 		$author_url     = ( ! empty( get_author_posts_url( $user_id ) ) ) ? get_author_posts_url( $user_id ) : '';
-		$all_criteria   = ( ! empty( $posted_array['user_criteria_ratings'] ) ) ? $posted_array['user_criteria_ratings'] : array();
+		$all_criteria   = ( ! empty( $posted_array['user_criteria_ratings'] ) ) ? $posted_array['user_criteria_ratings'] : '';
+		$all_criteria   = json_decode( $all_criteria );
+		foreach( $all_criteria as $array_of_criteria ) {
+			$closest_criteria  = $array_of_criteria->closest_criteria;
+			$rating            = $array_of_criteria->rating;
+			$new_array_of_criteria[] = array(
+				'closest_criteria' => $closest_criteria,
+				'rating' =>$rating,
+			);
+		}
+		// debug( $all_criteria );
+		// debug( $new_array_of_criteria );
+		// die;
 		// Upload the file now.
 		$review_file_name      = isset( $_FILES['files']['name'] ) ? $_FILES['files']['name'] : '';
 		$review_file_file_temp = isset( $_FILES['files']['tmp_name'] ) ? $_FILES['files']['tmp_name'] : '';
@@ -352,11 +364,15 @@ class Easy_Reservations_Reviews_Public {
 			$image_tag      = '<img src = "' . $image_url . '">';
 			$review_message = sprintf( __( '%1$s %2$s', 'easy-reservations-reviews' ), $review_message, $image_tag );
 		}
+		// debug( $all_criteria );
+		// die;
 		foreach ( $all_criteria as $key => $criteria ) {
-			$closest_criteria  = $criteria['closest_criteria'];
-			$rating            = $criteria['rating'];
+			$closest_criteria  = $criteria->closest_criteria;
+			$rating            = $criteria->rating;
 			$combine_ratings[] = $rating;
 		}
+		// debug( $combine_ratings );
+		// die;
 		$total_ratings  = array_sum( $combine_ratings );
 		$avrage_ratings = $total_ratings / count( $combine_ratings );
 		$save_option    = array(
@@ -376,7 +392,7 @@ class Easy_Reservations_Reviews_Public {
 		);
 		$comment_id     = wp_insert_comment( $comment_data );
 		add_comment_meta( $comment_id, 'average_ratings', $avrage_ratings );
-		add_comment_meta( $comment_id, 'user_criteria_ratings', $all_criteria );
+		add_comment_meta( $comment_id, 'user_criteria_ratings', $new_array_of_criteria );
 		$response = array(
 			'code'          => 'ersrvr_submit_reviews_success',
 			'toast_message' => __( 'Your Reviews Submitted.', 'easy-reservations-reviews' ),

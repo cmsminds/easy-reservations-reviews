@@ -106,13 +106,14 @@ jQuery( document ).ready( function( $ ) {
 		var this_button             = $( this );
 		var useremail               = user_email;
 		useremail                   = ( -1 === is_valid_string( useremail ) ) ? $( '#ersrvr_email' ).val() : useremail;
-		var given_rating_star_array = user_criteria_ratings;
 		var username                = $( '#ersrvr_name'  ).val();
 		var phone                   = $( '#ersrvr_phone' ).val();
 		var review_message          = $( '#ersrvr_message' ).val();
-		var oFReader                = new FileReader();
-		oFReader.readAsDataURL( file_array[0]['files'] );
-		
+		if( file_array.length > 0 ) {
+			var oFReader                = new FileReader();
+			oFReader.readAsDataURL( file_array[0]['files'] );
+		}
+		// console.log( given_rating_star_array );
 		// Prepare the form data.
 		var fd                      = new FormData();
 		if( 'no' === user_logged_in ) {
@@ -136,15 +137,22 @@ jQuery( document ).ready( function( $ ) {
 			ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, invalid_reviews_message_error_text );
 			return false;
 		}
-		fd.append( 'files',file_array[0]['files'] );
+		if( file_array.length > 0 ) {
+			fd.append( 'files',file_array[0]['files'] );
+		}
+		
+		// return false;
+		var given_user_criteria_ratings = JSON.stringify( user_criteria_ratings );
+		console.log( user_criteria_ratings );
+		// return false;
 		fd.append( 'action', 'ersrvr_submit_reviews' );
 		fd.append( 'useremail', useremail );
-		fd.append( 'user_criteria_ratings', user_criteria_ratings );
+		fd.append( 'user_criteria_ratings', given_user_criteria_ratings );
 		fd.append( 'current_post_id', current_post_id );
 		fd.append( 'username', username );
 		fd.append( 'phone', phone );
 		fd.append( 'review_message', review_message );
-		block_element( this_button );
+		// block_element( this_button );
 		$.ajax( {
 			type: 'POST',
 			url: ajaxurl,
