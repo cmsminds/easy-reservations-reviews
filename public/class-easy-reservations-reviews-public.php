@@ -370,6 +370,8 @@ class Easy_Reservations_Reviews_Public {
 		// die;
 		// Upload the file now.
 		$review_file_name      = isset( $_FILES['files']['name'] ) ? $_FILES['files']['name'] : '';
+		// debug( $review_file_name );
+		// die;
 		$review_file_file_temp = isset( $_FILES['files']['tmp_name'] ) ? $_FILES['files']['tmp_name'] : '';
 		$file_data             = file_get_contents( $review_file_file_temp );
 		$filename              = basename( $review_file_name );

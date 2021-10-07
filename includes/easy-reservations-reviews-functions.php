@@ -333,7 +333,7 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 					<div class="upload-btn-wrapper">
 						<label class="control-label">Attachment(s) (Attach multiple files.)</label>
 						<span class="btn btn-block btn-file px-0">
-							<input id="actual-btn" name="ersrvr_actual_btn[]" type="file" class="file" multiple data-show-upload="true" data-show-caption="true" accept="<?php echo implode( ',', ersrvr_get_review_file_allowed_file_types() ); ?>" >
+							<input id="actual-btn" name="ersrvr_actual_btn[]" type="file" class="file"  data-show-upload="true" data-show-caption="true" accept="<?php echo implode( ',', ersrvr_get_review_file_allowed_file_types() ); ?>" >
 						</span>
 					</div>
 				</div>
