@@ -75,7 +75,8 @@ jQuery( document ).ready( function( $ ) {
 	/**
 	 * Validate the file.
 	 */
-	 $( document ).on( 'change', 'input[name="ersrvr_actual_btn"]', function( evt ) {
+	 $( document ).on( 'change', 'input[name="ersrvr_actual_btn[]"]', function( evt ) {
+		// evt.preventDefault();
 		var file = $( this ).val();
 		var file_name = evt.target.files[0].name;
 		var ext  = file.split( '.' ).pop();
@@ -90,7 +91,10 @@ jQuery( document ).ready( function( $ ) {
 		// Check if this extension is among the extensions allowed.
 		if ( 0 < review_file_allowed_extensions.length && -1 === $.inArray( ext, review_file_allowed_extensions ) ) {
 			ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, review_file_invalid_file_error );
-
+			// $( '.file-preview' ).remove();
+			// $( '.fileinput-remove' ).remove();
+			// $( '.fileinput-upload' ).remove();
+			// $( '.file-input .file-caption-name' ).text('');
 			// Reset the file input type.
 			$('input[name="ersrvr_actual_btn"]').val('');
 			$('.ersrvr_file_chosen').text('No file chosen');
