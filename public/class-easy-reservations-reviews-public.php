@@ -114,9 +114,7 @@ class Easy_Reservations_Reviews_Public {
 				'invalid_reviews_name_error_text'        => __( 'Please add name', 'easy-reservations-reviews' ),
 				'toast_success_heading'                  => __( 'Woohhoooo! Success..', 'easy-reservations-reviews' ),
 				'review_file_allowed_extensions'         => $review_file_allowed_extensions,
-				'review_file_invalid_file_error'         => sprintf( __( 'Invalid file selected. Allowed extensions are: %1$s', 'easy-reservations' ), implode( ', ', $review_file_allowed_extensions ) ),
-				
-				
+				'review_file_invalid_file_error'         => sprintf( __( 'Invalid file selected. Allowed extensions are: %1$s', 'easy-reservations-reviews' ), implode( ', ', $review_file_allowed_extensions ) ),
 			)
 		);
 
@@ -298,10 +296,10 @@ class Easy_Reservations_Reviews_Public {
 						'class' => array(),
 						'alt'   => array(),
 					),
-					'ul'      => array(
+					'ul'       => array(
 						'class' => array(),
 					),
-					'li'      => array(
+					'li'       => array(
 						'class' => array(),
 					),
 				),
@@ -320,20 +318,20 @@ class Easy_Reservations_Reviews_Public {
 		if ( empty( $action ) || 'ersrvr_submit_reviews' !== $action ) {
 			wp_die();
 		}
-		$posted_array          = filter_input_array( INPUT_POST );
-		$user_email            = ( ! empty( $posted_array['useremail'] ) ) ? $posted_array['useremail'] : '';
-		$username              = ( ! empty( $posted_array['username'] ) ) ? $posted_array['username'] : '';
-		$phone                 = ( ! empty( $posted_array['phone'] ) ) ? $posted_array['phone'] : '';
-		$review_message        = ( ! empty( $posted_array['review_message'] ) ) ? $posted_array['review_message'] : '';
-		$post_id               = ( ! empty( $posted_array['current_post_id'] ) ) ? $posted_array['current_post_id'] : '';
-		$user                  = get_user_by( 'email', $user_email );
-		$user_id               = ( !empty( $user->ID ) ) ? $user->ID : 0;
-		$user_name             = ( ! empty( $user->data->display_name ) ) ? $user->data->display_name : $username;
-		$author_url            = ( !empty( get_author_posts_url( $user_id ) ) ) ? get_author_posts_url( $user_id ) : '';
-		$all_criteria          =  ( ! empty( $posted_array['user_criteria_ratings'] ) ) ? $posted_array['user_criteria_ratings'] : array();
+		$posted_array   = filter_input_array( INPUT_POST );
+		$user_email     = ( ! empty( $posted_array['useremail'] ) ) ? $posted_array['useremail'] : '';
+		$username       = ( ! empty( $posted_array['username'] ) ) ? $posted_array['username'] : '';
+		$phone          = ( ! empty( $posted_array['phone'] ) ) ? $posted_array['phone'] : '';
+		$review_message = ( ! empty( $posted_array['review_message'] ) ) ? $posted_array['review_message'] : '';
+		$post_id        = ( ! empty( $posted_array['current_post_id'] ) ) ? $posted_array['current_post_id'] : '';
+		$user           = get_user_by( 'email', $user_email );
+		$user_id        = ( ! empty( $user->ID ) ) ? $user->ID : 0;
+		$user_name      = ( ! empty( $user->data->display_name ) ) ? $user->data->display_name : $username;
+		$author_url     = ( ! empty( get_author_posts_url( $user_id ) ) ) ? get_author_posts_url( $user_id ) : '';
+		$all_criteria   = ( ! empty( $posted_array['user_criteria_ratings'] ) ) ? $posted_array['user_criteria_ratings'] : array();
 		// Upload the file now.
-		$review_file_name      = $_FILES['files']['name'];
-		$review_file_file_temp = $_FILES['files']['tmp_name'];
+		$review_file_name      = isset( $_FILES['files']['name'] ) ? $_FILES['files']['name'] : '';
+		$review_file_file_temp = isset( $_FILES['files']['tmp_name'] ) ? $_FILES['files']['tmp_name'] : '';
 		$file_data             = file_get_contents( $review_file_file_temp );
 		$filename              = basename( $review_file_name );
 		$upload_dir            = wp_upload_dir();
@@ -346,17 +344,14 @@ class Easy_Reservations_Reviews_Public {
 			'post_mime_type' => $wp_filetype['type'],
 			'post_title'     => sanitize_file_name( $filename ),
 			'post_content'   => '',
-			'post_status'    => 'inherit'
+			'post_status'    => 'inherit',
 		);
 		$attach_id   = wp_insert_attachment( $attachment, $file_path );
 		$image_url   = wp_get_attachment_url( $attach_id );
-		if( ! empty( $image_url ) ) {
-			$image_tag = '<img src = "' . $image_url . '">';
-			$review_message = sprintf( __( '%1$s %2$s', 'easy-reservations' ), $review_message, $image_tag );
+		if ( ! empty( $image_url ) ) {
+			$image_tag      = '<img src = "' . $image_url . '">';
+			$review_message = sprintf( __( '%1$s %2$s', 'easy-reservations-reviews' ), $review_message, $image_tag );
 		}
-		// debug($attach_id);
-		// die;
-		
 		foreach ( $all_criteria as $key => $criteria ) {
 			$closest_criteria  = $criteria['closest_criteria'];
 			$rating            = $criteria['rating'];
@@ -365,9 +360,9 @@ class Easy_Reservations_Reviews_Public {
 		$total_ratings  = array_sum( $combine_ratings );
 		$avrage_ratings = $total_ratings / count( $combine_ratings );
 		$save_option    = array(
-			'average_ratings' => $avrage_ratings
+			'average_ratings' => $avrage_ratings,
 		);
-		$comment_data =  array(
+		$comment_data   = array(
 			'comment_post_ID'      => $post_id,
 			'comment_author'       => $user_name,
 			'comment_author_email' => $user_email,
@@ -376,22 +371,19 @@ class Easy_Reservations_Reviews_Public {
 			'user_id'              => $user_id,
 			'comment_author_IP'    => '127.0.0.1',
 			'comment_agent'        => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.10) Gecko/2009042316 Firefox/3.0.10 (.NET CLR 3.5.30729)',
-			'comment_date'         => date('Y/m/d h:i:s'),
+			'comment_date'         => date( 'Y/m/d h:i:s' ),
 			'comment_approved'     => 1,
 		);
-		$comment_id = wp_insert_comment($comment_data);
+		$comment_id     = wp_insert_comment( $comment_data );
 		add_comment_meta( $comment_id, 'average_ratings', $avrage_ratings );
 		add_comment_meta( $comment_id, 'user_criteria_ratings', $all_criteria );
 		$response = array(
-			'code'                   => 'ersrvr_submit_reviews_success',
-			'toast_message'          => __( 'Your Reviews Submitted.', 'easy-reservations-reviews' ),
+			'code'          => 'ersrvr_submit_reviews_success',
+			'toast_message' => __( 'Your Reviews Submitted.', 'easy-reservations-reviews' ),
 		);
 		wp_send_json_success( $response );
 		wp_die();
-		
 	}
-	
-
 	/**
 	 * Add custom assets to footer section.
 	 *
