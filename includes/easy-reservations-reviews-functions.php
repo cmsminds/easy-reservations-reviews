@@ -328,9 +328,10 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 				<div class="col-12 col-md-<?php echo esc_attr( $row_size_value ); ?>">
 					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="message"><?php esc_html_e( 'Upload Something Here', 'easy-reservations-reviews' ); ?></label>
 					<div class="upload-btn-wrapper">
-							
+						
 						<!-- actual upload which is hidden -->
-						<input type="file" id="actual-btn" name="ersrvr_actual_btn" class="invisible sr-only ersrvr_actual_btn"/>
+						<!-- invisible sr-only  -->
+						<input type="file" id="actual-btn" name="ersrvr_actual_btn[]" class="ersrvr_actual_btn" multiple data-show-upload="true" data-show-caption="true"/>
 						<!-- our custom upload button -->
 						<div class="d-flex align-items-center flex-wrap cus-btn">
 							<label for="actual-btn" class="btn btn-outline-fill-primary d-inline-bloxk px-3 mb-0"> <span class="fa fa-upload mr-2"></span><?php esc_html_e( 'Add File', 'easy-reservations-reviews' ); ?></label>
@@ -340,14 +341,14 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 								https://codepen.io/wizardofcodez/pen/XWddObO  
 								js code
 								const actualBtn = document.getElementById('actual-btn');
-
+								
 								const fileChosen = document.getElementById('file-chosen');
-
+								
 								actualBtn.addEventListener('change', function(){
-								fileChosen.textContent = this.files[0].name
+									fileChosen.textContent = this.files[0].name
 								})
 							-->
-
+							
 						</div>
 					</div>
 				</div>
