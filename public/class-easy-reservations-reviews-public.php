@@ -273,8 +273,10 @@ class Easy_Reservations_Reviews_Public {
 					),
 					'h1'       => array(),
 					'button'   => array(
-						'type'  => array(),
-						'class' => array(),
+						'type'     => array(),
+						'class'    => array(),
+						'tabindex' => array(),
+						'title'    => array(),
 					),
 					'input'    => array(
 						'type'              => array(),
