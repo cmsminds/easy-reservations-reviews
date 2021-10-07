@@ -152,7 +152,7 @@ jQuery( document ).ready( function( $ ) {
 		fd.append( 'username', username );
 		fd.append( 'phone', phone );
 		fd.append( 'review_message', review_message );
-		// block_element( this_button );
+		block_element( this_button );
 		$.ajax( {
 			type: 'POST',
 			url: ajaxurl,
