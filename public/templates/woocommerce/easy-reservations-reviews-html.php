@@ -11,11 +11,18 @@
  * @package    Easy_Reservations_Reviews
  * @subpackage Easy_Reservations_Reviews/public/templates
  */
+global $post;
 $user_info                     = ersrvr_user_logged_in_data();
 $user_email                    = $user_info['user_email'];
 $username                      = $user_info['username'];
 $user_phone_number             = $user_info['user_phone_number'];
-$get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_reservation_reviews_guest_users' ); ?>
+$get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_reservation_reviews_guest_users' );
+$getallComments                = get_comments( array(
+	'post_id' => $post->ID,
+), );
+// debug( $getallComments );
+// die;
+?>
 
 <div class="ship-reviews info-box">
 	<a class="section-title font-Poppins font-size-24 font-weight-bold d-block color-black text-decoration-none" data-toggle="collapse" href="#ship-reviews-collapse" role="button" aria-expanded="true" aria-controls="ship-reviews-collapse">
@@ -81,98 +88,59 @@ $get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_rese
 					</div>
 				</div>
 			</div>
-			<div class="dropdown-divider"></div>
-			<div class="sinlgle-review-items-wrapper">
-				<ul class="list-unstyled ml-0">
-					<li class="media mb-4">
-						<img src="http://localhost:8888/woocom-learning/wp-content/uploads/2021/08/pexels-jason-boyd-3423147-scaled.jpg" class="mr-3 rounded-circle" alt="user-photo">
-						<div class="media-body">
-							<div class="media-title">
-								<div id="full-stars-example-two" class="rating-group-wrapper">
-									<div class="rating-item d-flex flex-wrap align-items-center">
-										<div class="col-auto rating-group px-0">
-											<input class="rating__input" name="rating3" id="rating3-1" value="1" type="radio">
-											<label aria-label="1 star" class="rating__label" for="rating3-1"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-											<input class="rating__input" name="rating3" id="rating3-2" value="2" type="radio">
-											<label aria-label="2 stars" class="rating__label" for="rating3-2"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-											<input class="rating__input" name="rating3" id="rating3-3" value="3" type="radio">
-											<label aria-label="3 stars" class="rating__label" for="rating3-3"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-											<input class="rating__input" name="rating3" id="rating3-4" value="4" type="radio">
-											<label aria-label="4 stars" class="rating__label" for="rating3-4"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-											<input class="rating__input" name="rating3" id="rating3-5" value="5" type="radio">
-											<label aria-label="5 stars" class="rating__label" for="rating3-5"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+			<?php if ( ! empty( $getallComments ) && is_array( $getallComments ) ) { ?>
+				<div class="dropdown-divider"></div>
+				<div class="sinlgle-review-items-wrapper">
+					<ul class="list-unstyled ml-0">
+						<?php 
+						foreach( $getallComments as $getallComment ) {
+							$commnet_id      = $getallComment->comment_ID;
+							$user_id         = $getallComment->user_id;
+							$comment_date    = $getallComment->comment_date;
+							$comment_date    = date( "d M Y", strtotime( $comment_date ) );
+							$user_obj        = get_userdata( $user_id );
+							$first_name      = ! empty( get_user_meta( $user_id, 'first_name', true ) ) ? get_user_meta( $user_id, 'first_name', true ) : '';
+							$last_name       = ! empty( get_user_meta( $user_id, 'last_name', true ) ) ? get_user_meta( $user_id, 'last_name', true ) : '';
+							$display_name    = ! empty( $user_obj->data->display_name ) ? $user_obj->data->display_name : '';
+							$username        = $first_name . ' ' . $last_name;
+							$username        = ( ' ' !== $username ) ? $username : $display_name; 
+							$comment_content = $getallComment->comment_content;
+							?>
+							<li class="media mb-4">
+								<img src="http://localhost:8888/woocom-learning/wp-content/uploads/2021/08/pexels-jason-boyd-3423147-scaled.jpg" class="mr-3 rounded-circle" alt="user-photo">
+								<div class="media-body">
+									<div class="media-title">
+										<div id="full-stars-example-two" class="rating-group-wrapper">
+											<div class="rating-item d-flex flex-wrap align-items-center">
+												<div class="col-auto rating-group px-0">
+													<input class="rating__input" name="rating3" id="rating3-1" value="1" type="radio">
+													<label aria-label="1 star" class="rating__label" for="rating3-1"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+													<input class="rating__input" name="rating3" id="rating3-2" value="2" type="radio">
+													<label aria-label="2 stars" class="rating__label" for="rating3-2"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+													<input class="rating__input" name="rating3" id="rating3-3" value="3" type="radio">
+													<label aria-label="3 stars" class="rating__label" for="rating3-3"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+													<input class="rating__input" name="rating3" id="rating3-4" value="4" type="radio">
+													<label aria-label="4 stars" class="rating__label" for="rating3-4"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+													<input class="rating__input" name="rating3" id="rating3-5" value="5" type="radio">
+													<label aria-label="5 stars" class="rating__label" for="rating3-5"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+												</div>
+												<div class="col-auto"><label class="font-Poppins font-weight-semibold text-muted font-size-14"><?php esc_html_e( '( 5 of 5 )', 'easy-reservations-reviews' ); ?> </label></div>
+											</div>
 										</div>
-										<div class="col-auto"><label class="font-Poppins font-weight-semibold text-muted font-size-14"><?php esc_html_e( '( 5 of 5 )', 'easy-reservations-reviews' ); ?> </label></div>
+										<h5 class="mt-2 mb-1 font-popins font-size-16 font-weight-semibold">
+											<?php esc_html_e( $username, 'easy-reservations-reviews' ); ?>
+											<span class="text-muted font-lato font-weight-normal font-size-14">- <?php esc_html_e( $comment_date, 'easy-reservations-reviews' ); ?></span>
+										</h5>
 									</div>
+									<p class="font-lato font-size-14 font-weight-normal mb-0"><?php echo $comment_content;?></p>
 								</div>
-								<h5 class="mt-2 mb-1 font-popins font-size-16 font-weight-semibold">
-									Grzegorz Podolan
-									<span class="text-muted font-lato font-weight-normal font-size-14">- 2 Sep, 2021</span>
-								</h5>
-							</div>
-							<p class="font-lato font-size-14 font-weight-normal mb-0">All my girls vintage Chanel baby. So you can have your cake. Tonight, tonight, tonight, I'm walking on air. Slowly swallowing down my fear, yeah yeah. Growing fast into a bolt of lightning. So hot and heavy, 'Til dawn. That fairy tale ending with a knight in shining armor. Heavy is the head that wears the crown.</p>
-						</div>
-					</li>
-					<li class="media mb-4">
-						<img src="http://localhost:8888/woocom-learning/wp-content/uploads/2021/08/pexels-jason-boyd-3423147-scaled.jpg" class="mr-3 rounded-circle" alt="user-photo">
-						<div class="media-body">
-							<div class="media-title">
-								<div id="full-stars-example-two" class="rating-group-wrapper">
-									<div class="rating-item d-flex flex-wrap align-items-center">
-										<div class="col-auto rating-group px-0">
-											<input class="rating__input" name="rating3" id="rating3-1" value="1" type="radio">
-											<label aria-label="1 star" class="rating__label" for="rating3-1"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-											<input class="rating__input" name="rating3" id="rating3-2" value="2" type="radio">
-											<label aria-label="2 stars" class="rating__label" for="rating3-2"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-											<input class="rating__input" name="rating3" id="rating3-3" value="3" type="radio">
-											<label aria-label="3 stars" class="rating__label" for="rating3-3"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-											<input class="rating__input" name="rating3" id="rating3-4" value="4" type="radio">
-											<label aria-label="4 stars" class="rating__label" for="rating3-4"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-											<input class="rating__input" name="rating3" id="rating3-5" value="5" type="radio">
-											<label aria-label="5 stars" class="rating__label" for="rating3-5"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-										</div>
-										<div class="col-auto"><label class="font-Poppins font-weight-semibold text-muted font-size-14"><?php esc_html_e( '( 5 of 5 )', 'easy-reservations-reviews' ); ?> </label></div>
-									</div>
-								</div>
-								<h5 class="mt-2 mb-1 font-popins font-size-16 font-weight-semibold">
-									Grzegorz Podolan
-									<span class="text-muted font-lato font-weight-normal font-size-14">- 2 Sep, 2021</span>
-								</h5>
-							</div>
-							<p class="font-lato font-size-14 font-weight-normal mb-0">All my girls vintage Chanel baby. So you can have your cake. Tonight, tonight, tonight, I'm walking on air. Slowly swallowing down my fear, yeah yeah. Growing fast into a bolt of lightning. So hot and heavy, 'Til dawn. That fairy tale ending with a knight in shining armor. Heavy is the head that wears the crown.</p>
-						</div>
-					</li>
-					<li class="media">
-						<img src="http://localhost:8888/woocom-learning/wp-content/uploads/2021/08/pexels-jason-boyd-3423147-scaled.jpg" class="mr-3 rounded-circle" alt="user-photo">
-						<div class="media-body">
-							<div class="media-title">
-								<div id="full-stars-example-two" class="rating-group-wrapper">
-									<div class="rating-item d-flex flex-wrap align-items-center">
-										<div class="col-auto rating-group px-0">
-											<input class="rating__input" name="rating3" id="rating3-1" value="1" type="radio">
-											<label aria-label="1 star" class="rating__label" for="rating3-1"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-											<input class="rating__input" name="rating3" id="rating3-2" value="2" type="radio">
-											<label aria-label="2 stars" class="rating__label" for="rating3-2"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-											<input class="rating__input" name="rating3" id="rating3-3" value="3" type="radio">
-											<label aria-label="3 stars" class="rating__label" for="rating3-3"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-											<input class="rating__input" name="rating3" id="rating3-4" value="4" type="radio">
-											<label aria-label="4 stars" class="rating__label" for="rating3-4"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-											<input class="rating__input" name="rating3" id="rating3-5" value="5" type="radio">
-											<label aria-label="5 stars" class="rating__label" for="rating3-5"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-										</div>
-										<div class="col-auto"><label class="font-Poppins font-weight-semibold text-muted font-size-14"><?php esc_html_e( '( 5 of 5 )', 'easy-reservations-reviews' ); ?> </label></div>
-									</div>
-								</div>
-								<h5 class="mt-2 mb-1 font-popins font-size-16 font-weight-semibold">
-									Grzegorz Podolan
-									<span class="text-muted font-lato font-weight-normal font-size-14">- 2 Sep, 2021</span>
-								</h5>
-							</div>
-							<p class="font-lato font-size-14 font-weight-normal mb-0">All my girls vintage Chanel baby. So you can have your cake. Tonight, tonight, tonight, I'm walking on air. Slowly swallowing down my fear, yeah yeah. Growing fast into a bolt of lightning. So hot and heavy, 'Til dawn. That fairy tale ending with a knight in shining armor. Heavy is the head that wears the crown.</p>
-						</div>
-					</li>
-				</ul>
-			</div>
+							</li>
+						<?php } ?>
+						
+					</ul>
+				</div>
+			<?php } ?>
+			
 
 		</div>
 		<div class="dropdown-divider"></div>
