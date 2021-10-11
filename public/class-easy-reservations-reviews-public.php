@@ -155,7 +155,7 @@ class Easy_Reservations_Reviews_Public {
 					'id'            => array(),
 					'role'          => array(),
 					'data-criteria' => array(),
-					'style'			=> array(),
+					'style'         => array(),
 				),
 				'span'     => array(
 					'class' => array(),
@@ -250,11 +250,11 @@ class Easy_Reservations_Reviews_Public {
 						'id'            => array(),
 						'role'          => array(),
 						'data-criteria' => array(),
-						'style'			=> array(),
+						'style'         => array(),
 						'aria-valuenow' => array(),
 						'aria-valuemin' => array(),
 						'aria-valuemax' => array(),
-						'tabindex'      => array(), 
+						'tabindex'      => array(),
 					),
 					'span'     => array(
 						'class' => array(),
@@ -345,6 +345,8 @@ class Easy_Reservations_Reviews_Public {
 		if ( empty( $action ) || 'ersrvr_submit_reviews' !== $action ) {
 			wp_die();
 		}
+		global $wp_filesystem;
+		WP_Filesystem();
 		$posted_array   = filter_input_array( INPUT_POST );
 		$user_email     = ( ! empty( $posted_array['useremail'] ) ) ? $posted_array['useremail'] : '';
 		$username       = ( ! empty( $posted_array['username'] ) ) ? $posted_array['username'] : '';
@@ -357,27 +359,25 @@ class Easy_Reservations_Reviews_Public {
 		$author_url     = ( ! empty( get_author_posts_url( $user_id ) ) ) ? get_author_posts_url( $user_id ) : '';
 		$all_criteria   = ( ! empty( $posted_array['user_criteria_ratings'] ) ) ? $posted_array['user_criteria_ratings'] : '';
 		$all_criteria   = json_decode( $all_criteria );
-		foreach( $all_criteria as $array_of_criteria ) {
-			$closest_criteria  = $array_of_criteria->closest_criteria;
-			$rating            = $array_of_criteria->rating;
+		foreach ( $all_criteria as $array_of_criteria ) {
+			$closest_criteria        = $array_of_criteria->closest_criteria;
+			$rating                  = $array_of_criteria->rating;
 			$new_array_of_criteria[] = array(
 				'closest_criteria' => $closest_criteria,
-				'rating' =>$rating,
+				'rating'           => $rating,
 			);
 		}
-		// debug( $all_criteria );
-		// debug( $new_array_of_criteria );
-		// die;
 		// Upload the file now.
 		$review_file_name      = isset( $_FILES['files']['name'] ) ? $_FILES['files']['name'] : '';
-		// debug( $review_file_name );
-		// die;
 		$review_file_file_temp = isset( $_FILES['files']['tmp_name'] ) ? $_FILES['files']['tmp_name'] : '';
-		$file_data             = file_get_contents( $review_file_file_temp );
+		$file_data             = $wp_filesystem->get_contents( $review_file_file_temp );
 		$filename              = basename( $review_file_name );
 		$upload_dir            = wp_upload_dir();
 		$file_path             = ( ! empty( $upload_dir['path'] ) ) ? $upload_dir['path'] . '/' . $filename : $upload_dir['basedir'] . '/' . $filename;
-		file_put_contents( $file_path, $file_data );
+		$wp_filesystem->put_contents(
+			$file_path,
+			$file_data,
+		);
 
 		// Upload it as WP attachment.
 		$wp_filetype = wp_check_filetype( $filename, null );
@@ -389,19 +389,11 @@ class Easy_Reservations_Reviews_Public {
 		);
 		$attach_id   = wp_insert_attachment( $attachment, $file_path );
 		$image_url   = wp_get_attachment_url( $attach_id );
-		// if ( ! empty( $image_url ) ) {
-		// 	$image_tag      = '<img src = "' . $image_url . '">';
-		// 	$review_message = sprintf( __( '%1$s %2$s', 'easy-reservations-reviews' ), $review_message, $image_tag );
-		// }
-		// debug( $all_criteria );
-		// die;
 		foreach ( $all_criteria as $key => $criteria ) {
 			$closest_criteria  = $criteria->closest_criteria;
 			$rating            = $criteria->rating;
 			$combine_ratings[] = $rating;
 		}
-		// debug( $combine_ratings );
-		// die;
 		$total_ratings  = array_sum( $combine_ratings );
 		$avrage_ratings = $total_ratings / count( $combine_ratings );
 		$save_option    = array(
@@ -416,7 +408,7 @@ class Easy_Reservations_Reviews_Public {
 			'user_id'              => $user_id,
 			'comment_author_IP'    => '127.0.0.1',
 			'comment_agent'        => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.10) Gecko/2009042316 Firefox/3.0.10 (.NET CLR 3.5.30729)',
-			'comment_date'         => date( 'Y/m/d h:i:s' ),
+			'comment_date'         => gmdate( 'Y/m/d h:i:s' ),
 			'comment_approved'     => 1,
 		);
 		$comment_id     = wp_insert_comment( $comment_data );
