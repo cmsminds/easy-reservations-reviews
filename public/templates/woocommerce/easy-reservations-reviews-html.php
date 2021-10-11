@@ -68,26 +68,6 @@ $getallComments                = get_comments( array(
 					</div>
 				</div>
 			</div>
-			<div class="dropdown-divider"></div>
-			<div id="full-stars-example-two" class="rating-group-wrapper">
-				<div class="rating-item d-flex flex-wrap align-items-center">
-					<div class="col-12 col-sm-6 col-md-3 mb-2 mb-sm-0">
-						<label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( 'Communication', 'easy-reservations-reviews' ); ?> </label>
-					</div>
-					<div class="col-12 col-sm-6 col-md-9 rating-group">
-						<input class="rating__input" name="rating3" id="rating3-1" value="1" type="radio">
-						<label aria-label="1 star" class="rating__label" for="rating3-1"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-						<input class="rating__input" name="rating3" id="rating3-2" value="2" type="radio">
-						<label aria-label="2 stars" class="rating__label" for="rating3-2"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-						<input class="rating__input" name="rating3" id="rating3-3" value="3" type="radio">
-						<label aria-label="3 stars" class="rating__label" for="rating3-3"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-						<input class="rating__input" name="rating3" id="rating3-4" value="4" type="radio">
-						<label aria-label="4 stars" class="rating__label" for="rating3-4"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-						<input class="rating__input" name="rating3" id="rating3-5" value="5" type="radio">
-						<label aria-label="5 stars" class="rating__label" for="rating3-5"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-					</div>
-				</div>
-			</div>
 			<?php if ( ! empty( $getallComments ) && is_array( $getallComments ) ) { ?>
 				<div class="dropdown-divider"></div>
 				<div class="sinlgle-review-items-wrapper">
@@ -133,6 +113,13 @@ $getallComments                = get_comments( array(
 										</h5>
 									</div>
 									<p class="font-lato font-size-14 font-weight-normal mb-0"><?php echo $comment_content;?></p>
+									<?php 
+									$attach_id = get_comment_meta( $commnet_id, 'attached_files', true );
+									$image_url   = ( ! empty( $attach_id ) ) ? wp_get_attachment_url( $attach_id ) : '';
+									if( ! empty( $image_url ) ) { ?>
+										<img src="<?php echo esc_url( $image_url ); ?>" class="ersrvr_attached_files">	
+									<?php }
+									?>
 								</div>
 							</li>
 						<?php } ?>
