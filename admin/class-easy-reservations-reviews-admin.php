@@ -134,9 +134,8 @@ class Easy_Reservations_Reviews_Admin {
 		if ( ! empty( $get_comment_id ) && isset( $get_comment_id ) ) {
 			$get_average_ratings       = get_comment_meta( $get_comment_id, 'average_ratings', true );
 			$get_user_criteria_ratings = get_comment_meta( $get_comment_id, 'user_criteria_ratings', true );
-			if ( ! empty( $get_user_criteria_ratings ) && is_array( $get_user_criteria_ratings ) ) {
-				add_meta_box( 'ersrvr_add_reviews_data', __( 'Reviews' ), 'ersrvr_add_reviews_data', 'comment', 'normal' );
-			}
+			add_meta_box( 'ersrvr_add_reviews_data', __( 'Reviews' ), 'ersrvr_add_reviews_data', 'comment', 'normal' );
+			
 		}
 		/**
 		 * Function to add output data.
@@ -183,6 +182,32 @@ class Easy_Reservations_Reviews_Admin {
 									</div>
 								</div>
 								<?php $k++; ?>
+							<?php } ?>
+						</div>
+					</div>
+				</div>
+			<?php } else { 
+				$criterias = ersrvr_get_plugin_settings( 'ersrvr_submit_review_criterias' ); ?>
+				<div class="form-row">
+					<div class="col-12">
+						<label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( 'Please reate us 1 (bad) to 5 (excellent)', 'easy-reservations-reviews' ); ?></label>
+						<div id="full-stars-example-two" class="rating-group-wrapper border py-2 px-1 rounded-xl">
+							<?php $k = 1; ?>
+							<?php foreach ( $criterias as $criteria ) { ?>
+								<?php
+								$criteria_slug = strtolower( $criteria );
+								$criteria_slug = str_replace( ' ', '-', $criteria_slug );
+								?>
+								<div class="rating-item d-flex flex-wrap align-items-center">
+									<div class="col-4 col-sm-3"><label class="font-Poppins font-weight-semibold text-black font-size-14"><?php echo esc_html( $criteria ); ?> </label></div>
+									<div class="col-8 col-sm-9 rating-group" id="<?php echo esc_attr( $criteria_slug ); ?>" data-criteria="<?php echo esc_attr( $criteria ); ?>">
+										<?php for ( $i = 1; $i <= 5; $i++ ) { ?>
+											<input class="rating__input" name="rating3" id="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
+											<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+											<?php $k++; ?>
+										<?php } ?>
+									</div>
+								</div>
 							<?php } ?>
 						</div>
 					</div>
