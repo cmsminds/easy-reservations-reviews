@@ -48,9 +48,9 @@
 .rating-group-wrapper label{
     margin-bottom: 0px;
 }
-.rating-group-wrapper > .rating-item:not(:last-child){
+/* .rating-group-wrapper > .rating-item:not(:last-child){
     margin-bottom: 16px;
-}
+} */
 .sinlgle-review-items-wrapper .media img {
   max-width: 48px;
   height: 48px;
