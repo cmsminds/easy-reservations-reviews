@@ -1,9 +1,9 @@
 .review-form-wrapper .form-row {
     margin-bottom: 16px;
 }
-.rating-group-wrapper > .rating-item:not(:last-child) {
+/* .rating-group-wrapper > .rating-item:not(:last-child) {
     margin-bottom: 8px !important;
-}
+} */
 .sinlgle-review-items-wrapper .media .media-title h5 {
     padding-top: 0px;
 }

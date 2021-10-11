@@ -71,10 +71,10 @@ $getallComments                = get_comments( array(
 			<div class="dropdown-divider"></div>
 			<div id="full-stars-example-two" class="rating-group-wrapper">
 				<div class="rating-item d-flex flex-wrap align-items-center">
-					<div class="col-4 col-sm-3">
+					<div class="col-12 col-sm-6 col-md-3 mb-2 mb-sm-0">
 						<label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( 'Communication', 'easy-reservations-reviews' ); ?> </label>
 					</div>
-					<div class="col-8 col-sm-9 rating-group">
+					<div class="col-12 col-sm-6 col-md-9 rating-group">
 						<input class="rating__input" name="rating3" id="rating3-1" value="1" type="radio">
 						<label aria-label="1 star" class="rating__label" for="rating3-1"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
 						<input class="rating__input" name="rating3" id="rating3-2" value="2" type="radio">
