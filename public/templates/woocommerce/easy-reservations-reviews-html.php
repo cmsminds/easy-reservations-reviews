@@ -48,24 +48,32 @@ $getallComments                = get_comments( array(
 				); ?>
 			</div>
 		<?php } ?>
+		<?php 
+		
+			$get_avrage_ratings = 	ersrvr_get_total_average_ratings();
+			foreach ( $get_avrage_ratings as $get_avrage_rating ){
+				$avrage_ratings[] = $get_avrage_rating->meta_value;
+
+			}
+			$total_rating_sum    = array_sum( $avrage_ratings );
+			$total_rating_star   = ( int ) round( $total_rating_sum / count( $avrage_ratings ) );
+			$total_rating_amount = round( $total_rating_sum / count( $avrage_ratings ), 2 );
+			
+			
+		?>
 		<div class="review-listing-wrapper">
 			<div class="list-Of-Review-title">
-				<h2 class="font-popins font-size-24 font-weight-bold">2 Reviews</h2>
+				<h2 class="font-popins font-size-24 font-weight-bold"><?php echo esc_html( $total_rating_amount ); ?> Reviews</h2>
 			</div>
 			<div class="total-of-star-rating">
 				<div class="rating-item d-flex flex-wrap align-items-center">
 					<div class="col-12 col-sm-12 rating-group px-0">
-						<input class="rating__input" name="rating3" id="rating3-1" value="1" type="radio">
-						<label aria-label="1 star" class="rating__label" for="rating3-1"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-						<input class="rating__input" name="rating3" id="rating3-2" value="2" type="radio">
-						<label aria-label="2 stars" class="rating__label" for="rating3-2"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-						<input class="rating__input" name="rating3" id="rating3-3" value="3" type="radio">
-						<label aria-label="3 stars" class="rating__label" for="rating3-3"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-						<input class="rating__input" name="rating3" id="rating3-4" value="4" type="radio">
-						<label aria-label="4 stars" class="rating__label" for="rating3-4"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-						<input class="rating__input" name="rating3" id="rating3-5" value="5" type="radio">
-						<label aria-label="5 stars" class="rating__label" for="rating3-5"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-					</div>
+					<?php for ( $i = 1; $i <= 5; $i++ ) {
+						$filled_star_class = ( $total_rating_star >= $i ) ? 'fill_star_click' : ''; ?>
+						<input class="rating__input" name="rating3" id="rating3-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
+						<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label <?php echo esc_attr( $filled_star_class ); ?>" for="rating3-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+					<?php } ?>
+				</div>
 				</div>
 			</div>
 			<?php if ( ! empty( $getallComments ) && is_array( $getallComments ) ) { ?>

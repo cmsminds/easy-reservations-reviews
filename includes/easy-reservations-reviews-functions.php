@@ -471,3 +471,14 @@ if ( ! function_exists( 'ersrvr_get_review_file_allowed_file_types' ) ) {
 		return apply_filters( 'ersrvr_allowed_file_types_review_file', $file_types );
 	}
 }
+if( ! function_exists( 'ersrvr_get_total_average_ratings' ) ) {
+	function ersrvr_get_total_average_ratings() {
+		global $wpdb;
+		$wc_commentmeta        = "{$wpdb->prefix}commentmeta";
+		$get_commentmeta_query = "SELECT `meta_value` FROM `{$wc_commentmeta}` WHERE `meta_key` = 'average_ratings'";
+		$get_average_ratings   = $wpdb->get_results( $get_commentmeta_query );
+		$get_average_ratings   = ! empty( $get_average_ratings ) ? $get_average_ratings : array();
+		return $get_average_ratings;
+
+	}
+}
