@@ -108,6 +108,7 @@ jQuery( document ).ready( function( $ ) {
 	jQuery(document).on( 'click', '.ersrvr_btn_submit', function( evt ) {
 		evt.preventDefault();
 		var this_button             = $( this );
+		var this_button_text        = this_button.text();
 		var useremail               = user_email;
 		useremail                   = ( -1 === is_valid_string( useremail ) ) ? $( '#ersrvr_email' ).val() : useremail;
 		var username                = $( '#ersrvr_name'  ).val();
@@ -156,6 +157,7 @@ jQuery( document ).ready( function( $ ) {
 		fd.append( 'username', username );
 		fd.append( 'phone', phone );
 		fd.append( 'review_message', review_message );
+		this_button.html( '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>' );
 		block_element( this_button );
 		$.ajax( {
 			type: 'POST',
@@ -171,9 +173,14 @@ jQuery( document ).ready( function( $ ) {
 					return false;
 				}
 				unblock_element( this_button );
+				this_button.text( this_button_text );
 				if( 'ersrvr_submit_reviews_success' === response.data.code ) {
 					// Show the toast now.
 					ersrvr_show_toast( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
+					setTimeout( function() {
+						location.reload();;
+					}, 800 );
+					
 				}
 				
 
