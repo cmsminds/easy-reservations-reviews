@@ -426,7 +426,13 @@ class Easy_Reservations_Reviews_Public {
 				'post_id' => $post_id,
 			),
 		);
-		$html         = ersrvr_html_comment_message_box( $all_comments );
+		$file_path = plugin_dir_path( __DIR__ ) . 'public/templates/review/review-comment-data.php';
+		$html = '';
+		if ( file_exists( $file_path ) ) {
+			$html  = include( $file_path );
+		}
+		// debug( $file_path );
+		// die;
 		$response     = array(
 			'code'          => 'ersrvr_submit_reviews_success',
 			'toast_message' => __( 'Your Reviews Submitted.', 'easy-reservations-reviews' ),
@@ -461,7 +467,11 @@ class Easy_Reservations_Reviews_Public {
 		if ( ! empty( $comment_id ) ) {
 			wp_delete_comment( $comment_id, true );
 		}
-		$html                = ersrvr_html_of_total_review();
+		$file_path = plugin_dir_path( __DIR__ ) . 'public/templates/review/total_review.php';
+		$html = '';
+		if ( file_exists( $file_path ) ) {
+			$html = include( $file_path );
+		}
 		$get_all_comments    = get_comments(
 			array(
 				'post_id' => $post_id,
