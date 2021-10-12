@@ -48,35 +48,19 @@ $getallComments                = get_comments( array(
 				); ?>
 			</div>
 		<?php } ?>
-		<div class="review-listing-wrapper">
-			<div class="ersrvr_total_review_html">
-				<?php echo ersrvr_html_of_total_review(); ?>
-			</div>
-			<?php if ( ! empty( $getallComments ) && is_array( $getallComments ) ) { ?>
-				<div class="dropdown-divider"></div>
-				<div class="sinlgle-review-items-wrapper">
-					<ul class="list-unstyled ml-0 ersrvr_comment_message_box_view">
-					<?php echo ersrvr_html_comment_message_box( $getallComments ); ?>
-					</ul>
-				</div>
-			<?php } ?>
-			
-
-		</div>
-		<div class="dropdown-divider ersrvr_total_review_divider"></div>
-		<!-- form start here -->
-		<div class="review-form-wrapper">
-			<?php 
-			/**
-			* Function ersrvr_prepare_reviews_form_html() Map from the file of includes/easy-reservations-reviews-functions.php Line no: 224
-			*/
-			if( empty( $user_info ) ) {
-				if( ! empty( $get_guest_user_enable_Setting ) && 'yes' === $get_guest_user_enable_Setting ) { 
-					echo ersrvr_prepare_reviews_form_html( $user_email, $username, $user_phone_number ); 
-				}
-			} else { 
-				echo ersrvr_prepare_reviews_form_html( $user_email, $username, $user_phone_number ); 
-			} ?>
-		</div>
+		<?php 
+		$file_path = plugin_dir_path( __DIR__ ) . 'review/review-comment-data.php';
+		// echo $file_path;
+		// die;
+		if ( file_exists( $file_path ) ) {
+			require_once $file_path;
+		}
+		?>
+		<?php 
+		$file_path = plugin_dir_path( __DIR__ ) . 'review/review-form.php';
+		if ( file_exists( $file_path ) ) {
+			require_once $file_path;
+		}
+		?>
 	</div>
 </div>
