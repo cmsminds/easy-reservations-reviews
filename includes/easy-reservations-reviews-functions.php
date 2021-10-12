@@ -539,12 +539,12 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 	 * @since 1.0.0
 	 */
 	function ersrvr_html_comment_message_box( $allcomments ) {
-		foreach( $allcomments as $getallComment ) {
-			$commnet_id      = $getallComment->comment_ID;
-			$user_id         = ( int ) $getallComment->user_id;
+		foreach( $allcomments as $get_all_comment ) {
+			$commnet_id      = $get_all_comment->comment_ID;
+			$user_id         = ( int ) $get_all_comment->user_id;
 			$current_user    = ersrvr_user_logged_in_data();
 			$current_user_id = ( int ) $current_user['user_id'];
-			$comment_date    = $getallComment->comment_date;
+			$comment_date    = $get_all_comment->comment_date;
 			$comment_date    = date( "d M Y", strtotime( $comment_date ) );
 			$user_obj        = get_userdata( $user_id );
 			$first_name      = ! empty( get_user_meta( $user_id, 'first_name', true ) ) ? get_user_meta( $user_id, 'first_name', true ) : '';
@@ -552,11 +552,11 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 			$display_name    = ! empty( $user_obj->data->display_name ) ? $user_obj->data->display_name : '';
 			$username        = $first_name . ' ' . $last_name;
 			$username        = ( ' ' !== $username ) ? $username : $display_name; 
-			$comment_content = $getallComment->comment_content;
+			$comment_content = $get_all_comment->comment_content;
 			$average_rating  = get_comment_meta( $commnet_id, 'average_ratings', true );
 			$average_rating  = (int) $average_rating;
 			$criteria        = get_comment_meta( $commnet_id, 'user_criteria_ratings', true );
-			$post_id         = ( int ) $getallComment->comment_post_ID; 
+			$post_id         = ( int ) $get_all_comment->comment_post_ID; 
 			$html            = ''; 
 			ob_start();
 			?>
