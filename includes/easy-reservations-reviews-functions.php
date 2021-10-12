@@ -48,19 +48,19 @@ if ( ! function_exists( 'ersrvr_setting_fields' ) ) {
 				'id'       => 'ersrvr_submit_review_criterias',
 			),
 			array(
-				'name' => __( 'Enable', 'easy-reservations-reviews' ),
+				'name' => __( 'For Guset User', 'easy-reservations-reviews' ),
 				'type' => 'checkbox',
 				'desc' => __( 'This will decide whether the guest user can fill up their reviews or not. Default is no.', 'easy-reservations-reviews' ),
 				'id'   => 'ersrvr_enable_reservation_reviews_guest_users',
 			),
 			array(
-				'name' => __( 'Enable', 'easy-reservations-reviews' ),
+				'name' => __( 'Edit Review', 'easy-reservations-reviews' ),
 				'type' => 'checkbox',
 				'desc' => __( 'This will decide whether the user can have ability to edit reviews or not.', 'easy-reservations-reviews' ),
 				'id'   => 'ersrvr_enable_edit_reservation_reviews',
 			),
 			array(
-				'name' => __( 'Enable', 'easy-reservations-reviews' ),
+				'name' => __( 'Delete Review', 'easy-reservations-reviews' ),
 				'type' => 'checkbox',
 				'desc' => __( 'This will decide whether the user can have ability to delete reviews or not.', 'easy-reservations-reviews' ),
 				'id'   => 'ersrvr_enable_delete_reservation_reviews',
