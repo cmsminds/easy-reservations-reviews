@@ -421,11 +421,13 @@ class Easy_Reservations_Reviews_Public {
 		add_comment_meta( $comment_id, 'average_ratings', $avrage_ratings );
 		add_comment_meta( $comment_id, 'user_criteria_ratings', $new_array_of_criteria );
 		add_comment_meta( $comment_id, 'attached_files', $attach_id );
-		$get_all_comments = get_comments( array(
-			'post_id' => $post_id,
-		), );
-		$html           = ersrvr_html_comment_message_box( $get_all_comments );
-		$response = array(
+		$all_comments = get_comments(
+			array(
+				'post_id' => $post_id,
+			),
+		);
+		$html         = ersrvr_html_comment_message_box( $get_all_comments );
+		$response     = array(
 			'code'          => 'ersrvr_submit_reviews_success',
 			'toast_message' => __( 'Your Reviews Submitted.', 'easy-reservations-reviews' ),
 			'html'          => $html,
@@ -454,21 +456,23 @@ class Easy_Reservations_Reviews_Public {
 		if ( empty( $action ) || 'ersrvr_delete_review_comment' !== $action ) {
 			wp_die();
 		}
-		$comment_id          = filter_input( INPUT_POST, 'comment_id', FILTER_SANITIZE_NUMBER_INT );
-		$post_id             = filter_input( INPUT_POST, 'postid', FILTER_SANITIZE_NUMBER_INT );
-		if( ! empty( $comment_id ) ) {
+		$comment_id = filter_input( INPUT_POST, 'comment_id', FILTER_SANITIZE_NUMBER_INT );
+		$post_id    = filter_input( INPUT_POST, 'postid', FILTER_SANITIZE_NUMBER_INT );
+		if ( ! empty( $comment_id ) ) {
 			wp_delete_comment( $comment_id, true );
 		}
 		$html                = ersrvr_html_of_total_review();
-		$getallComments      = get_comments( array(
-			'post_id' => $post_id,
-		), );
-		$status_zero_comment = ! empty( $getallComments ) ? 'available' : 'not_available';
+		$get_all_comments    = get_comments(
+			array(
+				'post_id' => $post_id,
+			),
+		);
+		$status_zero_comment = ! empty( $get_all_comments ) ? 'available' : 'not_available';
 		$response            = array(
 			'code'                => 'ersrvr_delete_comments_success',
 			'deleted_comment_id'  => $comment_id,
 			'html'                => $html,
-			'status_zero_comment' => $status_zero_comment
+			'status_zero_comment' => $status_zero_comment,
 		);
 		wp_send_json_success( $response );
 		wp_die();

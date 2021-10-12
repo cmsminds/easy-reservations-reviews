@@ -135,7 +135,6 @@ class Easy_Reservations_Reviews_Admin {
 			$get_average_ratings       = get_comment_meta( $get_comment_id, 'average_ratings', true );
 			$get_user_criteria_ratings = get_comment_meta( $get_comment_id, 'user_criteria_ratings', true );
 			add_meta_box( 'ersrvr_add_reviews_data', __( 'Reviews' ), 'ersrvr_add_reviews_data', 'comment', 'normal' );
-			
 		}
 		/**
 		 * Function to add output data.
@@ -186,8 +185,8 @@ class Easy_Reservations_Reviews_Admin {
 						</div>
 					</div>
 				</div>
-			<?php } else { 
-				$criterias = ersrvr_get_plugin_settings( 'ersrvr_submit_review_criterias' ); ?>
+			<?php } else { ?>
+				<?php $criterias = ersrvr_get_plugin_settings( 'ersrvr_submit_review_criterias' ); ?>
 				<div class="form-row">
 					<div class="col-12">
 						<label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( 'Please reate us 1 (bad) to 5 (excellent)', 'easy-reservations-reviews' ); ?></label>
