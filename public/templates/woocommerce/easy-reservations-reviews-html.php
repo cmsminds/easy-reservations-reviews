@@ -51,13 +51,16 @@ $getallComments                = get_comments( array(
 		<?php 
 		
 			$get_avrage_ratings = 	ersrvr_get_total_average_ratings();
-			foreach ( $get_avrage_ratings as $get_avrage_rating ){
-				$avrage_ratings[] = $get_avrage_rating->meta_value;
-
+			if( ! empty( $get_avrage_ratings ) && is_array( $get_avrage_ratings ) ) {
+				foreach ( $get_avrage_ratings as $get_avrage_rating ){
+					$avrage_ratings[] = $get_avrage_rating->meta_value;
+	
+				}
 			}
-			$total_rating_sum    = array_sum( $avrage_ratings );
-			$total_rating_star   = ( int ) round( $total_rating_sum / count( $avrage_ratings ) );
-			$total_rating_amount = round( $total_rating_sum / count( $avrage_ratings ), 2 );
+			$avrage_ratings      = ! empty( $avrage_ratings ) ? $avrage_ratings : array();
+			$total_rating_sum    = ! empty( $avrage_ratings ) ? array_sum( $avrage_ratings ) : 0;
+			$total_rating_star   = ( int ) ( 0 !== $total_rating_sum ) ? round( $total_rating_sum / count( $avrage_ratings ) ) : 0;
+			$total_rating_amount = ( int ) ( 0 !== $total_rating_sum ) ? round( $total_rating_sum / count( $avrage_ratings ), 2 ) : 0;
 			
 			
 		?>
