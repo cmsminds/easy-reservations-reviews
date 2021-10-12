@@ -189,10 +189,12 @@ jQuery( document ).ready( function( $ ) {
 	} );
 	jQuery( document ).on( 'click', '.ersrvr_delete_review', function( evt ) {
 		evt.preventDefault();
-		var this_btn        = $( this );
-		var this_comment_id = this_btn.data('commentid');
+		var this_btn   = $( this );
+		var comment_id = this_btn.data('commentid');
+		var postid     = this_btn.data('postid');
 		var data = {
-			comment_id: this_comment_id,
+			comment_id: comment_id,
+			postid: postid,
 			action: 'ersrvr_delete_review_comment',
 		};
 		$.ajax( {
@@ -202,7 +204,12 @@ jQuery( document ).ready( function( $ ) {
 			data: data,
 			success: function ( response ) {
 				if( 'ersrvr_delete_comments_success' === response.data.code ) {
-					$( '.ersrvr_comment_id_' + this_comment_id  ).remove();
+					$( '.ersrvr_comment_id_' + comment_id  ).remove();
+					$( '.ersrvr_total_review_html' ).html( response.data.html );
+					if( 'not_available' === response.data.status_zero_comment ) {
+						$( '.ersrvr_total_review_divider' ).remove();
+					}
+					
 				}
 			},
 		} );
