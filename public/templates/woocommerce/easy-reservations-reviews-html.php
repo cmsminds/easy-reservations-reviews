@@ -83,7 +83,9 @@ $getallComments                = get_comments( array(
 						<?php 
 						foreach( $getallComments as $getallComment ) {
 							$commnet_id      = $getallComment->comment_ID;
-							$user_id         = $getallComment->user_id;
+							$user_id         = ( int ) $getallComment->user_id;
+							$current_user    = ersrvr_user_logged_in_data();
+							$current_user_id = ( int ) $current_user['user_id'];
 							$comment_date    = $getallComment->comment_date;
 							$comment_date    = date( "d M Y", strtotime( $comment_date ) );
 							$user_obj        = get_userdata( $user_id );
@@ -96,10 +98,10 @@ $getallComments                = get_comments( array(
 							$average_rating  = get_comment_meta( $commnet_id, 'average_ratings', true );
 							$average_rating  = (int) $average_rating;
 							$criteria        = get_comment_meta( $commnet_id, 'user_criteria_ratings', true );
-							
+							$post_id         = ( int ) $getallComment->comment_post_ID;
 							?>
 							<li class="media mb-4">
-								<img src="http://localhost:8888/woocom-learning/wp-content/uploads/2021/08/pexels-jason-boyd-3423147-scaled.jpg" class="mr-3 rounded-circle" alt="user-photo">
+								<img src="<?php echo esc_url( site_url() ); ?>/wp-content/uploads/2021/08/pexels-jason-boyd-3423147-scaled.jpg" class="mr-3 rounded-circle" alt="user-photo">
 								<div class="media-body">
 									<div class="media-title">
 										<div id="full-stars-example-two" class="rating-group-wrapper">
@@ -118,6 +120,9 @@ $getallComments                = get_comments( array(
 										<h5 class="mt-2 mb-1 font-popins font-size-16 font-weight-semibold">
 											<?php esc_html_e( $username, 'easy-reservations-reviews' ); ?>
 											<span class="text-muted font-lato font-weight-normal font-size-14">- <?php esc_html_e( $comment_date, 'easy-reservations-reviews' ); ?></span>
+											<?php if ( $user_id  == $current_user_id ) { ?>
+												<span class="text-muted font-lato font-weight-normal font-size-14">- <a href="#" class="ersrvr_edit_review" data-commentid="<?php echo esc_html( $commnet_id ); ?>" data-userid="<?php echo esc_html( $current_user_id ); ?>" data-postid="<?php echo esc_html( $post_id ); ?>" ><?php esc_html_e( 'Edit', 'easy-reservations-reviews' ); ?></a></span>
+											<?php } ?>
 										</h5>
 									</div>
 									<p class="font-lato font-size-14 font-weight-normal mb-0"><?php echo $comment_content;?></p>

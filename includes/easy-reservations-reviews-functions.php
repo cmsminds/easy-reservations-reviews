@@ -187,13 +187,16 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 					'class' => array(),
 				),
 				'a'        => array(
-					'href'          => array(),
-					'class'         => array(),
-					'download'      => array(),
-					'data-toggle'   => array(),
-					'role'          => array(),
-					'aria-expanded' => array(),
-					'aria-controls' => array(),
+					'href'           => array(),
+					'class'          => array(),
+					'download'       => array(),
+					'data-toggle'    => array(),
+					'role'           => array(),
+					'aria-expanded'  => array(),
+					'aria-controls'  => array(),
+					'data-commentid' => array(),
+					'data-userid'    => array(),
+					'data-postid'    => array(),
 				),
 				'h1'       => array(),
 				'button'   => array(
@@ -440,6 +443,7 @@ if ( ! function_exists( 'ersrvr_user_logged_in_data' ) ) {
 				'username'          => $username,
 				'user_email'        => $user_email,
 				'user_phone_number' => $user_phone_number,
+				'user_id'           => $current_userid,
 			);
 		}
 		// This filters holds the user information modifications.
