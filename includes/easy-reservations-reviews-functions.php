@@ -54,6 +54,18 @@ if ( ! function_exists( 'ersrvr_setting_fields' ) ) {
 				'id'   => 'ersrvr_enable_reservation_reviews_guest_users',
 			),
 			array(
+				'name' => __( 'Enable', 'easy-reservations-reviews' ),
+				'type' => 'checkbox',
+				'desc' => __( 'This will decide whether the user can have ability to edit reviews or not.', 'easy-reservations-reviews' ),
+				'id'   => 'ersrvr_enable_edit_reservation_reviews',
+			),
+			array(
+				'name' => __( 'Enable', 'easy-reservations-reviews' ),
+				'type' => 'checkbox',
+				'desc' => __( 'This will decide whether the user can have ability to delete reviews or not.', 'easy-reservations-reviews' ),
+				'id'   => 'ersrvr_enable_delete_reservation_reviews',
+			),
+			array(
 				'type' => 'sectionend',
 				'id'   => 'ersrvr_reviews',
 			),
@@ -85,6 +97,14 @@ if ( ! function_exists( 'ersrvr_get_plugin_settings' ) ) {
 				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : __( 'Submit', 'easy-reservations-reviews' );
 				break;
 			case 'ersrvr_enable_reservation_reviews_guest_users':
+				$data = get_option( $setting );
+				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? 'yes' : 'no';
+				break;
+			case 'ersrvr_enable_edit_reservation_reviews':
+				$data = get_option( $setting );
+				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? 'yes' : 'no';
+				break;
+			case 'ersrvr_enable_delete_reservation_reviews':
 				$data = get_option( $setting );
 				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? 'yes' : 'no';
 				break;
@@ -123,37 +143,6 @@ if ( ! function_exists( 'ersrvr_prepare_criterias_array' ) ) {
 		return $criterias;
 	}
 }
-
-/**
- * Check if the function exists.
- */
-if ( ! function_exists( 'ersrvr_get_plugin_settings' ) ) {
-	/**
-	 * Get plugin setting by setting index.
-	 *
-	 * @param string $setting Holds the setting index.
-	 * @return boolean|string|array|int
-	 * @since 1.0.0
-	 */
-	function ersrvr_get_plugin_settings( $setting ) {
-		switch ( $setting ) {
-			case 'ersrvr_submit_review_criterias':
-				$data = get_option( $setting );
-				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : array();
-				$data = ( ! empty( $data ) ) ? ersrvr_prepare_criterias_array( $data ) : array();
-				break;
-			case 'ersrvr_submit_review_button_text':
-				$data = get_option( $setting );
-				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : array();
-				break;
-			default:
-				$data = -1;
-		}
-
-		return $data;
-	}
-}
-
 /**
  * Check if the function exists.
  */
