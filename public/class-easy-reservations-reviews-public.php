@@ -438,5 +438,27 @@ class Easy_Reservations_Reviews_Public {
 			// Include the notification html.
 			require_once ERSRVR_PLUGIN_PATH . 'public/templates/notifications/notification.php';
 	}
+	/**
+	 * Delete row of comments.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrvr_delete_review_comment() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+		// Check if action mismatches.
+		if ( empty( $action ) || 'ersrvr_delete_review_comment' !== $action ) {
+			wp_die();
+		}
+		$comment_id = filter_input( INPUT_POST, 'comment_id', FILTER_SANITIZE_NUMBER_INT );
+		if( ! empty( $comment_id ) ) {
+			wp_delete_comment( $comment_id, true );
+		}
+		$response = array(
+			'code'               => 'ersrvr_delete_comments_success',
+			'deleted_comment_id' => $comment_id,
+		);
+		wp_send_json_success( $response );
+		wp_die();
+	}
 
 }

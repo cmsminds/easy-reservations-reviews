@@ -108,7 +108,7 @@ $getallComments                = get_comments( array(
 							$criteria        = get_comment_meta( $commnet_id, 'user_criteria_ratings', true );
 							$post_id         = ( int ) $getallComment->comment_post_ID;
 							?>
-							<li class="media mb-4">
+							<li class="media mb-4 ersrvr_comment_id_<?php echo esc_attr( $commnet_id ); ?>">
 								<img src="<?php echo esc_url( site_url() ); ?>/wp-content/uploads/2021/08/pexels-jason-boyd-3423147-scaled.jpg" class="mr-3 rounded-circle" alt="user-photo">
 								<div class="media-body">
 									<div class="media-title">

@@ -187,6 +187,26 @@ jQuery( document ).ready( function( $ ) {
 			},
 		} );
 	} );
+	jQuery( document ).on( 'click', '.ersrvr_delete_review', function( evt ) {
+		evt.preventDefault();
+		var this_btn        = $( this );
+		var this_comment_id = this_btn.data('commentid');
+		var data = {
+			comment_id: this_comment_id,
+			action: 'ersrvr_delete_review_comment',
+		};
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: data,
+			success: function ( response ) {
+				if( 'ersrvr_delete_comments_success' === response.data.code ) {
+					$( '.ersrvr_comment_id_' + this_comment_id  ).remove();
+				}
+			},
+		} );
+	} );
 	/**
 	 * Check if a string is valid.
 	 *
