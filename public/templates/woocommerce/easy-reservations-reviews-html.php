@@ -55,74 +55,8 @@ $getallComments                = get_comments( array(
 			<?php if ( ! empty( $getallComments ) && is_array( $getallComments ) ) { ?>
 				<div class="dropdown-divider"></div>
 				<div class="sinlgle-review-items-wrapper">
-					<ul class="list-unstyled ml-0">
-						<?php 
-						foreach( $getallComments as $getallComment ) {
-							$commnet_id      = $getallComment->comment_ID;
-							$user_id         = ( int ) $getallComment->user_id;
-							$current_user    = ersrvr_user_logged_in_data();
-							$current_user_id = ( int ) $current_user['user_id'];
-							$comment_date    = $getallComment->comment_date;
-							$comment_date    = date( "d M Y", strtotime( $comment_date ) );
-							$user_obj        = get_userdata( $user_id );
-							$first_name      = ! empty( get_user_meta( $user_id, 'first_name', true ) ) ? get_user_meta( $user_id, 'first_name', true ) : '';
-							$last_name       = ! empty( get_user_meta( $user_id, 'last_name', true ) ) ? get_user_meta( $user_id, 'last_name', true ) : '';
-							$display_name    = ! empty( $user_obj->data->display_name ) ? $user_obj->data->display_name : '';
-							$username        = $first_name . ' ' . $last_name;
-							$username        = ( ' ' !== $username ) ? $username : $display_name; 
-							$comment_content = $getallComment->comment_content;
-							$average_rating  = get_comment_meta( $commnet_id, 'average_ratings', true );
-							$average_rating  = (int) $average_rating;
-							$criteria        = get_comment_meta( $commnet_id, 'user_criteria_ratings', true );
-							$post_id         = ( int ) $getallComment->comment_post_ID;
-							?>
-							<li class="media mb-4 ersrvr_comment_id_<?php echo esc_attr( $commnet_id ); ?>">
-								<img src="<?php echo esc_url( site_url() ); ?>/wp-content/uploads/2021/08/pexels-jason-boyd-3423147-scaled.jpg" class="mr-3 rounded-circle" alt="user-photo">
-								<div class="media-body">
-									<div class="media-title">
-										<div id="full-stars-example-two" class="rating-group-wrapper">
-											<div class="rating-item d-flex flex-wrap align-items-center">
-												<div class="col-auto rating-group px-0">
-													<?php for ( $i = 1; $i <= 5; $i++ ) {
-															$filled_star_class = ( $average_rating >= $i ) ? 'fill_star_click' : '';
-														?>
-														<input class="rating__input <?php echo esc_attr( $filled_star_class ); ?>" name="rating3" id="rating3-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
-														<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="rating3-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-													<?php } ?>
-												</div>
-												<div class="col-auto"><label class="font-Poppins font-weight-semibold text-muted font-size-14"><?php esc_html_e( '( 5 of 5 )', 'easy-reservations-reviews' ); ?> </label></div>
-											</div>
-										</div>
-										<h5 class="mt-2 mb-1 font-popins font-size-16 font-weight-semibold">
-											<?php esc_html_e( $username, 'easy-reservations-reviews' ); ?>
-											<span class="text-muted font-lato font-weight-normal font-size-14">- <?php esc_html_e( $comment_date, 'easy-reservations-reviews' ); ?></span>
-											<?php if ( $user_id  == $current_user_id ) { ?>
-												<?php 
-												$edit_setting = get_option('ersrvr_enable_edit_reservation_reviews');?>
-												<?php if ( 'yes' === $edit_setting ) { ?>
-												<span class="text-muted font-lato font-weight-normal font-size-14">- <a href="#" class="ersrvr_edit_review" data-commentid="<?php echo esc_html( $commnet_id ); ?>" data-userid="<?php echo esc_html( $current_user_id ); ?>" data-postid="<?php echo esc_html( $post_id ); ?>" ><span class="fa fa-pencil-alt"></span></a></span>
-												<?php } ?>
-												<?php 
-												$delete_setting = get_option( 'ersrvr_enable_delete_reservation_reviews' );
-												?>
-												<?php if ( 'yes' === $delete_setting ) { ?>
-												<span class="text-muted font-lato font-weight-normal font-size-14">- <a href="#" class="ersrvr_delete_review" data-commentid="<?php echo esc_html( $commnet_id ); ?>" data-userid="<?php echo esc_html( $current_user_id ); ?>" data-postid="<?php echo esc_html( $post_id ); ?>" ><span class="fa fa-window-close"></span></a></span>
-												<?php } ?>
-											<?php } ?>
-										</h5>
-									</div>
-									<p class="font-lato font-size-14 font-weight-normal mb-0"><?php echo $comment_content;?></p>
-									<?php 
-									$attach_id = get_comment_meta( $commnet_id, 'attached_files', true );
-									$image_url   = ( ! empty( $attach_id ) ) ? wp_get_attachment_url( $attach_id ) : '';
-									if( ! empty( $image_url ) ) { ?>
-										<img src="<?php echo esc_url( $image_url ); ?>" class="ersrvr_attached_files">	
-									<?php }
-									?>
-								</div>
-							</li>
-						<?php } ?>
-						
+					<ul class="list-unstyled ml-0 ersrvr_comment_message_box_view">
+					<?php echo ersrvr_html_comment_message_box( $getallComments ); ?>
 					</ul>
 				</div>
 			<?php } ?>

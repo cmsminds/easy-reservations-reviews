@@ -421,9 +421,14 @@ class Easy_Reservations_Reviews_Public {
 		add_comment_meta( $comment_id, 'average_ratings', $avrage_ratings );
 		add_comment_meta( $comment_id, 'user_criteria_ratings', $new_array_of_criteria );
 		add_comment_meta( $comment_id, 'attached_files', $attach_id );
+		$getallComments = get_comments( array(
+			'post_id' => $post_id,
+		), );
+		$html           = ersrvr_html_comment_message_box( $getallComments );
 		$response = array(
 			'code'          => 'ersrvr_submit_reviews_success',
 			'toast_message' => __( 'Your Reviews Submitted.', 'easy-reservations-reviews' ),
+			'html'          => $html,
 		);
 		wp_send_json_success( $response );
 		wp_die();
