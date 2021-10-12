@@ -63,3 +63,10 @@
 .hide{
   display: none !important;
 }
+.sinlgle-review-items-wrapper .media-title a:not(:hover){
+  color: #a9a9a9;
+}
+.review-listing-wrapper .rating-group {
+  pointer-events: none;
+  cursor: default;
+}
