@@ -69,9 +69,14 @@ $getallComments                = get_comments( array(
 				<div class="rating-item d-flex flex-wrap align-items-center">
 					<div class="col-12 col-sm-12 rating-group px-0">
 					<?php for ( $i = 1; $i <= 5; $i++ ) {
-						$filled_star_class = ( $total_rating_star >= $i ) ? 'fill_star_click' : ''; ?>
-						<input class="rating__input" name="rating3" id="rating3-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
-						<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label <?php echo esc_attr( $filled_star_class ); ?>" for="rating3-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+
+						$filled_star_class = ( $total_rating_star >= $i ) ? 'fill_star_click' : ''; 
+						$filled_icons      = ( is_float( $total_rating_amount ) ) ? 'fa-star-half' : 'fa-star'; 
+						// debug( $filled_icons );
+						// die;
+						?>
+						<input class="rating__input <?php echo esc_attr( $filled_star_class ); ?>" name="rating3" id="rating<?php echo esc_attr( $i ); ?>-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
+						<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="rating<?php echo esc_attr( $i ); ?>-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
 					<?php } ?>
 				</div>
 				</div>
@@ -110,8 +115,8 @@ $getallComments                = get_comments( array(
 													<?php for ( $i = 1; $i <= 5; $i++ ) {
 															$filled_star_class = ( $average_rating >= $i ) ? 'fill_star_click' : '';
 														?>
-														<input class="rating__input" name="rating3" id="rating3-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
-														<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label <?php echo esc_attr( $filled_star_class ); ?>" for="rating3-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+														<input class="rating__input <?php echo esc_attr( $filled_star_class ); ?>" name="rating3" id="rating3-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
+														<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="rating3-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
 													<?php } ?>
 												</div>
 												<div class="col-auto"><label class="font-Poppins font-weight-semibold text-muted font-size-14"><?php esc_html_e( '( 5 of 5 )', 'easy-reservations-reviews' ); ?> </label></div>
@@ -121,7 +126,7 @@ $getallComments                = get_comments( array(
 											<?php esc_html_e( $username, 'easy-reservations-reviews' ); ?>
 											<span class="text-muted font-lato font-weight-normal font-size-14">- <?php esc_html_e( $comment_date, 'easy-reservations-reviews' ); ?></span>
 											<?php if ( $user_id  == $current_user_id ) { ?>
-												<span class="text-muted font-lato font-weight-normal font-size-14">- <a href="#" class="ersrvr_edit_review" data-commentid="<?php echo esc_html( $commnet_id ); ?>" data-userid="<?php echo esc_html( $current_user_id ); ?>" data-postid="<?php echo esc_html( $post_id ); ?>" ><?php esc_html_e( 'Edit', 'easy-reservations-reviews' ); ?></a></span>
+												<span class="text-muted font-lato font-weight-normal font-size-14">- <a href="#" class="ersrvr_edit_review" data-commentid="<?php echo esc_html( $commnet_id ); ?>" data-userid="<?php echo esc_html( $current_user_id ); ?>" data-postid="<?php echo esc_html( $post_id ); ?>" ><span class="fa fa-pencil"></span></a></span>
 											<?php } ?>
 										</h5>
 									</div>
