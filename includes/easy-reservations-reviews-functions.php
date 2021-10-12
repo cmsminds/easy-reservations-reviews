@@ -561,7 +561,7 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 			ob_start();
 			?>
 			<li class="media mb-4 ersrvr_comment_id_<?php echo esc_attr( $commnet_id ); ?>">
-				<img src="<?php echo esc_url( site_url() ); ?>/wp-content/uploads/2021/08/pexels-jason-boyd-3423147-scaled.jpg" class="mr-3 rounded-circle" alt="user-photo">
+				<img class="mr-3 rounded-circle" alt="user-photo" src="<?php echo esc_attr( site_url() ); ?>/wp-content/uploads/2021/08/pexels-jason-boyd-3423147-scaled.jpg" />
 				<div class="media-body">
 					<div class="media-title">
 						<div id="full-stars-example-two" class="rating-group-wrapper">
@@ -582,14 +582,11 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 							<?php esc_html_e( $username, 'easy-reservations-reviews' ); ?>
 							<span class="text-muted font-lato font-weight-normal font-size-14">- <?php esc_html_e( $comment_date, 'easy-reservations-reviews' ); ?></span>
 							<?php if ( $user_id  == $current_user_id ) { ?>
-							<?php 
-							$edit_setting = get_option('ersrvr_enable_edit_reservation_reviews');?>
+							<?php $edit_setting = get_option('ersrvr_enable_edit_reservation_reviews'); ?>
 							<?php if ( 'yes' === $edit_setting ) { ?>
 							<span class="text-muted font-lato font-weight-normal font-size-14">- <a href="#" class="ersrvr_edit_review" data-commentid="<?php echo esc_html( $commnet_id ); ?>" data-userid="<?php echo esc_html( $current_user_id ); ?>" data-postid="<?php echo esc_html( $post_id ); ?>" ><span class="fa fa-pencil-alt"></span></a></span>
 							<?php } ?>
-							<?php 
-							$delete_setting = get_option( 'ersrvr_enable_delete_reservation_reviews' );
-							?>
+							<?php $delete_setting = get_option( 'ersrvr_enable_delete_reservation_reviews' ); ?>
 							<?php if ( 'yes' === $delete_setting ) { ?>
 							<span class="text-muted font-lato font-weight-normal font-size-14">- <a href="#" class="ersrvr_delete_review" data-commentid="<?php echo esc_html( $commnet_id ); ?>" data-userid="<?php echo esc_html( $current_user_id ); ?>" data-postid="<?php echo esc_html( $post_id ); ?>" ><span class="fa fa-window-close"></span></a></span>
 							<?php } ?>
