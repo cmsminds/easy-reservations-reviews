@@ -576,7 +576,7 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 										<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="rating3-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
 									<?php } ?>
 								</div>
-								<div class="col-auto"><label class="font-Poppins font-weight-semibold text-muted font-size-14"><?php esc_html_e( '( 5 of 5 )', 'easy-reservations-reviews' ); ?> </label>
+								<div class="col-auto"><label class="font-Poppins font-weight-semibold text-muted font-size-14"><?php echo esc_html( '( 5 of 5 )' ); ?> </label>
 								</div>
 							</div>
 						</div>

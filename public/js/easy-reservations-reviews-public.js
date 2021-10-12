@@ -188,6 +188,7 @@ jQuery( document ).ready( function( $ ) {
 			},
 		} );
 	} );
+	// delete comments.
 	jQuery( document ).on( 'click', '.ersrvr_delete_review', function( evt ) {
 		evt.preventDefault();
 		var this_btn   = $( this );
@@ -198,12 +199,14 @@ jQuery( document ).ready( function( $ ) {
 			postid: postid,
 			action: 'ersrvr_delete_review_comment',
 		};
+		block_element( $('.ersrvr_comment_message_box_view') );
 		$.ajax( {
 			dataType: 'JSON',
 			url: ajaxurl,
 			type: 'POST',
 			data: data,
 			success: function ( response ) {
+				unblock_element( $('.ersrvr_comment_message_box_view') );
 				if( 'ersrvr_delete_comments_success' === response.data.code ) {
 					$( '.ersrvr_comment_id_' + comment_id  ).remove();
 					$( '.ersrvr_total_review_html' ).html( response.data.html );

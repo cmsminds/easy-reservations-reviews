@@ -426,7 +426,7 @@ class Easy_Reservations_Reviews_Public {
 				'post_id' => $post_id,
 			),
 		);
-		$html         = ersrvr_html_comment_message_box( $get_all_comments );
+		$html         = ersrvr_html_comment_message_box( $all_comments );
 		$response     = array(
 			'code'          => 'ersrvr_submit_reviews_success',
 			'toast_message' => __( 'Your Reviews Submitted.', 'easy-reservations-reviews' ),
