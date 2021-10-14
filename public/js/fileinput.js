@@ -298,9 +298,6 @@
         '<div class="input-group {class}">\n' +
         '   {caption}\n' +
         '   <div class="input-group-btn">\n' +
-        '       {remove}\n' +
-        '       {cancel}\n' +
-        '       {upload}\n' +
         '       {browse}\n' +
         '   </div>\n' +
         '</div>';
