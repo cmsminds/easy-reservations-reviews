@@ -177,12 +177,12 @@ jQuery( document ).ready( function( $ ) {
 				if( 'ersrvr_submit_reviews_success' === response.data.code ) {
 					// Show the toast now.
 					ersrvr_show_toast( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
-					$( '.ersrvr_comment_message_box_view' ).html( response.data.html );
-					$( '.ersrvr_total_review_html' ).html( response.data.total_review_html );
 					$( 'input[type="radio"]' ).removeClass( 'fill_star_click' );
 					$( '.file-preview' ).remove();
 					$( '.file-input .file-caption-name' ).text( '' );
 					$( '.ersrvr_comment_message_box_view' ).html( '' );
+					$( '.ersrvr_comment_message_box_view' ).html( response.data.html );
+					$( '.ersrvr_total_review_html' ).html( response.data.total_review_html );
 					$('#ersrvr_message').val( '' );
 				}
 			},
