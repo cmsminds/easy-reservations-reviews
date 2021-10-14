@@ -180,7 +180,7 @@ class Easy_Reservations_Reviews {
 		$this->loader->add_action( 'wp_ajax_nopriv_ersrvr_submit_reviews', $plugin_public, 'ersrvr_submit_reviews' );
 		$this->loader->add_action( 'wp_ajax_ersrvr_delete_review_comment', $plugin_public, 'ersrvr_delete_review_comment' );
 		$this->loader->add_action( 'wp_ajax_nopriv_ersrvr_delete_review_comment', $plugin_public, 'ersrvr_delete_review_comment' );
-		// $this->loader->add_action( 'wp_footer', $plugin_public, 'ersrvr_wp_footer_callback' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'ersrvr_wp_footer_callback' );
 	}
 
 	/**

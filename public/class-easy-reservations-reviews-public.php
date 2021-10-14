@@ -444,8 +444,10 @@ class Easy_Reservations_Reviews_Public {
 	 */
 	public function ersrvr_wp_footer_callback() {
 		global $post, $wp_query;
+			
 			// Include the notification html.
-			require_once ERSRVR_PLUGIN_PATH . 'public/templates/notifications/notification.php';
+			// require_once ERSRVR_PLUGIN_PATH . 'public/templates/notifications/notification.php';
+			require_once ERSRVR_PLUGIN_PATH . 'public/templates/modals/edit-review.php';
 	}
 	/**
 	 * Delete row of comments.

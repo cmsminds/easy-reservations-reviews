@@ -70,3 +70,17 @@
   pointer-events: none;
   cursor: default;
 }
+.ersrvr-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    padding-top: 80px;
+    padding-bottom: 80px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: #000;
+    background-color: rgba(0, 0, 0, .4);
+}

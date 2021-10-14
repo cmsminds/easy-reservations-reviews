@@ -200,6 +200,7 @@ jQuery( document ).ready( function( $ ) {
 			action: 'ersrvr_delete_review_comment',
 		};
 		block_element( $('.ersrvr_comment_message_box_view') );
+		// $('.ersrvr_comment_message_box_view').html( '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>' );
 		$.ajax( {
 			dataType: 'json',
 			url: ajaxurl,
