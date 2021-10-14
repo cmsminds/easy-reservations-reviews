@@ -48,14 +48,16 @@ $getallComments                = get_comments( array(
 				); ?>
 			</div>
 		<?php } ?>
-		<?php 
-		$file_path = plugin_dir_path( __DIR__ ) . 'review/review-comment-data.php';
-		// echo $file_path;
-		// die;
-		if ( file_exists( $file_path ) ) {
-			require_once $file_path;
-		}
-		?>
+		<div class="ersrvr_review-listing-container">
+			<?php 
+			$file_path = plugin_dir_path( __DIR__ ) . 'review/review-comment-data.php';
+			// echo $file_path;
+			// die;
+			if ( file_exists( $file_path ) ) {
+				require_once $file_path;
+			}
+			?>
+		</div>
 		<?php 
 		$file_path = plugin_dir_path( __DIR__ ) . 'review/review-form.php';
 		if ( file_exists( $file_path ) ) {

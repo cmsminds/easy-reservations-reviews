@@ -495,6 +495,7 @@ if ( ! function_exists( 'ersrvr_html_of_total_review' ) ) {
 	 * @since 1.0.0
 	 */
 	function ersrvr_html_of_total_review() {
+		ob_start();
 		$get_avrage_ratings = ersrvr_get_total_average_ratings();
 		if ( ! empty( $get_avrage_ratings ) && is_array( $get_avrage_ratings ) ) {
 			foreach ( $get_avrage_ratings as $get_avrage_rating ) {
@@ -505,7 +506,6 @@ if ( ! function_exists( 'ersrvr_html_of_total_review' ) ) {
 		$total_rating_sum    = ! empty( $avrage_ratings ) ? array_sum( $avrage_ratings ) : 0;
 		$total_rating_star   = (int) ( 0 !== $total_rating_sum ) ? round( $total_rating_sum / count( $avrage_ratings ) ) : 0;
 		$total_rating_amount = (int) ( 0 !== $total_rating_sum ) ? round( $total_rating_sum / count( $avrage_ratings ), 2 ) : 0;
-		ob_start();
 		?>
 		<div class="list-Of-Review-title">
 			<h2 class="font-popins font-size-24 font-weight-bold"><?php echo esc_html( $total_rating_amount ); ?> Reviews</h2>
@@ -540,6 +540,7 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 	 * @since 1.0.0
 	 */
 	function ersrvr_html_comment_message_box( $allcomments ) {
+		ob_start();
 		foreach ( $allcomments as $get_all_comment ) {
 			$commnet_id      = $get_all_comment->comment_ID;
 			$user_id         = (int) $get_all_comment->user_id;
@@ -558,8 +559,6 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 			$average_rating  = (int) $average_rating;
 			$criteria        = get_comment_meta( $commnet_id, 'user_criteria_ratings', true );
 			$post_id         = (int) $get_all_comment->comment_post_ID;
-			$html            = '';
-			ob_start();
 			?>
 			<li class="media mb-4 ersrvr_comment_id_<?php echo esc_attr( $commnet_id ); ?>">
 				<img class="mr-3 rounded-circle" alt="user-photo" src="<?php echo esc_attr( site_url() ); ?>/wp-content/uploads/2021/08/pexels-jason-boyd-3423147-scaled.jpg" />
@@ -609,7 +608,6 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 			</li>
 		<?php } ?>
 		<?php
-		$html .= ob_get_clean();
-		return $html;
+		return ob_get_clean();
 	}
 }

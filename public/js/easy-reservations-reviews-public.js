@@ -165,7 +165,7 @@ jQuery( document ).ready( function( $ ) {
 			data: fd,
 			contentType: false,
 			processData: false,
-			dataType: 'JSON',
+			dataType: 'json',
 			success: function ( response ) {
 				// Check for invalid ajax request.
 				if ( 0 === response ) {
@@ -177,14 +177,10 @@ jQuery( document ).ready( function( $ ) {
 				if( 'ersrvr_submit_reviews_success' === response.data.code ) {
 					// Show the toast now.
 					ersrvr_show_toast( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
+					$( '.ersrvr_comment_message_box_view' ).html( '' );
 					$( '.ersrvr_comment_message_box_view' ).html( response.data.html );
-					// setTimeout( function() {
-					// 	location.reload();;
-					// }, 800 );
-					
+					$( '.ersrvr_total_review_html' ).html( response.data.total_review_html );
 				}
-				
-
 			},
 		} );
 	} );
@@ -201,7 +197,7 @@ jQuery( document ).ready( function( $ ) {
 		};
 		block_element( $('.ersrvr_comment_message_box_view') );
 		$.ajax( {
-			dataType: 'JSON',
+			dataType: 'json',
 			url: ajaxurl,
 			type: 'POST',
 			data: data,
