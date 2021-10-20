@@ -26,10 +26,12 @@ $get_all_comments = get_comments(
 	?>
 	<?php if ( ! empty( $get_all_comments ) && is_array( $get_all_comments ) ) { ?>
 		<div class="dropdown-divider"></div>
-			<div class="sinlgle-review-items-wrapper">
-				<ul class="list-unstyled ml-0 ersrvr_comment_message_box_view">
-					<?php echo ersrvr_html_comment_message_box( $get_all_comments ); ?>
-				</ul>
-			</div>
 	<?php } ?>
+		<div class="sinlgle-review-items-wrapper">
+			<ul class="list-unstyled ml-0 ersrvr_comment_message_box_view">
+				<?php if ( ! empty( $get_all_comments ) && is_array( $get_all_comments ) ) { ?>
+					<?php echo ersrvr_html_comment_message_box( $get_all_comments ); ?>
+				<?php } ?>
+			</ul>
+		</div>
 </div>

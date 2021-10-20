@@ -66,3 +66,4 @@ $getallComments                = get_comments( array(
 		?>
 	</div>
 </div>
+ 

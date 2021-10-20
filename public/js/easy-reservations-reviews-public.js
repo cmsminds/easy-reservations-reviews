@@ -180,7 +180,8 @@ jQuery( document ).ready( function( $ ) {
 					$( 'input[type="radio"]' ).removeClass( 'fill_star_click' );
 					$( '.file-preview' ).remove();
 					$( '.file-input .file-caption-name' ).text( '' );
-					$( '.ersrvr_comment_message_box_view' ).html( '' );
+					$('.ersrvr_comment_message_box_view').before('<div class="dropdown-divider"></div>');
+					// $( '.ersrvr_comment_message_box_view' ).html( '' );
 					$( '.ersrvr_comment_message_box_view' ).html( response.data.html );
 					$( '.ersrvr_total_review_html' ).html( response.data.total_review_html );
 					$('#ersrvr_message').val( '' );
