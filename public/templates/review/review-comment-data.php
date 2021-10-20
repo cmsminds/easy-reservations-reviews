@@ -25,7 +25,7 @@ $get_all_comments = get_comments(
 	}
 	?>
 	<?php if ( ! empty( $get_all_comments ) && is_array( $get_all_comments ) ) { ?>
-		<div class="dropdown-divider"></div>
+		<div class="dropdown-divider divider_list_comments available"></div>
 	<?php } ?>
 		<div class="sinlgle-review-items-wrapper">
 			<ul class="list-unstyled ml-0 ersrvr_comment_message_box_view">

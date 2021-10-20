@@ -180,7 +180,9 @@ jQuery( document ).ready( function( $ ) {
 					$( 'input[type="radio"]' ).removeClass( 'fill_star_click' );
 					$( '.file-preview' ).remove();
 					$( '.file-input .file-caption-name' ).text( '' );
-					$('.ersrvr_comment_message_box_view').before('<div class="dropdown-divider"></div>');
+					if( ! $('.divider_list_comments').hasClass('available') ) {
+						$('.ersrvr_comment_message_box_view').before('<div class="dropdown-divider divider_list_comments available"></div>');
+					}
 					// $( '.ersrvr_comment_message_box_view' ).html( '' );
 					$( '.ersrvr_comment_message_box_view' ).html( response.data.html );
 					$( '.ersrvr_total_review_html' ).html( response.data.total_review_html );
