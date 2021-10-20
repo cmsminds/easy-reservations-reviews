@@ -134,8 +134,12 @@ class Easy_Reservations_Reviews_Admin {
 		if ( ! empty( $get_comment_id ) && isset( $get_comment_id ) ) {
 			$get_average_ratings       = get_comment_meta( $get_comment_id, 'average_ratings', true );
 			$get_user_criteria_ratings = get_comment_meta( $get_comment_id, 'user_criteria_ratings', true );
+			$attached_files            = get_comment_meta( $get_comment_id, 'attached_files', true );
 			add_meta_box( 'ersrvr_add_reviews_data', __( 'Reviews' ), 'ersrvr_add_reviews_data', 'comment', 'normal' );
-			add_meta_box( 'ersrvr_add_reviews_images', __( 'Review Images' ), 'ersrvr_add_reviews_images', 'comment', 'normal' );
+			if( ! empty( $attached_files ) ) {
+				add_meta_box( 'ersrvr_add_reviews_images', __( 'Review Images' ), 'ersrvr_add_reviews_images', 'comment', 'normal' );
+			}
+			
 		}
 		/**
 		 * Function to add output data.
@@ -237,9 +241,24 @@ class Easy_Reservations_Reviews_Admin {
 			<?php
 		}
 
-		function ersrvr_add_reviews_images(){
-			
-		}
+		function ersrvr_add_reviews_images(){ 
+			$get_comment_id            = filter_input( INPUT_GET, 'c', FILTER_SANITIZE_NUMBER_INT );
+			$attached_ids              = get_comment_meta( $get_comment_id, 'attached_files', true );
+			if ( ! empty( $attached_ids ) && is_array( $attached_ids ) ) { 
+				
+				?>
+				<div class="gallery-images ersrv_count_images_3">
+					<?php foreach ( $attached_ids as $attached_id ) { 
+						$image_url = ( ! empty( $attached_id ) ) ? wp_get_attachment_url( $attached_id ) : '';
+						?>
+						<div data-text="" class="gallery-image-item  ">
+							<img src="<?php echo esc_attr( $image_url ); ?>" alt="FILLING-MACHINE-CONTROLLERS.png">
+						</div>
+					<?php } ?>
+					
+				</div>
+			<?php } ?>
+		<?php }
 	}
 	/**
 	 * Function to return save comment hook.

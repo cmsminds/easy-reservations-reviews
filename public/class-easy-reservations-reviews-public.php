@@ -394,6 +394,9 @@ class Easy_Reservations_Reviews_Public {
 			'post_status'    => 'inherit',
 		);
 		$attach_id   = wp_insert_attachment( $attachment, $file_path );
+		$attach_id   = array( 
+			$attach_id,
+		);
 		$image_url   = wp_get_attachment_url( $attach_id );
 		foreach ( $all_criteria as $key => $criteria ) {
 			$closest_criteria  = $criteria->closest_criteria;

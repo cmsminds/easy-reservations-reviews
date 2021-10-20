@@ -325,7 +325,7 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 					<div class="upload-btn-wrapper">
 						<label class="control-label">Attachment(s) (Attach multiple files.)</label>
 						<span class="btn btn-block btn-file px-0">
-							<input id="actual-btn" name="ersrvr_actual_btn[]" type="file" class="file"  data-show-upload="true" data-show-caption="true" accept="<?php echo esc_attr( implode( ',', ersrvr_get_review_file_allowed_file_types() ) ); ?>" >
+							<input id="actual-btn" name="ersrvr_actual_btn[]" type="file" class="file"  data-show-upload="true" data-show-caption="true" accept="<?php echo esc_attr( implode( ',', ersrvr_get_review_file_allowed_file_types() ) ); ?>" multiple >
 						</span>
 					</div>
 				</div>
@@ -598,12 +598,15 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 					</div>
 					<p class="font-lato font-size-14 font-weight-normal mb-0"><?php echo esc_html( $comment_content ); ?></p>
 					<?php
-					$attach_id = get_comment_meta( $commnet_id, 'attached_files', true );
-					$image_url = ( ! empty( $attach_id ) ) ? wp_get_attachment_url( $attach_id ) : '';
-					if ( ! empty( $image_url ) ) {
-						?>
-						<img src="<?php echo esc_url( $image_url ); ?>" class="ersrvr_attached_files">	
-					<?php } ?>
+					$attach_ids = get_comment_meta( $commnet_id, 'attached_files', true );
+					foreach ( $attach_ids as $attach_id ) {
+						$image_url = ( ! empty( $attach_id ) ) ? wp_get_attachment_url( $attach_id ) : '';
+						if ( ! empty( $image_url ) ) {
+							?>
+							<img src="<?php echo esc_url( $image_url ); ?>" class="ersrvr_attached_files">	
+						<?php } 
+					} ?>
+					
 				</div>
 			</li>
 		<?php } ?>
