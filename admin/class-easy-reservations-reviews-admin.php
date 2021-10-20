@@ -135,6 +135,7 @@ class Easy_Reservations_Reviews_Admin {
 			$get_average_ratings       = get_comment_meta( $get_comment_id, 'average_ratings', true );
 			$get_user_criteria_ratings = get_comment_meta( $get_comment_id, 'user_criteria_ratings', true );
 			add_meta_box( 'ersrvr_add_reviews_data', __( 'Reviews' ), 'ersrvr_add_reviews_data', 'comment', 'normal' );
+			add_meta_box( 'ersrvr_add_reviews_images', __( 'Review Images' ), 'ersrvr_add_reviews_images', 'comment', 'normal' );
 		}
 		/**
 		 * Function to add output data.
@@ -234,6 +235,10 @@ class Easy_Reservations_Reviews_Admin {
 				<label aria-label="5 stars" class="rating__label" for="rating3-5"><span class="rating__icon rating__icon--star fa fa-star"></span></label> -->
 			</div>
 			<?php
+		}
+
+		function ersrvr_add_reviews_images(){
+			
 		}
 	}
 	/**
