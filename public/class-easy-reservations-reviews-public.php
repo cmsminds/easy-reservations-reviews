@@ -373,30 +373,37 @@ class Easy_Reservations_Reviews_Public {
 				'rating'           => $rating,
 			);
 		}
-		// Upload the file now.
-		$review_file_name      = isset( $_FILES['files']['name'] ) ? $_FILES['files']['name'] : '';
-		$review_file_file_temp = isset( $_FILES['files']['tmp_name'] ) ? $_FILES['files']['tmp_name'] : '';
-		$file_data             = $wp_filesystem->get_contents( $review_file_file_temp );
-		$filename              = basename( $review_file_name );
-		$upload_dir            = wp_upload_dir();
-		$file_path             = ( ! empty( $upload_dir['path'] ) ) ? $upload_dir['path'] . '/' . $filename : $upload_dir['basedir'] . '/' . $filename;
-		$wp_filesystem->put_contents(
-			$file_path,
-			$file_data,
-		);
+		$names     = $_FILES['files']['name'];
+		$tmp_names = $_FILES['files']['tmp_name'];
+		$types     = $_FILES['files']['type'];
+		$sizes     = $_FILES['files']['size'];
+		$errors    = $_FILES['files']['error'];
+		foreach ( $names as $key => $name ) {
+			$tempname         = $tmp_names[$key];
+			$type             = $types[$key];
+			$review_file_name = isset( $name ) ? $name : '';
+			$review_file_temp = isset( $tempname ) ? $tempname : '';
+			$file_data        = $wp_filesystem->get_contents( $review_file_temp );
+			$filename         = basename( $review_file_name );
+			$upload_dir       = wp_upload_dir();
+			$file_path        = ( ! empty( $upload_dir['path'] ) ) ? $upload_dir['path'] . '/' . $filename : $upload_dir['basedir'] . '/' . $filename;
+			$wp_filesystem->put_contents(
+				$file_path,
+				$file_data,
+			);
 
-		// Upload it as WP attachment.
-		$wp_filetype = wp_check_filetype( $filename, null );
-		$attachment  = array(
-			'post_mime_type' => $wp_filetype['type'],
-			'post_title'     => sanitize_file_name( $filename ),
-			'post_content'   => '',
-			'post_status'    => 'inherit',
-		);
-		$attach_id   = wp_insert_attachment( $attachment, $file_path );
-		$attach_id   = array( 
-			$attach_id,
-		);
+			// Upload it as WP attachment.
+			$wp_filetype = wp_check_filetype( $filename, null );
+			$attachment  = array(
+				'post_mime_type' => $type,
+				'post_title'     => sanitize_file_name( $filename ),
+				'post_content'   => '',
+				'post_status'    => 'inherit',
+			);
+			$attach_ids[]   = wp_insert_attachment( $attachment, $file_path );
+		}
+		// debug( $attachment );
+		// die;
 		$image_url   = wp_get_attachment_url( $attach_id );
 		foreach ( $all_criteria as $key => $criteria ) {
 			$closest_criteria  = $criteria->closest_criteria;
@@ -423,7 +430,7 @@ class Easy_Reservations_Reviews_Public {
 		$comment_id     = wp_insert_comment( $comment_data );
 		add_comment_meta( $comment_id, 'average_ratings', $avrage_ratings );
 		add_comment_meta( $comment_id, 'user_criteria_ratings', $new_array_of_criteria );
-		add_comment_meta( $comment_id, 'attached_files', $attach_id );
+		add_comment_meta( $comment_id, 'attached_files', $attach_ids );
 		$all_comments      = get_comments(
 			array(
 				'post_id' => $post_id,

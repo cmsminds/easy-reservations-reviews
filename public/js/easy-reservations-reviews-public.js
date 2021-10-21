@@ -17,6 +17,7 @@ jQuery( document ).ready( function( $ ) {
 	var review_file_invalid_file_error         = ERSRVR_Reviews_Public_Script_Vars.review_file_invalid_file_error;
 	var user_criteria_ratings = [];
 	var file_array = [];
+	var new_file_array = [];
 	// console.log('useremail', user_email);
 	jQuery(document).on( 'mouseout', '.rating__label', function( evt ) {
 		// evt.preventDefault();
@@ -81,25 +82,43 @@ jQuery( document ).ready( function( $ ) {
 		var file_name = evt.target.files[0].name;
 		var ext  = file.split( '.' ).pop();
 		ext      = '.' + ext;
-		file_array.push( {
-			'files': evt.target.files[0],
-		});
+		$( this ).each(function() {
+            file_array.push( {
+				'files': evt.target.files,
+			});
+        });
+
+		// if( file_array.length > 0 ) {
+		// 	$.each(file_array[0]['files'] , function(index, val) { 
+		// 		var oFReader                = new FileReader();
+		// 		oFReader.readAsDataURL( val );
+		// 		JSON.stringify( new_file_array.push( val ) );
+		// 	});	
+		// 	// var new_file_json = JSON.stringify( new_file_array );
+		// 	console.log( new_file_array  );
+		// 	return false;
+		// 	fd.append( 'files',new_file_array );		  
+			
+		// }
+		
+		// console.log( file_array );
+		// return false;
 		// this.files[0].name
 		
-		$('.ersrvr_file_chosen').text(file_name);
+		// $('.ersrvr_file_chosen').text(file_name);
 
-		// Check if this extension is among the extensions allowed.
-		if ( 0 < review_file_allowed_extensions.length && -1 === $.inArray( ext, review_file_allowed_extensions ) ) {
-			ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, review_file_invalid_file_error );
-			// $( '.file-preview' ).remove();
-			// $( '.fileinput-remove' ).remove();
-			// $( '.fileinput-upload' ).remove();
-			// $( '.file-input .file-caption-name' ).text('');
-			// Reset the file input type.
-			$('input[name="ersrvr_actual_btn"]').val('');
-			$('.ersrvr_file_chosen').text('No file chosen');
-			return false;
-		}
+		// // Check if this extension is among the extensions allowed.
+		// if ( 0 < review_file_allowed_extensions.length && -1 === $.inArray( ext, review_file_allowed_extensions ) ) {
+		// 	ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, review_file_invalid_file_error );
+		// 	// $( '.file-preview' ).remove();
+		// 	// $( '.fileinput-remove' ).remove();
+		// 	// $( '.fileinput-upload' ).remove();
+		// 	// $( '.file-input .file-caption-name' ).text('');
+		// 	// Reset the file input type.
+		// 	$('input[name="ersrvr_actual_btn"]').val('');
+		// 	$('.ersrvr_file_chosen').text('No file chosen');
+		// 	return false;
+		// }
 	} );
 
 	
@@ -114,10 +133,7 @@ jQuery( document ).ready( function( $ ) {
 		var username                = $( '#ersrvr_name'  ).val();
 		var phone                   = $( '#ersrvr_phone' ).val();
 		var review_message          = $( '#ersrvr_message' ).val();
-		if( file_array.length > 0 ) {
-			var oFReader                = new FileReader();
-			oFReader.readAsDataURL( file_array[0]['files'] );
-		}
+		
 		// console.log( given_rating_star_array );
 		// Prepare the form data.
 		var fd                      = new FormData();
@@ -143,9 +159,27 @@ jQuery( document ).ready( function( $ ) {
 			return false;
 		}
 		if( file_array.length > 0 ) {
-			fd.append( 'files',file_array[0]['files'] );
+			
 		}
-		
+		var new_file_array = [];
+		if( file_array.length > 0 ) {
+			$.each(file_array[0]['files'] , function(index, val) { 
+				var oFReader                = new FileReader();
+				oFReader.readAsDataURL( val );
+				new_file_array.push( val  );
+			});
+			for (var i = 0; i < file_array[0]['files'].length; i++) {
+				fd.append('files[]', file_array[0]['files'][i]);
+			}
+			
+			
+			// var new_file_json = JSON.stringify( new_file_array );
+			// console.log( JSON.stringify( new_file_array, null , 4 ) );
+			// return false;
+			// fd.append( 'files',JSON.stringify( new_file_array ) );
+			
+		}
+
 		// return false;
 		var given_user_criteria_ratings = JSON.stringify( user_criteria_ratings );
 		console.log( user_criteria_ratings );
@@ -158,6 +192,8 @@ jQuery( document ).ready( function( $ ) {
 		fd.append( 'phone', phone );
 		fd.append( 'review_message', review_message );
 		this_button.html( '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>' );
+		// console.log( fd );
+		// return false;
 		block_element( this_button );
 		$.ajax( {
 			type: 'POST',
