@@ -177,7 +177,8 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 					'data-imageid'  => array(),
 				),
 				'span'     => array(
-					'class' => array(),
+					'class'     => array(),
+					'data-cost' => array(),
 				),
 				'p'        => array(
 					'class' => array(),
@@ -249,6 +250,21 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 				),
 				'li'       => array(
 					'class' => array(),
+				),
+				'table'    => array(
+					'class' =>  array(),
+				),
+				'tbody'    => array(
+					'class' =>  array(),
+				),
+				'th'       => array(
+					'class' =>  array(),
+				),
+				'td'       => array(
+					'class' =>  array(),
+				),
+				'tr'       => array(
+					'class' =>  array(),
 				),
 			),
 		);
@@ -582,7 +598,49 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 										<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="rating3-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
 									<?php } ?>
 								</div>
-								<div class="col-auto"><label class="font-Poppins font-weight-semibold text-muted font-size-14"><?php echo esc_html( '( 5 of 5 )' ); ?> </label>
+								<div class="ersrvr-reservation-details-item-summary" id="ersrvr-split-reservation-cost-content">
+									<div class="ersrvr-reservation-details-item-summary-wrapper p-3">
+										<table class="table table-borderless">
+											<tbody>
+												<?php $k = 1; ?>
+												<?php $rating_by_criteria = array(); ?>
+												<?php 
+												foreach( $criteria as $criteria_data ) {
+													$rating_by_criteria[] = array(
+														$criteria_data['closest_criteria'] => $criteria_data['rating'],
+													);
+													$final_ratings_array  = array();
+													foreach ( $rating_by_criteria as $key => $formatted_data ) {
+														foreach ( $formatted_data as $key => $value ) {
+															$final_ratings_array[ $key ] = $value;
+														}
+													}
+												} 
+												foreach ( $final_ratings_array as $criteria_key => $criteria_rating ) {
+													$criteria_rating = (int) $criteria_rating;
+													$criteria_name   = ucfirst( $criteria_key );
+													$criteria_name   = str_replace( '-', ' ', $criteria_name );
+													$criteria_slug   = $criteria_key;
+													?>
+													<tr class="<?php echo esc_html( $criteria_name ); ?>">
+														<th><?php echo esc_html( $criteria_name ); ?></th>
+														<td>
+															<div class="col-8 col-sm-9 rating-group" id="<?php echo esc_attr( $criteria_slug ); ?>" data-criteria="<?php echo esc_attr( $criteria_name ); ?>">
+																<?php for ( $i = 1; $i <= 5; $i++ ) { ?>
+																	<?php $filled_star_class = ( $criteria_rating >= $i ) ? 'fill_star_click' : ''; ?>
+																	<input class="rating__input <?php echo esc_attr( $filled_star_class ); ?>" name="rating3" id="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
+																	<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+																<?php } ?>
+															</div>
+														</td>
+													</tr>
+													<?php $k++; ?>
+												<?php } ?>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="col-auto"><label class="font-Poppins font-weight-semibold text-muted font-size-14"><?php echo esc_html( '( '. $average_rating .' of 5 )' ); ?> </label>
 								</div>
 							</div>
 						</div>

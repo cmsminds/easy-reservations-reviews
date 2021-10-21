@@ -172,7 +172,8 @@ class Easy_Reservations_Reviews_Public {
 					'data-imageid'  => array(),
 				),
 				'span'     => array(
-					'class' => array(),
+					'class'     => array(),
+					'data-cost' => array(),
 				),
 				'p'        => array(
 					'class' => array(),
@@ -245,6 +246,21 @@ class Easy_Reservations_Reviews_Public {
 				'li'       => array(
 					'class' => array(),
 				),
+				'table'    => array(
+					'class' =>  array(),
+				),
+				'tbody'    => array(
+					'class' =>  array(),
+				),
+				'th'       => array(
+					'class' =>  array(),
+				),
+				'td'       => array(
+					'class' =>  array(),
+				),
+				'tr'       => array(
+					'class' =>  array(),
+				),
 			),
 		);
 		return ob_get_clean();
@@ -276,7 +292,8 @@ class Easy_Reservations_Reviews_Public {
 						'data-imageid'  => array(),
 					),
 					'span'     => array(
-						'class' => array(),
+						'class'     => array(),
+						'data-cost' => array(),
 					),
 					'p'        => array(
 						'class' => array(),
@@ -350,6 +367,21 @@ class Easy_Reservations_Reviews_Public {
 					),
 					'li'       => array(
 						'class' => array(),
+					),
+					'table'    => array(
+						'class' =>  array(),
+					),
+					'tbody'    => array(
+						'class' =>  array(),
+					),
+					'th'       => array(
+						'class' =>  array(),
+					),
+					'td'       => array(
+						'class' =>  array(),
+					),
+					'tr'       => array(
+						'class' =>  array(),
 					),
 				),
 			);
