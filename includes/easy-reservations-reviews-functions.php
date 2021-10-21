@@ -600,7 +600,7 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 								</div>
 								<?php if ( ! empty( $criteria ) && is_array( $criteria ) ) { ?>
 									<div class="ersrvr-reservation-reviews-details" id="ersrvr-reservation-reviews-details-id">
-										<div class="ersrvr-reservation-details-item-summary-wrapper p-3">
+										<div class="ersrvr-reservation-reviews-details-summary-wrapper p-3">
 											<table class="table table-borderless">
 												<tbody>
 													<?php $k = 1; ?>
