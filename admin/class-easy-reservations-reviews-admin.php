@@ -269,7 +269,7 @@ class Easy_Reservations_Reviews_Admin {
 							?>
 							<div data-text="<?php echo esc_html( $last_gallery_image_custom_text ); ?>" class="gallery-image-item <?php echo esc_attr( "{$last_gallery_image_custom_class} {$display_none_image_class}" ); ?>">
 								<img src="<?php echo esc_url( $image_url ); ?>" class="ersrvr_attached_files" />
-								<a href="javascript:void(0)" class="delete-link">
+								<a href="javascript:void(0)" class="delete-link ersrvr_delete_image">
 									<span class="icon">
 										<span class="dashicons dashicons-dismiss"></span>
 									</span>
