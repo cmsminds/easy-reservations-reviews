@@ -604,9 +604,10 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 						if ( ! empty( $image_url ) ) {
 							?>
 							<img src="<?php echo esc_url( $image_url ); ?>" class="ersrvr_attached_files">	
-						<?php } 
-					} ?>
-					
+							<?php
+						}
+					}
+					?>
 				</div>
 			</li>
 		<?php } ?>

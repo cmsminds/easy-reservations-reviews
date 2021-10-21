@@ -373,14 +373,14 @@ class Easy_Reservations_Reviews_Public {
 				'rating'           => $rating,
 			);
 		}
-		$names     = $_FILES['files']['name'];
-		$tmp_names = $_FILES['files']['tmp_name'];
-		$types     = $_FILES['files']['type'];
-		$sizes     = $_FILES['files']['size'];
-		$errors    = $_FILES['files']['error'];
+		$names     = isset( $_FILES['files']['name'] ) ? $_FILES['files']['name'] : array();
+		$tmp_names = isset( $_FILES['files']['tmp_name'] ) ? $_FILES['files']['tmp_name'] : array();
+		$types     = isset( $_FILES['files']['type'] ) ? $_FILES['files']['type'] : array();
+		$sizes     = isset( $_FILES['files']['size'] ) ? $_FILES['files']['size'] : array();
+		$errors    = isset( $_FILES['files']['error'] ) ? $_FILES['files']['error'] : array();
 		foreach ( $names as $key => $name ) {
-			$tempname         = $tmp_names[$key];
-			$type             = $types[$key];
+			$tempname         = $tmp_names[ $key ];
+			$type             = $types[ $key ];
 			$review_file_name = isset( $name ) ? $name : '';
 			$review_file_temp = isset( $tempname ) ? $tempname : '';
 			$file_data        = $wp_filesystem->get_contents( $review_file_temp );
@@ -393,18 +393,16 @@ class Easy_Reservations_Reviews_Public {
 			);
 
 			// Upload it as WP attachment.
-			$wp_filetype = wp_check_filetype( $filename, null );
-			$attachment  = array(
+			$wp_filetype  = wp_check_filetype( $filename, null );
+			$attachment   = array(
 				'post_mime_type' => $type,
 				'post_title'     => sanitize_file_name( $filename ),
 				'post_content'   => '',
 				'post_status'    => 'inherit',
 			);
-			$attach_ids[]   = wp_insert_attachment( $attachment, $file_path );
+			$attach_ids[] = wp_insert_attachment( $attachment, $file_path );
 		}
-		// debug( $attachment );
-		// die;
-		$image_url   = wp_get_attachment_url( $attach_id );
+		$image_url = wp_get_attachment_url( $attach_id );
 		foreach ( $all_criteria as $key => $criteria ) {
 			$closest_criteria  = $criteria->closest_criteria;
 			$rating            = $criteria->rating;
@@ -454,9 +452,6 @@ class Easy_Reservations_Reviews_Public {
 	 */
 	public function ersrvr_wp_footer_callback() {
 		global $post, $wp_query;
-			
-			// Include the notification html.
-			// require_once ERSRVR_PLUGIN_PATH . 'public/templates/notifications/notification.php';
 			require_once ERSRVR_PLUGIN_PATH . 'public/templates/modals/edit-review.php';
 	}
 	/**
