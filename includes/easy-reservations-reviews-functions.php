@@ -252,19 +252,19 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 					'class' => array(),
 				),
 				'table'    => array(
-					'class' =>  array(),
+					'class' => array(),
 				),
 				'tbody'    => array(
-					'class' =>  array(),
+					'class' => array(),
 				),
 				'th'       => array(
-					'class' =>  array(),
+					'class' => array(),
 				),
 				'td'       => array(
-					'class' =>  array(),
+					'class' => array(),
 				),
 				'tr'       => array(
-					'class' =>  array(),
+					'class' => array(),
 				),
 			),
 		);
@@ -604,8 +604,6 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 								<?php if ( ! empty( $criteria ) && is_array( $criteria ) ) { ?>
 									</a>
 								<?php } ?>
-							
-								
 								<?php if ( ! empty( $criteria ) && is_array( $criteria ) ) { ?>
 									<div class="ersrvr-reservation-reviews-details" id="ersrvr-reservation-reviews-details-id">
 										<div class="ersrvr-reservation-reviews-details-summary-wrapper p-3">
@@ -613,8 +611,8 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 												<tbody>
 													<?php $k = 1; ?>
 													<?php $rating_by_criteria = array(); ?>
-													<?php 
-													foreach( $criteria as $criteria_data ) {
+													<?php
+													foreach ( $criteria as $criteria_data ) {
 														$rating_by_criteria[] = array(
 															$criteria_data['closest_criteria'] => $criteria_data['rating'],
 														);
@@ -624,7 +622,7 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 																$final_ratings_array[ $key ] = $value;
 															}
 														}
-													} 
+													}
 													foreach ( $final_ratings_array as $criteria_key => $criteria_rating ) {
 														$criteria_rating = (int) $criteria_rating;
 														$criteria_name   = ucfirst( $criteria_key );
@@ -650,7 +648,7 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 										</div>
 									</div>
 								<?php } ?>
-								<div class="col-auto"><label class="font-Poppins font-weight-semibold text-muted font-size-14"><?php echo esc_html( '( '. $average_rating .' of 5 )' ); ?> </label>
+								<div class="col-auto"><label class="font-Poppins font-weight-semibold text-muted font-size-14"><?php echo esc_html( sprintf( __( '%1$s  of 5', 'easy-reservations-reviews' ), $average_rating ) ); ?> </label>
 								</div>
 							</div>
 						</div>
@@ -673,30 +671,26 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 					</div>
 					<p class="font-lato font-size-14 font-weight-normal mb-3"><?php echo esc_html( $comment_content ); ?></p>
 					<?php
-					$attached_ids   = get_comment_meta( $commnet_id, 'attached_files', true );
+					$attached_ids = get_comment_meta( $commnet_id, 'attached_files', true );
 					if ( ! empty( $attached_ids ) && is_array( $attached_ids ) ) {
 						?>
 						<div class="gallery-images ersrvr_count_images_3">
-							<?php 
+							<?php
 							foreach ( $attached_ids as $index => $attach_id ) {
 								$gallery_images_last_index = count( $attached_ids ) - 1;
-								$image_url = ( ! empty( $attach_id ) ) ? wp_get_attachment_url( $attach_id ) : '';
+								$image_url                 = ( ! empty( $attach_id ) ) ? wp_get_attachment_url( $attach_id ) : '';
 								/**
 								* Last image custom class.
 								* And, this should work only when the images are more than 5.
 								*/
 								$last_gallery_image_custom_class = '';
 								$last_gallery_image_custom_text  = '';
-								
 								if ( 6 < count( $attached_ids ) && 5 === $index ) {
-									
 									$last_gallery_image_custom_class = 'ersrvr_gallery-last-image-overlay';
 									$last_gallery_image_custom_text  = sprintf( __( '+%1$d images', 'easy-reservations-reviews' ), ( count( $attached_ids ) - 6 ) );
 								}
 								// Hide the images after 6 images.
 								$display_none_image_class = ( 5 < $index ) ? 'd-none' : '';
-								// debug( $last_gallery_image_custom_text );
-								// die;
 								if ( ! empty( $image_url ) ) {
 									?>
 									<div data-text="<?php echo esc_html( $last_gallery_image_custom_text ); ?>" class="ersrvr-gallery-image-item gallery-image-item <?php echo esc_attr( "{$last_gallery_image_custom_class} {$display_none_image_class}" ); ?>" data-imageid="<?php echo esc_attr( $attach_id ); ?>">

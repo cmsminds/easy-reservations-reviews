@@ -248,10 +248,10 @@ class Easy_Reservations_Reviews_Admin {
 			if ( ! empty( $attached_ids ) && is_array( $attached_ids ) ) {
 				?>
 				<div class="gallery-images ersrvr_count_images_3">
-					<?php 
+					<?php
 					foreach ( $attached_ids as $index => $attach_id ) {
 						$gallery_images_last_index = count( $attached_ids ) - 1;
-						$image_url = ( ! empty( $attach_id ) ) ? wp_get_attachment_url( $attach_id ) : '';
+						$image_url                 = ( ! empty( $attach_id ) ) ? wp_get_attachment_url( $attach_id ) : '';
 						/**
 						* Last image custom class.
 						* And, this should work only when the images are more than 5.
@@ -264,7 +264,6 @@ class Easy_Reservations_Reviews_Admin {
 						}
 						// Hide the images after 6 images.
 						$display_none_image_class = ( 5 < $index ) ? 'd-none' : '';
-						
 						if ( ! empty( $image_url ) ) {
 							?>
 							<div data-text="<?php echo esc_html( $last_gallery_image_custom_text ); ?>" class="ersrvr-gallery-image-item <?php echo esc_attr( "{$last_gallery_image_custom_class} {$display_none_image_class}" ); ?>" data-imageid="<?php echo esc_attr( $attach_id ); ?>">

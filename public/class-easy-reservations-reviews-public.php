@@ -83,14 +83,6 @@ class Easy_Reservations_Reviews_Public {
 			filemtime( ERSRVR_PLUGIN_PATH . 'public/js/easy-reservations-reviews-public.js' ),
 			true
 		);
-		// Include the lightbox jquery.
-		// wp_enqueue_script(
-		// 	$this->plugin_name . '-lightbox',
-		// 	ERSRVR_PLUGIN_URL . 'public/js/lightbox/lightbox.js',
-		// 	array( 'jquery' ),
-		// 	filemtime( ERSRVR_PLUGIN_PATH . 'public/js/lightbox/lightbox.js' ),
-		// 	true
-		// );
 		wp_enqueue_script(
 			$this->plugin_name . '-fileinput',
 			ERSRVR_PLUGIN_URL . 'public/js/fileinput.js',
@@ -247,19 +239,19 @@ class Easy_Reservations_Reviews_Public {
 					'class' => array(),
 				),
 				'table'    => array(
-					'class' =>  array(),
+					'class' => array(),
 				),
 				'tbody'    => array(
-					'class' =>  array(),
+					'class' => array(),
 				),
 				'th'       => array(
-					'class' =>  array(),
+					'class' => array(),
 				),
 				'td'       => array(
-					'class' =>  array(),
+					'class' => array(),
 				),
 				'tr'       => array(
-					'class' =>  array(),
+					'class' => array(),
 				),
 			),
 		);
@@ -369,19 +361,19 @@ class Easy_Reservations_Reviews_Public {
 						'class' => array(),
 					),
 					'table'    => array(
-						'class' =>  array(),
+						'class' => array(),
 					),
 					'tbody'    => array(
-						'class' =>  array(),
+						'class' => array(),
 					),
 					'th'       => array(
-						'class' =>  array(),
+						'class' => array(),
 					),
 					'td'       => array(
-						'class' =>  array(),
+						'class' => array(),
 					),
 					'tr'       => array(
-						'class' =>  array(),
+						'class' => array(),
 					),
 				),
 			);
