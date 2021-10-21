@@ -589,6 +589,9 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 					<div class="media-title">
 						<div id="full-stars-example-two" class="rating-group-wrapper">
 							<div class="rating-item d-flex flex-wrap align-items-center">
+							<?php if ( ! empty( $criteria ) && is_array( $criteria ) ) { ?>
+								<a class="text-decoration-none ersrvr-review-details-popup" href="javascript:void(0);">
+							<?php } ?>
 								<div class="col-auto rating-group px-0">
 									<?php for ( $i = 1; $i <= 5; $i++ ) { ?>
 										<?php
@@ -598,6 +601,11 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 										<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="rating3-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
 									<?php } ?>
 								</div>
+								<?php if ( ! empty( $criteria ) && is_array( $criteria ) ) { ?>
+									</a>
+								<?php } ?>
+							
+								
 								<?php if ( ! empty( $criteria ) && is_array( $criteria ) ) { ?>
 									<div class="ersrvr-reservation-reviews-details" id="ersrvr-reservation-reviews-details-id">
 										<div class="ersrvr-reservation-reviews-details-summary-wrapper p-3">

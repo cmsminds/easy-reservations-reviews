@@ -258,6 +258,32 @@ jQuery( document ).ready( function( $ ) {
 			},
 		} );
 	} );
+
+	/**
+	 * Show/hide the reservation splitted cost.
+	 */
+	 $( document ).on( 'click', '.ersrvr-review-details-popup', function( evt ) {
+		evt.preventDefault();
+		var this_anchor = $( this );
+		$( '#ersrvr-reservation-reviews-details-id' ).toggleClass( 'show' );
+
+		// Check if the click is from modal.
+		if ( ! this_anchor.hasClass( 'is-modal' ) ) {
+			// Add a body class if the summary is visible.
+			$( 'body' ).removeClass( 'ersrvr-reservation-reviews-details-active' );
+			if ( $( '#ersrvr-reservation-reviews-details-id' ).hasClass( 'show' ) ) {
+				$( 'body' ).addClass( 'ersrvr-reservation-reviews-details-active' );
+			}
+		}
+	} );
+	// /**
+	//  * Show/hide the reservation splitted cost.
+	//  */
+	//  $( document ).on( 'mouseout', '.ersrvr-review-details-popup', function( evt ) {
+	// 	evt.preventDefault();
+	// 	var this_anchor = $( this );
+	// 	$( '#ersrvr-reservation-reviews-details-id' ).removeClass( 'show' );
+	// } );
 	/**
 	 * Check if a string is valid.
 	 *
