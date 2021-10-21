@@ -189,3 +189,12 @@
       opacity: 1;
   }
 }
+/*  */
+/*  */
+.sinlgle-review-items-wrapper .media .media-body .media-title .rating-item {
+  position: relative;
+}
+
+.ersrvr-reservation-reviews-details table td{
+  text-align: left !important;
+}
