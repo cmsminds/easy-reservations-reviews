@@ -41,6 +41,7 @@
     object-fit: cover;
     object-position: center;
     /* border-radius: 8px; */
+    cursor: pointer;
 }
 
 .gallery-images>.ersrvr-gallery-image-item:nth-child(1) {

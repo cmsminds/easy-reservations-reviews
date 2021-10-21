@@ -148,6 +148,24 @@
 .ship-reviews .gallery-images>.ersrvr-gallery-image-item:nth-child(6) {
   grid-area: six-see-all;
 }
+.ship-reviews .gallery-images>.ersrvr-gallery-image-item:nth-child(6)::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 9;
+  width: 100%;
+  cursor: pointer;
+  height: 100%;
+  background-color: rgba(72, 72, 72, 0.5);
+  font-size: 1.2rem;
+  color: #fff;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
 @media(max-width:991px) {
   .ship-reviews .gallery-images {
       grid-template-columns: repeat(2, 1fr);
