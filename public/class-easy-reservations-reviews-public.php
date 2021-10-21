@@ -156,6 +156,12 @@ class Easy_Reservations_Reviews_Public {
 					'role'          => array(),
 					'data-criteria' => array(),
 					'style'         => array(),
+					'aria-valuenow' => array(),
+					'aria-valuemin' => array(),
+					'aria-valuemax' => array(),
+					'tabindex'      => array(),
+					'data-text'     => array(),
+					'data-imageid'  => array(),
 				),
 				'span'     => array(
 					'class' => array(),
@@ -258,6 +264,8 @@ class Easy_Reservations_Reviews_Public {
 						'aria-valuemin' => array(),
 						'aria-valuemax' => array(),
 						'tabindex'      => array(),
+						'data-text'     => array(),
+						'data-imageid'  => array(),
 					),
 					'span'     => array(
 						'class' => array(),
