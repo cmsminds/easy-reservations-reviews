@@ -599,7 +599,7 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 									<?php } ?>
 								</div>
 								<?php if ( ! empty( $criteria ) && is_array( $criteria ) ) { ?>
-									<div class="ersrvr-reservation-details-item-summary" id="ersrvr-split-reservation-cost-content">
+									<div class="ersrvr-reservation-reviews-details" id="ersrvr-reservation-reviews-details-id">
 										<div class="ersrvr-reservation-details-item-summary-wrapper p-3">
 											<table class="table table-borderless">
 												<tbody>
