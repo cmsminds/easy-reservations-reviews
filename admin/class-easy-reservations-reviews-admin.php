@@ -247,7 +247,7 @@ class Easy_Reservations_Reviews_Admin {
 			$attached_ids   = get_comment_meta( $get_comment_id, 'attached_files', true );
 			if ( ! empty( $attached_ids ) && is_array( $attached_ids ) ) {
 				?>
-				<div class="gallery-images ersrv_count_images_3">
+				<div class="gallery-images ersrvr_count_images_3">
 					<?php 
 					foreach ( $attached_ids as $index => $attach_id ) {
 						$gallery_images_last_index = count( $attached_ids ) - 1;
@@ -259,7 +259,7 @@ class Easy_Reservations_Reviews_Admin {
 						$last_gallery_image_custom_class = '';
 						$last_gallery_image_custom_text  = '';
 						if ( 6 < count( $attached_ids ) && 5 === $index ) {
-							$last_gallery_image_custom_class = 'gallery-last-image-overlay';
+							$last_gallery_image_custom_class = 'ersrvr_gallery-last-image-overlay';
 							$last_gallery_image_custom_text  = sprintf( __( '+%1$d images', 'easy-reservations-reviews' ), ( count( $attached_ids ) - 6 ) );
 						}
 						// Hide the images after 6 images.
@@ -267,7 +267,7 @@ class Easy_Reservations_Reviews_Admin {
 						
 						if ( ! empty( $image_url ) ) {
 							?>
-							<div data-text="<?php echo esc_html( $last_gallery_image_custom_text ); ?>" class="gallery-image-item <?php echo esc_attr( "{$last_gallery_image_custom_class} {$display_none_image_class}" ); ?>" data-imageid="<?php echo esc_attr( $attach_id ); ?>">
+							<div data-text="<?php echo esc_html( $last_gallery_image_custom_text ); ?>" class="ersrvr-gallery-image-item <?php echo esc_attr( "{$last_gallery_image_custom_class} {$display_none_image_class}" ); ?>" data-imageid="<?php echo esc_attr( $attach_id ); ?>">
 								<img src="<?php echo esc_url( $image_url ); ?>" class="ersrvr_attached_files" />
 								<a href="javascript:void(0)" class="delete-link ersrvr_delete_image">
 									<span class="icon">
