@@ -603,7 +603,7 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 							<?php } ?>
 						</h5>
 					</div>
-					<p class="font-lato font-size-14 font-weight-normal mb-0"><?php echo esc_html( $comment_content ); ?></p>
+					<p class="font-lato font-size-14 font-weight-normal mb-3"><?php echo esc_html( $comment_content ); ?></p>
 					<?php
 					$attached_ids   = get_comment_meta( $commnet_id, 'attached_files', true );
 					if ( ! empty( $attached_ids ) && is_array( $attached_ids ) ) {
