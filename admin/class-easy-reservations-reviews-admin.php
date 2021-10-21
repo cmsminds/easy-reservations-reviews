@@ -248,12 +248,32 @@ class Easy_Reservations_Reviews_Admin {
 			if ( ! empty( $attached_ids ) && is_array( $attached_ids ) ) {
 				?>
 				<div class="gallery-images ersrv_count_images_3">
-					<?php foreach ( $attached_ids as $attached_id ) { ?>
-						<?php $image_url = ( ! empty( $attached_id ) ) ? wp_get_attachment_url( $attached_id ) : ''; ?>
-						<div data-text="" class="gallery-image-item  ">
-							<img src="<?php echo esc_attr( $image_url ); ?>" alt="FILLING-MACHINE-CONTROLLERS.png">
-						</div>
-					<?php } ?>
+					<?php 
+					foreach ( $attached_ids as $index => $attach_id ) {
+						$gallery_images_last_index = count( $attached_ids ) - 1;
+						$image_url = ( ! empty( $attach_id ) ) ? wp_get_attachment_url( $attach_id ) : '';
+						/**
+						* Last image custom class.
+						* And, this should work only when the images are more than 5.
+						*/
+						$last_gallery_image_custom_class = '';
+						$last_gallery_image_custom_text  = '';
+						if ( 3 < count( $attached_ids ) && 2 === $index ) {
+							$last_gallery_image_custom_class = 'gallery-last-image-overlay';
+							$last_gallery_image_custom_text  = sprintf( __( '+%1$d images', 'easy-reservations-reviews' ), ( count( $attached_ids ) - 3 ) );
+						}
+						// Hide the images after 6 images.
+						$display_none_image_class = ( 2 < $index ) ? 'd-none' : '';
+						
+						if ( ! empty( $image_url ) ) {
+							?>
+							<div data-text="<?php echo esc_html( $last_gallery_image_custom_text ); ?>" class="gallery-image-item <?php echo esc_attr( "{$last_gallery_image_custom_class} {$display_none_image_class}" ); ?>">
+								<img src="<?php echo esc_url( $image_url ); ?>" class="ersrvr_attached_files">	
+							</div>
+							<?php
+						}
+					}
+					?>
 				</div>
 				<?php
 			}
