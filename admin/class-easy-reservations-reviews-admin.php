@@ -258,12 +258,12 @@ class Easy_Reservations_Reviews_Admin {
 						*/
 						$last_gallery_image_custom_class = '';
 						$last_gallery_image_custom_text  = '';
-						if ( 3 < count( $attached_ids ) && 2 === $index ) {
+						if ( 6 < count( $attached_ids ) && 5 === $index ) {
 							$last_gallery_image_custom_class = 'gallery-last-image-overlay';
-							$last_gallery_image_custom_text  = sprintf( __( '+%1$d images', 'easy-reservations-reviews' ), ( count( $attached_ids ) - 3 ) );
+							$last_gallery_image_custom_text  = sprintf( __( '+%1$d images', 'easy-reservations-reviews' ), ( count( $attached_ids ) - 6 ) );
 						}
 						// Hide the images after 6 images.
-						$display_none_image_class = ( 2 < $index ) ? 'd-none' : '';
+						$display_none_image_class = ( 5 < $index ) ? 'd-none' : '';
 						
 						if ( ! empty( $image_url ) ) {
 							?>
