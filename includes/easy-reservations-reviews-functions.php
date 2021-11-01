@@ -297,7 +297,7 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 				<div class="form-row">
 					<div class="col-12">
 						<label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( 'Please reate us 1 (bad) to 5 (excellent)', 'easy-reservations-reviews' ); ?></label>
-						<div id="full-stars-example-two" class="rating-group-wrapper border py-2 px-1 rounded-xl">
+						<div id="ersrvr_ratings_stars" class="rating-group-wrapper border py-2 px-1 rounded-xl">
 							<?php $k = 1; ?>
 							<?php foreach ( $criterias as $criteria ) { ?>
 								<?php

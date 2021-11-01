@@ -19,7 +19,7 @@ jQuery( document ).ready( function( $ ) {
 	var file_array = [];
 	var new_file_array = [];
 	// console.log('useremail', user_email);
-	jQuery(document).on( 'mouseout', '.rating__label', function( evt ) {
+	jQuery(document).on( 'mouseout', '#ersrvr_ratings_stars .rating__label', function( evt ) {
 		// evt.preventDefault();
 		var this_label        = $( this );
 		var criteria_input    = this_label.prev( 'input[type="radio"]' );
@@ -30,7 +30,7 @@ jQuery( document ).ready( function( $ ) {
 	});
 
 	// check user hover on which star and add class till starts
-	jQuery( document ).on( 'mouseover', '.rating__label', function( evt ) {
+	jQuery( document ).on( 'mouseover', '#ersrvr_ratings_stars .rating__label', function( evt ) {
 		var this_label        = $( this );
 		var criteria_input    = this_label.prev( 'input[type="radio"]' );
 		var criteria_input_id = criteria_input.attr( 'id' );
@@ -39,8 +39,8 @@ jQuery( document ).ready( function( $ ) {
 	} );
 
 	// check user click on which star and add class till starts
-	jQuery( document ).on( 'click', '.rating__label', function() {
-		// evt.preventDefault();
+	jQuery( document ).on( 'click', '#ersrvr_ratings_stars .rating__label', function( evt ) {
+		evt.preventDefault();
 		$( 'label.rating__label' ).removeClass( 'fill_star_click' );
 		var this_label        = $( this );
 		var criteria_input    = this_label.prev( 'input[type="radio"]' );
