@@ -568,7 +568,8 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 			$commnet_id      = $get_all_comment->comment_ID;
 			$user_id         = (int) $get_all_comment->user_id;
 			$current_user    = ersrvr_user_logged_in_data();
-			$current_user_id = (int) $current_user['user_id'];
+			$current_user_id = ! empty( $current_user['user_id'] ) ? $current_user['user_id'] : '';
+			$current_user_id = (int) $current_user_id;
 			$comment_date    = $get_all_comment->comment_date;
 			$comment_date    = gmdate( 'd M Y', strtotime( $comment_date ) );
 			$user_obj        = get_userdata( $user_id );
