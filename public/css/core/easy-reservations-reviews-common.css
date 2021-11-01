@@ -198,3 +198,11 @@
 .ersrvr-reservation-reviews-details table td{
   text-align: left !important;
 }
+.ersrvr-reservation-reviews-details table th{
+  font-size: 15px;
+}
+@media(min-width:768px){
+  .ersrvr-reservation-reviews-details{
+    width: 20rem;
+  }
+}
