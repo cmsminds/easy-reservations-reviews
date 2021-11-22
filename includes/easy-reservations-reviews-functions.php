@@ -660,11 +660,11 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 								<?php
 								$edit_setting = get_option( 'ersrvr_enable_edit_reservation_reviews' );
 								?>
-								<?php if ( 'yes' === $edit_setting ) { ?>
+								<?php if ( 'yes' === $edit_setting  && is_user_logged_in() ) { ?>
 								<span class="text-muted font-lato font-weight-normal font-size-14">- <a href="#" class="ersrvr_edit_review" data-commentid="<?php echo esc_html( $commnet_id ); ?>" data-userid="<?php echo esc_html( $current_user_id ); ?>" data-postid="<?php echo esc_html( $post_id ); ?>" ><span class="fa fa-pencil-alt"></span></a></span>
 								<?php } ?>
 								<?php $delete_setting = get_option( 'ersrvr_enable_delete_reservation_reviews' ); ?>
-								<?php if ( 'yes' === $delete_setting ) { ?>
+								<?php if ( 'yes' === $delete_setting && is_user_logged_in() ) { ?>
 								<span class="text-muted font-lato font-weight-normal font-size-14">- <a href="#" class="ersrvr_delete_review" data-commentid="<?php echo esc_html( $commnet_id ); ?>" data-userid="<?php echo esc_html( $current_user_id ); ?>" data-postid="<?php echo esc_html( $post_id ); ?>" ><span class="fa fa-window-close"></span></a></span>
 								<?php } ?>
 							<?php } ?>
