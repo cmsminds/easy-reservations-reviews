@@ -98,15 +98,15 @@ if ( ! function_exists( 'ersrvr_get_plugin_settings' ) ) {
 				break;
 			case 'ersrvr_enable_reservation_reviews_guest_users':
 				$data = get_option( $setting );
-				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? 'yes' : 'no';
+				$data = ( ! empty( $data ) && 'yes' === $data ) ? 'yes' : 'no';
 				break;
 			case 'ersrvr_enable_edit_reservation_reviews':
 				$data = get_option( $setting );
-				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? 'yes' : 'no';
+				$data = ( ! empty( $data ) && 'yes' === $data ) ? 'yes' : 'no';
 				break;
 			case 'ersrvr_enable_delete_reservation_reviews':
 				$data = get_option( $setting );
-				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? 'yes' : 'no';
+				$data = ( ! empty( $data ) && 'yes' === $data ) ? 'yes' : 'no';
 				break;
 			default:
 				$data = -1;
