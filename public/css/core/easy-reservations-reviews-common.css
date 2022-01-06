@@ -58,7 +58,7 @@
   object-position: center;
 }
 .review-listing-wrapper {
-  margin: 40px 0px;
+  margin: 30px 0px;
 }
 .hide{
   display: none !important;
@@ -213,4 +213,8 @@
 }
 .review-form-wrapper .form-row {
   margin-bottom: 16px;
+}
+.wrapper .content-part .info-box.user-not-loggedin .dropdown-divider {
+  padding-bottom: 0px !important;
+  margin-bottom: 0px !important;
 }
