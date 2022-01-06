@@ -12,9 +12,9 @@
  * @package           Easy_Reservations_Reviews
  *
  * @wordpress-plugin
- * Plugin Name:       Easy Reservations Reviews
+ * Plugin Name:       Reviews for Boat Rental Plugin
  * Plugin URI:        https://github.com/cmsminds/easy-reservations-reviews
- * Description:       This is Add-ons for Easy Reservation Plugin. This plugin holds add reservation reviews on reservation products.
+ * Description:       Allow your customers to review their experience with your boat bookings.
  * Version:           1.0.0
  * Author:            cmsMinds
  * Author URI:        https://cmsminds.com
@@ -51,27 +51,22 @@ if ( ! defined( 'ERSRVR_PLUGIN_URL' ) ) {
  * This action is documented in includes/class-easy-reservations-reviews-activator.php
  */
 function activate_easy_reservations_reviews() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-easy-reservations-reviews-activator.php';
+	require_once ERSRVR_PLUGIN_PATH . 'includes/class-easy-reservations-reviews-activator.php';
 	Easy_Reservations_Reviews_Activator::activate();
 }
+
+register_activation_hook( __FILE__, 'activate_easy_reservations_reviews' );
 
 /**
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-easy-reservations-reviews-deactivator.php
  */
 function deactivate_easy_reservations_reviews() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-easy-reservations-reviews-deactivator.php';
+	require_once ERSRVR_PLUGIN_PATH . 'includes/class-easy-reservations-reviews-deactivator.php';
 	Easy_Reservations_Reviews_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_easy_reservations_reviews' );
 register_deactivation_hook( __FILE__, 'deactivate_easy_reservations_reviews' );
-
-/**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
- */
-require plugin_dir_path( __FILE__ ) . 'includes/class-easy-reservations-reviews.php';
 
 /**
  * Begins execution of the plugin.
@@ -83,10 +78,10 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-easy-reservations-reviews.
  * @since    1.0.0
  */
 function run_easy_reservations_reviews() {
-
-	$plugin = new Easy_Reservations_Reviews();
-	$plugin->run();
-
+	// The core plugin class that is used to define internationalization, admin-specific hooks, and public-facing site hooks.
+	require ERSRVR_PLUGIN_PATH . 'includes/class-easy-reservations-reviews.php';
+	$easy_reservations_reviews_plugin = new Easy_Reservations_Reviews();
+	$easy_reservations_reviews_plugin->run();
 }
 /**
  * This initiates the plugin.
@@ -95,8 +90,7 @@ function run_easy_reservations_reviews() {
  * @since 1.0.0
  */
 function ersrvr_plugins_loaded_callback() {
-	$active_plugins   = get_option( 'active_plugins' );
-	$is_ersrvr_active = in_array( 'easy-reservations/easy-reservations.php', $active_plugins, true );
+	$is_ersrvr_active = in_array( 'easy-reservations/easy-reservations.php', get_option( 'active_plugins' ), true );
 
 	if ( current_user_can( 'activate_plugins' ) && false === $is_ersrvr_active ) {
 		add_action( 'admin_notices', 'ersrvr_admin_notices_callback' );
@@ -114,7 +108,7 @@ add_action( 'plugins_loaded', 'ersrvr_plugins_loaded_callback' );
 function ersrvr_admin_notices_callback() {
 	$this_plugin_data = get_plugin_data( __FILE__ );
 	$this_plugin      = $this_plugin_data['Name'];
-	$ersrv_plugin     = 'Easy Reservations';
+	$ersrv_plugin     = 'Boat Rental Plugin for WordPress';
 	?>
 	<div class="error">
 		<p>

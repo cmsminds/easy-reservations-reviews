@@ -118,11 +118,13 @@ class Easy_Reservations_Reviews_Admin {
 	 * @since 1.0.0
 	 */
 	public function ersrvr_reviews_settings_fields( $settings, $current_section ) {
+		// Return, if the current section is not for reviews.
 		if ( 'reviews' !== $current_section ) {
 			return $settings;
 		}
-		$settings = ersrvr_setting_fields();
-		return $settings;
+
+		// Return the plugin settings.
+		return ersrvr_plugin_settings_fields();
 	}
 	/**
 	 * Add Custom meta in comment for reviews.

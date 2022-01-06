@@ -13,14 +13,14 @@
  * Check if the function exists.
  */
 
-if ( ! function_exists( 'ersrvr_setting_fields' ) ) {
+if ( ! function_exists( 'ersrvr_plugin_settings_fields' ) ) {
 	/**
-	 * Add setting fields here.
+	 * Configure the plugin settings.
 	 *
 	 * @return array
 	 * @since 1.0.0
 	 */
-	function ersrvr_setting_fields() {
+	function ersrvr_plugin_settings_fields() {
 		$fields = array(
 			array(
 				'title' => __( 'Reservations Reviews Setting', 'easy-reservations-reviews' ),
@@ -48,21 +48,21 @@ if ( ! function_exists( 'ersrvr_setting_fields' ) ) {
 				'id'       => 'ersrvr_submit_review_criterias',
 			),
 			array(
-				'name' => __( 'For Guset User', 'easy-reservations-reviews' ),
+				'name' => __( 'Allow Guest Reviews?', 'easy-reservations-reviews' ),
 				'type' => 'checkbox',
-				'desc' => __( 'This will decide whether the guest user can fill up their reviews or not. Default is no.', 'easy-reservations-reviews' ),
+				'desc' => __( 'Check this to allow guest users to post reviews.', 'easy-reservations-reviews' ),
 				'id'   => 'ersrvr_enable_reservation_reviews_guest_users',
 			),
 			array(
 				'name' => __( 'Edit Review', 'easy-reservations-reviews' ),
 				'type' => 'checkbox',
-				'desc' => __( 'This will decide whether the user can have ability to edit reviews or not.', 'easy-reservations-reviews' ),
+				'desc' => __( 'Check this to allow users to edit their posted reviews. This works only for "loggedin" users.', 'easy-reservations-reviews' ),
 				'id'   => 'ersrvr_enable_edit_reservation_reviews',
 			),
 			array(
 				'name' => __( 'Delete Review', 'easy-reservations-reviews' ),
 				'type' => 'checkbox',
-				'desc' => __( 'This will decide whether the user can have ability to delete reviews or not.', 'easy-reservations-reviews' ),
+				'desc' => __( 'Check this to allow users to delete their posted reviews. This works only for "loggedin" users.', 'easy-reservations-reviews' ),
 				'id'   => 'ersrvr_enable_delete_reservation_reviews',
 			),
 			array(
