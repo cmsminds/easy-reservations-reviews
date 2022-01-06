@@ -18,7 +18,7 @@ $username                      = ! empty( $user_info ) ? $user_info['username'] 
 $user_phone_number             = ! empty( $user_info ) ? $user_info['user_phone_number'] : '';
 $get_guest_user_enable_setting = ersrvr_get_plugin_settings( 'ersrvr_enable_reservation_reviews_guest_users' );
 ?>
-<div class="dropdown-divider ersrvr_total_review_divider"></div>
+<!-- <div class="dropdown-divider ersrvr_total_review_divider"></div> -->
 <!-- form start here -->
 <div class="review-form-wrapper">
 	<?php
