@@ -20,11 +20,8 @@ $get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_rese
 $getallComments                = get_comments( array(
 	'post_id' => $post->ID,
 ), );
-// debug( $getallComments );
-// die;
 ?>
-
-<div class="ship-reviews info-box">
+<div class="ship-reviews info-box <?php echo esc_attr( ( ! empty( $user_info ) ) ? 'user-loggedin' : 'user-not-loggedin' ); ?>">
 	<a class="section-title font-Poppins font-size-24 font-weight-bold d-block color-black text-decoration-none" data-toggle="collapse" href="#ship-reviews-collapse" role="button" aria-expanded="true" aria-controls="ship-reviews-collapse">
 		<span class=""><?php esc_html_e( 'Reviews', 'easy-reservations-reviews' ); ?></span>
 	</a>

@@ -305,8 +305,8 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 								$criteria_slug = str_replace( ' ', '-', $criteria_slug );
 								?>
 								<div class="rating-item d-flex flex-wrap align-items-center mb-3 mb-md-0">
-									<div class="col-12 col-sm-6 col-md-3 mb-1 mb-sm-0"><label class="font-Poppins font-weight-semibold text-black font-size-14"><?php echo esc_html( $criteria ); ?> </label></div>
-									<div class="col-12 col-sm-6 col-md-9 rating-group" id="<?php echo esc_attr( $criteria_slug ); ?>" data-criteria="<?php echo esc_attr( $criteria ); ?>">
+									<div class="col-12 col-sm-6 col-md-9 mb-1 mb-sm-0"><label class="font-Poppins font-weight-semibold text-black font-size-14"><?php echo esc_html( $criteria ); ?> </label></div>
+									<div class="col-12 col-sm-6 col-md-3 rating-group" id="<?php echo esc_attr( $criteria_slug ); ?>" data-criteria="<?php echo esc_attr( $criteria ); ?>">
 										<?php for ( $i = 1; $i <= 5; $i++ ) { ?>
 											<input class="rating__input" name="rating3" id="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
 											<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
