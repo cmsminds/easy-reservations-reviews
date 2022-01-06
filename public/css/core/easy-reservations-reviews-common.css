@@ -211,3 +211,6 @@
     width: 20rem;
   }
 }
+.review-form-wrapper .form-row {
+  margin-bottom: 16px;
+}
