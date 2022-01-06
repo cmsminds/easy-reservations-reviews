@@ -20,8 +20,6 @@ $username              = ! empty( $user_info ) ? $user_info['username'] : '';
 $user_phone_number     = ! empty( $user_info ) ? $user_info['user_phone_number'] : '';
 $guest_reviews_allowed = ersrvr_get_plugin_settings( 'ersrvr_enable_reservation_reviews_guest_users' );
 ?>
-
-<!-- form start here -->
 <div class="review-form-wrapper">
 	<?php
 	if ( empty( $user_info ) ) {

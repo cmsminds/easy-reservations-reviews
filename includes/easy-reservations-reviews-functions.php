@@ -324,10 +324,12 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 					<div class="col-12 col-md-6">
 						<label class="font-Poppins font-weight-semibold text-black font-size-16" for="name"><?php echo esc_html( 'Name' ); ?> <span class="text-danger">*</span></label>
 						<input type="text" class="form-control mb-2" id="ersrvr_name" placeholder="Name" value="<?php echo esc_attr( $username ); ?>" />
+						<p class="ersrv-reservation-error reviewer-name-error"></p>
 					</div>
 					<div class="col-12 col-md-6">
 						<label class="font-Poppins font-weight-semibold text-black font-size-16" for="email"><?php echo esc_html( 'Email' ); ?> <span class="text-danger">*</span></label>
 						<input type="email" class="form-control mb-2" id="ersrvr_email" placeholder="E-mail" value="<?php echo esc_html( $user_email ); ?>" />
+						<p class="ersrv-reservation-error reviewer-email-error"></p>
 					</div>
 				</div>
 			<?php } ?>
@@ -346,8 +348,7 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 				<div class="col-12 col-md-<?php echo esc_attr( $row_size_value ); ?>">
 					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="message"><?php esc_html_e( 'Upload Something Here', 'easy-reservations-reviews' ); ?></label>
 					<div class="upload-btn-wrapper">
-						<label class="control-label">Attachment(s) (Attach multiple files.)</label>
-						<span class="btn btn-block btn-file px-0">
+						<span class="btn btn-block btn-file p-0">
 							<input id="actual-btn" name="ersrvr_actual_btn[]" type="file" class="file"  data-show-upload="true" data-show-caption="true" accept="<?php echo esc_attr( implode( ',', ersrvr_get_review_file_allowed_file_types() ) ); ?>" multiple >
 						</span>
 					</div>

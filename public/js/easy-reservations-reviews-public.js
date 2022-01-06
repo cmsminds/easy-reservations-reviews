@@ -121,22 +121,27 @@ jQuery( document ).ready( function( $ ) {
 		// }
 	} );
 
-	
+	/**
+	 * Submit the review form.
+	 */
+	jQuery(document).on( 'click', '.ersrvr_btn_submit', function() {
+		var this_button      = $( this );
+		var this_button_text = this_button.text();
+		var useremail        = user_email;
+		useremail            = ( -1 === is_valid_string( useremail ) ) ? $( '#ersrvr_email' ).val() : useremail;
+		var username         = $( '#ersrvr_name'  ).val();
+		var phone            = $( '#ersrvr_phone' ).val();
+		var review_message   = $( '#ersrvr_message' ).val();
+		var fd               = new FormData(); // Prepare the form data.
+		var validate_form    = ( 1 === is_valid_string( user_logged_in ) && 'yes' === user_logged_in ) ? true : false;
 
-	// submit revie form.
-	jQuery(document).on( 'click', '.ersrvr_btn_submit', function( evt ) {
-		evt.preventDefault();
-		var this_button             = $( this );
-		var this_button_text        = this_button.text();
-		var useremail               = user_email;
-		useremail                   = ( -1 === is_valid_string( useremail ) ) ? $( '#ersrvr_email' ).val() : useremail;
-		var username                = $( '#ersrvr_name'  ).val();
-		var phone                   = $( '#ersrvr_phone' ).val();
-		var review_message          = $( '#ersrvr_message' ).val();
+		// Validate the form, if required.
+		if ( validate_form ) {
+			
+		}
+
 		
-		// console.log( given_rating_star_array );
-		// Prepare the form data.
-		var fd                      = new FormData();
+		
 		if( 'no' === user_logged_in ) {
 			if ( -1 === is_valid_string( username ) ) {
 				ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, invalid_reviews_name_error_text );
