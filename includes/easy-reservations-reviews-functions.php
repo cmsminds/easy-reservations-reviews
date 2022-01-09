@@ -291,8 +291,9 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 		$btn_text  = ersrvr_get_plugin_settings( 'ersrvr_submit_review_button_text' );
 
 		// Prepare the html now.
-		ob_start(); ?>
-		<form action="" method="post" enctype="multipart/form-data">
+		ob_start();
+		?>
+		<form action="" method="POST" enctype="multipart/form-data" id="item-review-form">
 			<?php if ( ! empty( $criterias ) && is_array( $criterias ) ) { ?>
 				<div class="form-row">
 					<div class="col-12">
@@ -323,12 +324,12 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 				<div class="form-row">
 					<div class="col-12 col-md-6">
 						<label class="font-Poppins font-weight-semibold text-black font-size-16" for="name"><?php echo esc_html( 'Name' ); ?> <span class="text-danger">*</span></label>
-						<input type="text" class="form-control mb-2" id="ersrvr_name" placeholder="Name" value="<?php echo esc_attr( $username ); ?>" />
+						<input type="text" class="form-control mb-2" id="ersrvr_name" placeholder="<?php esc_html_e( 'Eg: John Doe', 'easy-reservations-reviews' ); ?>" value="<?php echo esc_attr( $username ); ?>" />
 						<p class="ersrv-reservation-error reviewer-name-error"></p>
 					</div>
 					<div class="col-12 col-md-6">
 						<label class="font-Poppins font-weight-semibold text-black font-size-16" for="email"><?php echo esc_html( 'Email' ); ?> <span class="text-danger">*</span></label>
-						<input type="email" class="form-control mb-2" id="ersrvr_email" placeholder="E-mail" value="<?php echo esc_html( $user_email ); ?>" />
+						<input type="email" class="form-control mb-2" id="ersrvr_email" placeholder="<?php esc_html_e( 'Eg: john.doe@example.com', 'easy-reservations-reviews' ); ?>" value="<?php echo esc_html( $user_email ); ?>" />
 						<p class="ersrv-reservation-error reviewer-email-error"></p>
 					</div>
 				</div>
@@ -337,19 +338,15 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 				<?php if ( ! is_user_logged_in() ) { ?>
 				<div class="col-12 col-md-6">
 					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="phone"><?php esc_html_e( 'Phone Number', 'easy-reservations-reviews' ); ?> <span class="text-danger">*</span></label>
-					<input type="text" class="form-control mb-2" id="ersrvr_phone" placeholder="Phone Number" value="<?php echo esc_html( $user_phone_number ); ?>" />
+					<input type="text" class="form-control mb-2" id="ersrvr_phone" placeholder="<?php esc_html_e( 'Eg: +1 XXX XXX XXXX', 'easy-reservations-reviews' ); ?>" value="<?php echo esc_html( $user_phone_number ); ?>" />
+					<p class="ersrv-reservation-error reviewer-phone-error"></p>
 				</div>
 				<?php } ?>
-				<?php if ( ! is_user_logged_in() ) { ?>
-					<?php $row_size_value = 6; ?>
-				<?php } else { ?> 
-					<?php $row_size_value = 12; ?>
-				<?php } ?>
-				<div class="col-12 col-md-<?php echo esc_attr( $row_size_value ); ?>">
+				<div class="col-12 col-md-<?php echo esc_attr( ( ! is_user_logged_in() ) ? 6 : 12 ); ?>">
 					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="message"><?php esc_html_e( 'Upload Something Here', 'easy-reservations-reviews' ); ?></label>
 					<div class="upload-btn-wrapper">
 						<span class="btn btn-block btn-file p-0">
-							<input id="actual-btn" name="ersrvr_actual_btn[]" type="file" class="file"  data-show-upload="true" data-show-caption="true" accept="<?php echo esc_attr( implode( ',', ersrvr_get_review_file_allowed_file_types() ) ); ?>" multiple >
+							<input id="actual-btn" name="ersrvr_review_attachments[]" type="file" class="file"  data-show-upload="true" data-show-caption="true" accept="<?php echo esc_attr( implode( ',', ersrvr_get_review_file_allowed_file_types() ) ); ?>" multiple >
 						</span>
 					</div>
 				</div>
@@ -357,10 +354,11 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 			<div class="form-row">
 				<div class="col-12 col-md-12">
 					<label class="font-Poppins font-weight-semibold text-black font-size-16" for="message"><?php esc_html_e( 'Review', 'easy-reservations-reviews' ); ?> <span class="text-danger">*</span></label>
-					<textarea name="message" id="ersrvr_message" class="form-control mb-2"  placeholder="Message"></textarea>
+					<textarea name="message" id="ersrvr_message" class="form-control mb-2"  placeholder="<?php esc_html_e( 'Eg: I really enjoyed....', 'easy-reservations-reviews' ); ?>"></textarea>
+					<p class="ersrv-reservation-error reviewer-message-error"></p>
 				</div>
 				<div class="col-12 text-center">
-					<button type="submit" class="btn ersrvr_btn_submit btn-primary px-4 py-2 font-lato font-size-18 font-weight-bold"><?php echo esc_html( $btn_text ); ?></button>
+					<button type="button" class="btn ersrvr_btn_submit btn-primary px-4 py-2 font-lato font-size-18 font-weight-bold"><?php echo esc_html( $btn_text ); ?></button>
 				</div>
 			</div>
 		</form>

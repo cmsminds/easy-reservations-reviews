@@ -17,7 +17,7 @@ $user_email                    = ! empty( $user_info ) ? $user_info['user_email'
 $username                      = ! empty( $user_info ) ? $user_info['username'] : '';
 $user_phone_number             = ! empty( $user_info ) ? $user_info['user_phone_number'] : '';
 $get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_reservation_reviews_guest_users' );
-$getallComments                = get_comments( array(
+$get_all_comments              = get_comments( array(
 	'post_id' => $post->ID,
 ), );
 ?>
@@ -32,7 +32,7 @@ $getallComments                = get_comments( array(
 			<div class="alert alert-warning" role="alert">
 				<?php 
 				echo wp_kses(
-					sprintf( __( 'You are logged in as %1$s %2$s %3$s %4$s Logout %5$s.', 'easy-reservations-reviews' ), '<span class="font-weight-bold">', $user_email, '</span>', '<a href="'. wp_logout_url( home_url() ) .'" class="">','</a>' ),
+					sprintf( __( 'You are logged in as %1$s %2$s %3$s %4$s Logout%5$s?', 'easy-reservations-reviews' ), '<span class="font-weight-bold">', $user_email, '</span>', '<a href="'. wp_logout_url( home_url() ) .'" class="">','</a>' ),
 					array(
 						'span'   => array(
 							'class' => array(),
@@ -48,8 +48,6 @@ $getallComments                = get_comments( array(
 		<div class="ersrvr_review-listing-container">
 			<?php 
 			$file_path = plugin_dir_path( __DIR__ ) . 'review/review-comment-data.php';
-			// echo $file_path;
-			// die;
 			if ( file_exists( $file_path ) ) {
 				require_once $file_path;
 			}

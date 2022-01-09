@@ -4,8 +4,6 @@ jQuery( document ).ready( function( $ ) {
 	// Localized variables.
 	var ajaxurl                                = ERSRVR_Reviews_Public_Script_Vars.ajaxurl;
 	var user_logged_in                         = ERSRVR_Reviews_Public_Script_Vars.user_logged_in;
-	var user_email                             = ERSRVR_Reviews_Public_Script_Vars.user_email;
-	var current_post_id                        = ERSRVR_Reviews_Public_Script_Vars.current_post_id;
 	var toast_error_heading                    = ERSRVR_Reviews_Public_Script_Vars.toast_error_heading;
 	var invalid_reviews_message_error_text     = ERSRVR_Reviews_Public_Script_Vars.invalid_reviews_message_error_text;
 	var invalid_reviews_email_error_text       = ERSRVR_Reviews_Public_Script_Vars.invalid_reviews_email_error_text;
@@ -15,22 +13,27 @@ jQuery( document ).ready( function( $ ) {
 	var toast_success_heading                  = ERSRVR_Reviews_Public_Script_Vars.toast_success_heading;
 	var review_file_allowed_extensions         = ERSRVR_Reviews_Public_Script_Vars.review_file_allowed_extensions;
 	var review_file_invalid_file_error         = ERSRVR_Reviews_Public_Script_Vars.review_file_invalid_file_error;
+	var review_cannot_be_submitted             = ERSRVR_Reviews_Public_Script_Vars.review_cannot_be_submitted;
+
+	// Global variables.
 	var user_criteria_ratings = [];
-	var file_array = [];
-	var new_file_array = [];
-	// console.log('useremail', user_email);
-	jQuery(document).on( 'mouseout', '#ersrvr_ratings_stars .rating__label', function( evt ) {
-		// evt.preventDefault();
+	var file_array            = [];
+
+	/**
+	 * Manage the classes based on which star the mouse is on.
+	 */
+	$( document ).on( 'mouseout', '#ersrvr_ratings_stars .rating__label', function() {
 		var this_label        = $( this );
 		var criteria_input    = this_label.prev( 'input[type="radio"]' );
 		var criteria_input_id = criteria_input.attr( 'id' );
-		// var closest_criteria  = $( this ).closest( '.rating-group' ).data( 'criteria' );
 		$( '#' + criteria_input_id ).prevUntil( '.rating__input:first' ).addBack().removeClass( 'fill_star_hover' );
 		$( 'label.rating__label' ).removeClass( 'fill_star_hover' );
-	});
+	} );
 
-	// check user hover on which star and add class till starts
-	jQuery( document ).on( 'mouseover', '#ersrvr_ratings_stars .rating__label', function( evt ) {
+	/**
+	 * Manage the classes based on which star the mouse is on.
+	 */
+	$( document ).on( 'mouseover', '#ersrvr_ratings_stars .rating__label', function() {
 		var this_label        = $( this );
 		var criteria_input    = this_label.prev( 'input[type="radio"]' );
 		var criteria_input_id = criteria_input.attr( 'id' );
@@ -38,23 +41,23 @@ jQuery( document ).ready( function( $ ) {
 		$( 'label.rating__label' ).removeClass( 'fill_star_hover' );
 	} );
 
-	// check user click on which star and add class till starts
-	jQuery( document ).on( 'click', '#ersrvr_ratings_stars .rating__label', function( evt ) {
-		evt.preventDefault();
+	/**
+	 * Select the star ratings.
+	 */
+	$( document ).on( 'click', '#ersrvr_ratings_stars .rating__label', function() {
 		$( 'label.rating__label' ).removeClass( 'fill_star_click' );
 		var this_label        = $( this );
 		var criteria_input    = this_label.prev( 'input[type="radio"]' );
 		var criteria_input_id = criteria_input.attr( 'id' );
-		var closest_criteria  = criteria_input.closest( '.rating-group' ).attr( 'id' );
-		// console.log( $( '#' + closest_criteria ) );
-		$( '#' + closest_criteria + ' .rating__input' ).removeClass( 'fill_star_click' );
+		var criteria_name     = criteria_input.closest( '.rating-group' ).attr( 'id' );
+		var criteria_title    = criteria_input.closest( '.rating-group' ).data( 'criteria' );
+		$( '#' + criteria_name + ' .rating__input' ).removeClass( 'fill_star_click' );
 		$( '#' + criteria_input_id ).prevUntil( '.rating__input:first' ).addBack().addClass( 'fill_star_click' );
 		var rating = parseInt( criteria_input.val() );
-		// $( 'label.rating__label' ).removeClass( 'fill_star_click' );
 
 		// Check if criteria to add already exists in the array.
 		var existing_criteria_key = $.map( user_criteria_ratings, function( val, i ) {
-			if ( val.closest_criteria === closest_criteria ) {
+			if ( val.criteria_name === criteria_name ) {
 				return i;
 			}
 		} );
@@ -66,147 +69,166 @@ jQuery( document ).ready( function( $ ) {
 
 		// Push the element in the array.
 		user_criteria_ratings.push( {
-			closest_criteria: closest_criteria,
+			criteria_name: criteria_name,
+			criteria_title: criteria_title,
 			rating: rating,
 		} );
-
-		// console.log( 'user_criteria_ratings', user_criteria_ratings );
 	} );
 
 	/**
-	 * Validate the file.
+	 * Validate the files selected for submitting review.
 	 */
-	 $( document ).on( 'change', 'input[name="ersrvr_actual_btn[]"]', function( evt ) {
-		// evt.preventDefault();
-		var file = $( this ).val();
-		var file_name = evt.target.files[0].name;
-		var ext  = file.split( '.' ).pop();
-		ext      = '.' + ext;
-		$( this ).each(function() {
-            file_array.push( {
-				'files': evt.target.files,
-			});
-        });
+	$( document ).on( 'change', 'input[name="ersrvr_review_attachments[]"]', function( evt ) {
+		// Get the selected files.
+		var files = evt.target.files;
 
-		// if( file_array.length > 0 ) {
-		// 	$.each(file_array[0]['files'] , function(index, val) { 
-		// 		var oFReader                = new FileReader();
-		// 		oFReader.readAsDataURL( val );
-		// 		JSON.stringify( new_file_array.push( val ) );
-		// 	});	
-		// 	// var new_file_json = JSON.stringify( new_file_array );
-		// 	console.log( new_file_array  );
-		// 	return false;
-		// 	fd.append( 'files',new_file_array );		  
-			
-		// }
-		
-		// console.log( file_array );
-		// return false;
-		// this.files[0].name
-		
-		// $('.ersrvr_file_chosen').text(file_name);
+		// Exit, if there are files selected.
+		if ( 0 === files.length ) {
+			return false;
+		}
 
-		// // Check if this extension is among the extensions allowed.
-		// if ( 0 < review_file_allowed_extensions.length && -1 === $.inArray( ext, review_file_allowed_extensions ) ) {
-		// 	ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, review_file_invalid_file_error );
-		// 	// $( '.file-preview' ).remove();
-		// 	// $( '.fileinput-remove' ).remove();
-		// 	// $( '.fileinput-upload' ).remove();
-		// 	// $( '.file-input .file-caption-name' ).text('');
-		// 	// Reset the file input type.
-		// 	$('input[name="ersrvr_actual_btn"]').val('');
-		// 	$('.ersrvr_file_chosen').text('No file chosen');
-		// 	return false;
-		// }
+		// Collect the file extensions here.
+		var file_extensions = [];
+
+		// Iterate through the files to collect the extensions.
+		for ( var i in files ) {
+			var filename = files[i].name;
+
+			// If the filename is invalid, skip.
+			if ( -1 === is_valid_string( filename ) ) {
+				continue;
+			}
+
+			// Check if the filename has a dot in it.
+			var dot_index = filename.indexOf( '.' );
+
+			// If there is no dot, skip.
+			if ( -1 === dot_index ) {
+				continue;
+			}
+
+			var file_ext = filename.split( '.' ).pop();
+			file_ext     = '.' + file_ext;
+
+			// Collect the extension in the array.
+			file_extensions.push( file_ext );
+		}
+
+		// Unwanted selected files.
+		var unwanted_selected_file_extensions = [];
+
+		// Get the unwanted extensions now.
+		$.grep( file_extensions, function( el ) {
+			if ( -1 === $.inArray( el, review_file_allowed_extensions ) ) unwanted_selected_file_extensions.push( el );
+		} );
+
+		// Clear the file selections if there are disallowed files selected.
+		if ( 0 < unwanted_selected_file_extensions.length ) {
+			ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, review_file_invalid_file_error );
+
+			// Reset the file input type.
+			setTimeout( function() {
+				$( '.fileinput-remove-button' ).click();
+			}, 1000 );
+
+			return false; // Exit.
+		}
 	} );
 
 	/**
 	 * Submit the review form.
 	 */
-	jQuery(document).on( 'click', '.ersrvr_btn_submit', function() {
-		var this_button      = $( this );
-		var this_button_text = this_button.text();
-		var useremail        = user_email;
-		useremail            = ( -1 === is_valid_string( useremail ) ) ? $( '#ersrvr_email' ).val() : useremail;
-		var username         = $( '#ersrvr_name'  ).val();
-		var phone            = $( '#ersrvr_phone' ).val();
-		var review_message   = $( '#ersrvr_message' ).val();
-		var fd               = new FormData(); // Prepare the form data.
-		var validate_form    = ( 1 === is_valid_string( user_logged_in ) && 'yes' === user_logged_in ) ? true : false;
+	$(document).on( 'click', '.ersrvr_btn_submit', function() {
+		var this_button        = $( this );
+		var this_button_text   = this_button.text();
+		var reviewer_name      = $( '#ersrvr_name'  ).val();
+		var reviewer_phone     = $( '#ersrvr_phone' ).val();
+		var reviewer_email     = $( '#ersrvr_email' ).val();
+		var reviewer_message   = $( '#ersrvr_message' ).val();
+		var review_attachments = $( 'input[name="ersrvr_review_attachments[]"]' ).prop( 'files' );
+		var review_form        = $( '#item-review-form' )[0];
+		var form_data          = new FormData( review_form ); // Prepare the form data.
+		var submit_review      = true;
+
+		form_data.append( 'hello', 'world' );
+		console.log( 'form_data', form_data );
+		return false;
+
+		// Vacate all the errors.
+		$( '.ersrv-reservation-error' ).text( '' );
 
 		// Validate the form, if required.
-		if ( validate_form ) {
-			
+		if ( 1 === is_valid_string( user_logged_in ) && 'no' === user_logged_in ) {
+			// Reviewer name validation.
+			if ( -1 === is_valid_string( reviewer_name ) ) {
+				submit_review = false;
+				$( '.ersrv-reservation-error.reviewer-name-error' ).text( invalid_reviews_name_error_text );
+			}
+
+			// Reviewer phone validation.
+			if ( '' === reviewer_phone ) {
+				submit_review = false;
+				$( '.ersrv-reservation-error.reviewer-phone-error' ).text( invalid_reviews_phone_error_text );
+			}
+
+			// Reviewer email validation.
+			if ( -1 === is_valid_string( reviewer_email ) ) {
+				submit_review = false;
+				$( '.ersrv-reservation-error.reviewer-email-error' ).text( invalid_reviews_email_error_text );
+			} else if ( -1 === is_valid_email( reviewer_email ) ) {
+				submit_review = false;
+				$( '.ersrv-reservation-error.reviewer-email-error' ).text( invalid_reviews_email_regex_error_text );
+			}
 		}
 
-		
-		
-		if( 'no' === user_logged_in ) {
-			if ( -1 === is_valid_string( username ) ) {
-				ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, invalid_reviews_name_error_text );
-				return false;
-			} 
-			if( -1 === is_valid_string( useremail ) ) {
-				ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, invalid_reviews_email_error_text );	
-				return false;
-			} else if ( -1 === is_valid_email( useremail ) ) {
-				ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, invalid_reviews_email_regex_error_text );	
-				return false;
-			}
-			if( -1 === is_valid_number( phone ) ) {
-				ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, invalid_reviews_phone_error_text );
-				return false;
-			}
+		// Reviewer message validation.
+		if ( -1 === is_valid_string( reviewer_message ) ) {
+			submit_review = false;
+			$( '.ersrv-reservation-error.reviewer-message-error' ).text( invalid_reviews_message_error_text );
 		}
-		if ( -1 === is_valid_string( review_message ) ) {
-			ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, invalid_reviews_message_error_text );
+
+		// Show error notification, if there are errors.
+		if ( false === submit_review ) {
+			ersrvr_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, review_cannot_be_submitted );
 			return false;
 		}
-		if( file_array.length > 0 ) {
-			
-		}
-		var new_file_array = [];
-		if( file_array.length > 0 ) {
-			$.each(file_array[0]['files'] , function(index, val) { 
-				var oFReader                = new FileReader();
-				oFReader.readAsDataURL( val );
-				new_file_array.push( val  );
-			});
-			for (var i = 0; i < file_array[0]['files'].length; i++) {
-				fd.append('files[]', file_array[0]['files'][i]);
-			}
-			
-			
-			// var new_file_json = JSON.stringify( new_file_array );
-			// console.log( JSON.stringify( new_file_array, null , 4 ) );
-			// return false;
-			// fd.append( 'files',JSON.stringify( new_file_array ) );
-			
+
+		// Attach all the data to the form data variable.
+		form_data.append( 'action', 'submit_review' );
+		form_data.append( 'reviewer_message', reviewer_message );
+
+		console.log( 'reviewer_message', reviewer_message );
+		console.log( 'form_data', form_data );
+		return false;
+
+		form_data.append( 'review_attachments', review_attachments );
+		form_data.append( 'user_criteria_ratings', user_criteria_ratings );
+		form_data.append( 'item_id', $( '.single-reserve-page' ).data( 'item' ) );
+
+		// Collect all the data now.
+		if ( 1 === is_valid_string( user_logged_in ) && 'no' === user_logged_in ) {
+			form_data.append( 'reviewer_name', reviewer_name );
+			form_data.append( 'reviewer_phone', reviewer_phone );
+			form_data.append( 'reviewer_email', reviewer_email );
 		}
 
-		// return false;
-		var given_user_criteria_ratings = JSON.stringify( user_criteria_ratings );
-		console.log( user_criteria_ratings );
-		// return false;
-		fd.append( 'action', 'ersrvr_submit_reviews' );
-		fd.append( 'useremail', useremail );
-		fd.append( 'user_criteria_ratings', given_user_criteria_ratings );
-		fd.append( 'current_post_id', current_post_id );
-		fd.append( 'username', username );
-		fd.append( 'phone', phone );
-		fd.append( 'review_message', review_message );
+		console.log( 'form_data', form_data );
+
+		// Change the button HTML.
 		this_button.html( '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>' );
-		// console.log( fd );
-		// return false;
+
+		// Block the button now.
 		block_element( this_button );
+
+		// Fire the AJAX now to submit the review.
 		$.ajax( {
-			type: 'POST',
+			dataType: 'JSON',
 			url: ajaxurl,
-			data: fd,
+			type: 'POST',
+			data: form_data,
+			cache: false,
 			contentType: false,
 			processData: false,
-			dataType: 'json',
 			success: function ( response ) {
 				// Check for invalid ajax request.
 				if ( 0 === response ) {
@@ -232,8 +254,11 @@ jQuery( document ).ready( function( $ ) {
 			},
 		} );
 	} );
-	// delete comments.
-	jQuery( document ).on( 'click', '.ersrvr_delete_review', function( evt ) {
+
+	/**
+	 * Delete comment.
+	 */
+	$( document ).on( 'click', '.ersrvr_delete_review', function( evt ) {
 		evt.preventDefault();
 		var this_btn   = $( this );
 		var comment_id = this_btn.data('commentid');

@@ -60,7 +60,6 @@ class Easy_Reservations_Reviews_Public {
 	 */
 	public function enqueue_scripts() {
 		global $wp_registered_widgets, $post, $wp_query;
-		$post_id = ! empty( $post->ID ) ? $post->ID : 0;
 		// Active style file based on the active theme.
 		$current_theme     = get_option( 'stylesheet' );
 		$active_style      = ersrvr_get_active_stylesheet( $current_theme );
@@ -104,33 +103,36 @@ class Easy_Reservations_Reviews_Public {
 			array(),
 			filemtime( ERSRVR_PLUGIN_PATH . 'public/css/fileinput.css' )
 		);
-		$user_email = '';
-		if ( is_user_logged_in() ) {
-			$user_data  = ersrvr_user_logged_in_data();
-			$user_email = $user_data['user_email'];
-		}
-		$review_file_allowed_extensions = ersrvr_get_review_file_allowed_file_types();
-		// Localize variables.
-		wp_localize_script(
-			$this->plugin_name,
-			'ERSRVR_Reviews_Public_Script_Vars',
-			array(
-				'ajaxurl'                                => admin_url( 'admin-ajax.php' ),
-				'user_logged_in'                         => ( is_user_logged_in() ) ? 'yes' : 'no',
-				'user_email'                             => $user_email,
-				'current_post_id'                        => $post_id,
-				'toast_error_heading'                    => __( 'Ooops! Error..', 'easy-reservations-reviews' ),
-				'invalid_reviews_message_error_text'     => __( 'Please add review message', 'easy-reservations-reviews' ),
-				'invalid_reviews_email_error_text'       => __( 'Please add email ID', 'easy-reservations-reviews' ),
-				'invalid_reviews_email_regex_error_text' => __( 'Please add valid email ID', 'easy-reservations-reviews' ),
-				'invalid_reviews_phone_error_text'       => __( 'Please add valid phone number', 'easy-reservations-reviews' ),
-				'invalid_reviews_name_error_text'        => __( 'Please add name', 'easy-reservations-reviews' ),
-				'toast_success_heading'                  => __( 'Woohhoooo! Success..', 'easy-reservations-reviews' ),
-				'review_file_allowed_extensions'         => $review_file_allowed_extensions,
-				'review_file_invalid_file_error'         => sprintf( __( 'Invalid file selected. Allowed extensions are: %1$s', 'easy-reservations-reviews' ), implode( ', ', $review_file_allowed_extensions ) ),
-			)
+
+		// Localized strings.
+		$localized_strings = array(
+			'ajaxurl'                                => admin_url( 'admin-ajax.php' ),
+			'user_logged_in'                         => ( is_user_logged_in() ) ? 'yes' : 'no',
+			'toast_error_heading'                    => __( 'Ooops! Error..', 'easy-reservations-reviews' ),
+			'invalid_reviews_message_error_text'     => __( 'Please provide review text.', 'easy-reservations-reviews' ),
+			'invalid_reviews_email_error_text'       => __( 'Please provide your email address.', 'easy-reservations-reviews' ),
+			'invalid_reviews_email_regex_error_text' => __( 'Please review the email address provided.', 'easy-reservations-reviews' ),
+			'invalid_reviews_phone_error_text'       => __( 'Please provide your contact number.', 'easy-reservations-reviews' ),
+			'invalid_reviews_name_error_text'        => __( 'Please provide your name.', 'easy-reservations-reviews' ),
+			'review_cannot_be_submitted'             => __( 'There are a few errors that need to be addressed before submitting the review.', 'easy-reservations-reviews' ),
+			'toast_success_heading'                  => __( 'Woohhoooo! Success..', 'easy-reservations-reviews' ),
+			'review_file_allowed_extensions'         => ersrvr_get_review_file_allowed_file_types(),
+			'review_file_invalid_file_error'         => sprintf( __( 'Invalid file selected. Allowed extensions are: %1$s', 'easy-reservations-reviews' ), implode( ', ', ersrvr_get_review_file_allowed_file_types() ) ),
 		);
 
+		/**
+		 * This hook fires in public side of the site.
+		 *
+		 * This filter helps in modifying the localized strings used on the public side.
+		 *
+		 * @param array $localized_strings List of localized strings.
+		 * @return array
+		 * @since 1.0.0
+		 */
+		$localized_strings = apply_filters( 'ersrvr_public_localized_strings', $localized_strings );
+
+		// Localize variables.
+		wp_localize_script( $this->plugin_name, 'ERSRVR_Reviews_Public_Script_Vars', $localized_strings );
 	}
 
 	/**
@@ -385,15 +387,16 @@ class Easy_Reservations_Reviews_Public {
 	 *
 	 * @since 1.0.0
 	 */
-	public function ersrvr_submit_reviews() {
-		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
-		// Check if action mismatches.
-		if ( empty( $action ) || 'ersrvr_submit_reviews' !== $action ) {
-			wp_die();
-		}
+	public function ersrvr_submit_review_callback() {
 		global $wp_filesystem;
 		WP_Filesystem();
 		$posted_array   = filter_input_array( INPUT_POST );
+
+		debug( $posted_array );
+		debug( $_POST );
+		debug( $_FILES );
+		die;
+
 		$user_email     = ( ! empty( $posted_array['useremail'] ) ) ? $posted_array['useremail'] : '';
 		$username       = ( ! empty( $posted_array['username'] ) ) ? $posted_array['username'] : '';
 		$phone          = ( ! empty( $posted_array['phone'] ) ) ? $posted_array['phone'] : '';
