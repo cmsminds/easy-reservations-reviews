@@ -20,7 +20,6 @@
  * @author     cmsMinds <info@cmsminds.com>
  */
 class Easy_Reservations_Reviews_Public {
-
 	/**
 	 * The ID of this plugin.
 	 *
@@ -47,10 +46,8 @@ class Easy_Reservations_Reviews_Public {
 	 * @param      string $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
-
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-
 	}
 
 	/**
@@ -60,11 +57,13 @@ class Easy_Reservations_Reviews_Public {
 	 */
 	public function enqueue_scripts() {
 		global $wp_registered_widgets, $post, $wp_query;
+
 		// Active style file based on the active theme.
 		$current_theme     = get_option( 'stylesheet' );
 		$active_style      = ersrvr_get_active_stylesheet( $current_theme );
 		$active_style_url  = ( ! empty( $active_style['url'] ) ) ? $active_style['url'] : '';
 		$active_style_path = ( ! empty( $active_style['path'] ) ) ? $active_style['path'] : '';
+
 		// Enque Style file.
 		if ( ! empty( $active_style_url ) && ! empty( $active_style_path ) ) {
 			wp_enqueue_style(
@@ -74,6 +73,7 @@ class Easy_Reservations_Reviews_Public {
 				filemtime( $active_style_path ),
 			);
 		}
+
 		// Enque Javascript file.
 		wp_enqueue_script(
 			$this->plugin_name,
@@ -82,6 +82,7 @@ class Easy_Reservations_Reviews_Public {
 			filemtime( ERSRVR_PLUGIN_PATH . 'public/js/easy-reservations-reviews-public.js' ),
 			true
 		);
+
 		wp_enqueue_script(
 			$this->plugin_name . '-fileinput',
 			ERSRVR_PLUGIN_URL . 'public/js/fileinput.js',

@@ -66,18 +66,14 @@ class Easy_Reservations_Reviews {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'EASY_RESERVATIONS_REVIEWS_VERSION' ) ) {
-			$this->version = EASY_RESERVATIONS_REVIEWS_VERSION;
-		} else {
-			$this->version = '1.0.0';
-		}
+		$this->version     = ( defined( 'ERSRVR_PLUGIN_VERSION' ) ) ? ERSRVR_PLUGIN_VERSION : '1.0.0';
 		$this->plugin_name = 'easy-reservations-reviews';
 
+		// Initiate all the hooks and callbacks.
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
 	}
 
 	/**
@@ -97,36 +93,13 @@ class Easy_Reservations_Reviews {
 	 * @access   private
 	 */
 	private function load_dependencies() {
+		require_once ERSRVR_PLUGIN_PATH . 'includes/class-easy-reservations-reviews-loader.php'; // The class responsible for orchestrating the actions and filters of the core plugin.
+		require_once ERSRVR_PLUGIN_PATH . 'includes/class-easy-reservations-reviews-i18n.php'; // The class responsible for defining internationalization functionality of the plugin.
+		require_once ERSRVR_PLUGIN_PATH . 'includes/easy-reservations-reviews-functions.php'; // The files responsible for common static functions side of the site.
+		require_once ERSRVR_PLUGIN_PATH . 'admin/class-easy-reservations-reviews-admin.php'; // The class responsible for defining all actions that occur in the admin area.
+		require_once ERSRVR_PLUGIN_PATH . 'public/class-easy-reservations-reviews-public.php'; // The class responsible for defining all actions that occur in the public-facing side of the site.
 
-		/**
-		 * The class responsible for orchestrating the actions and filters of the
-		 * core plugin.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-easy-reservations-reviews-loader.php';
-
-		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-easy-reservations-reviews-i18n.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the admin area.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-easy-reservations-reviews-admin.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the public-facing
-		 * side of the site.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-easy-reservations-reviews-public.php';
-		/**
-		 * The files responsible for common static functions
-		 * side of the site.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/easy-reservations-reviews-functions.php';
 		$this->loader = new Easy_Reservations_Reviews_Loader();
-
 	}
 
 	/**
@@ -139,11 +112,9 @@ class Easy_Reservations_Reviews {
 	 * @access   private
 	 */
 	private function set_locale() {
-
 		$plugin_i18n = new Easy_Reservations_Reviews_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-
 	}
 
 	/**
@@ -154,12 +125,12 @@ class Easy_Reservations_Reviews {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
-
 		$plugin_admin = new Easy_Reservations_Reviews_Admin( $this->get_plugin_name(), $this->get_version() );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'ersrvr_admin_enqueue_scripts_callback' );
 		$this->loader->add_filter( 'woocommerce_get_sections_easy-reservations', $plugin_admin, 'ersrvr_reviews_settings_section' );
-		$this->loader->add_filter( 'woocommerce_get_settings_easy-reservations', $plugin_admin, 'ersrvr_reviews_settings_fields', 99, 2 );
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'ersrvr_add_metabox_in_comment_screen' );
+		$this->loader->add_filter( 'woocommerce_get_settings_easy-reservations', $plugin_admin, 'ersrvr_reviews_settings_fields', 10, 2 );
+		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'ersrvr_add_meta_boxes_callback' );
 		$this->loader->add_action( 'wp_ajax_ersrvr_submit_reviews_current_comment', $plugin_admin, 'ersrvr_submit_reviews_current_comment' );
 	}
 

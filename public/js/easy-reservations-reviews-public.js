@@ -196,11 +196,6 @@ jQuery( document ).ready( function( $ ) {
 		// Attach all the data to the form data variable.
 		form_data.append( 'action', 'submit_review' );
 		form_data.append( 'reviewer_message', reviewer_message );
-
-		console.log( 'reviewer_message', reviewer_message );
-		console.log( 'form_data', form_data );
-		return false;
-
 		form_data.append( 'review_attachments', review_attachments );
 		form_data.append( 'user_criteria_ratings', user_criteria_ratings );
 		form_data.append( 'item_id', $( '.single-reserve-page' ).data( 'item' ) );
@@ -211,8 +206,6 @@ jQuery( document ).ready( function( $ ) {
 			form_data.append( 'reviewer_phone', reviewer_phone );
 			form_data.append( 'reviewer_email', reviewer_email );
 		}
-
-		console.log( 'form_data', form_data );
 
 		// Change the button HTML.
 		this_button.html( '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>' );
