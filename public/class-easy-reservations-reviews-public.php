@@ -207,6 +207,7 @@ class Easy_Reservations_Reviews_Public {
 					'method'  => array(),
 					'enctype' => array(),
 					'action'  => array(),
+					'id'      => array(),
 				),
 				'label'    => array(
 					'class' => array(),
@@ -329,6 +330,7 @@ class Easy_Reservations_Reviews_Public {
 						'method'  => array(),
 						'enctype' => array(),
 						'action'  => array(),
+						'id'      => array(),
 					),
 					'label'    => array(
 						'class' => array(),

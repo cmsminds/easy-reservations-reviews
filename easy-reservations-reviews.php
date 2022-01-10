@@ -90,7 +90,7 @@ function run_easy_reservations_reviews() {
  * @since 1.0.0
  */
 function ersrvr_plugins_loaded_callback() {
-	$is_ersrvr_active = in_array( 'easy-reservations/easy-reservations.php', get_option( 'active_plugins' ), true );
+	$is_ersrvr_active = in_array( 'boat-rental-system/easy-reservations.php', get_option( 'active_plugins' ), true );
 
 	if ( current_user_can( 'activate_plugins' ) && false === $is_ersrvr_active ) {
 		add_action( 'admin_notices', 'ersrvr_admin_notices_callback' );

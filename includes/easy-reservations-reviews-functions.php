@@ -217,6 +217,7 @@ if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
 					'method'  => array(),
 					'enctype' => array(),
 					'action'  => array(),
+					'id'      => array(),
 				),
 				'label'    => array(
 					'class' => array(),

@@ -16,8 +16,8 @@ jQuery( document ).ready( function( $ ) {
 	var review_cannot_be_submitted             = ERSRVR_Reviews_Public_Script_Vars.review_cannot_be_submitted;
 
 	// Global variables.
-	var user_criteria_ratings = [];
-	var file_array            = [];
+	var user_criteria_ratings  = [];
+	var review_attachments_arr = [];
 
 	/**
 	 * Manage the classes based on which star the mouse is on.
@@ -92,7 +92,7 @@ jQuery( document ).ready( function( $ ) {
 
 		// Iterate through the files to collect the extensions.
 		for ( var i in files ) {
-			var filename = files[i].name;
+			var filename   = files[i].name;
 
 			// If the filename is invalid, skip.
 			if ( -1 === is_valid_string( filename ) ) {
@@ -112,6 +112,9 @@ jQuery( document ).ready( function( $ ) {
 
 			// Collect the extension in the array.
 			file_extensions.push( file_ext );
+
+			// Collect the files in an array.
+			review_attachments_arr.push( files[i] );
 		}
 
 		// Unwanted selected files.
@@ -146,11 +149,12 @@ jQuery( document ).ready( function( $ ) {
 		var reviewer_email     = $( '#ersrvr_email' ).val();
 		var reviewer_message   = $( '#ersrvr_message' ).val();
 		var review_attachments = $( 'input[name="ersrvr_review_attachments[]"]' ).prop( 'files' );
-		var review_form        = $( '#item-review-form' )[0];
-		var form_data          = new FormData( review_form ); // Prepare the form data.
+		var form_data          = new FormData(); // Prepare the form data.
 		var submit_review      = true;
 
-		form_data.append( 'hello', 'world' );
+		console.log( 'review_attachments', review_attachments );
+		console.log( 'review_attachments_arr', review_attachments_arr );
+		form_data.append( 'attachments[]', review_attachments_arr );
 		console.log( 'form_data', form_data );
 		return false;
 
