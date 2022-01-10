@@ -142,6 +142,7 @@ class Easy_Reservations_Reviews_Admin {
 			'add_criterias_promptbox_text' => __( 'New Criteria', 'easy-reservations-reviews' ),
 			'add_same_criteria_error'      => __( 'The criteria already exists. Please add a different criteria.', 'easy-reservations-reviews' ),
 			'existing_criteria_result'     => ( $this->comment_post_id_is_reservation ) ? get_comment_meta( $this->comment_id, 'user_criteria_ratings', true ) : array(),
+			'is_reservation_comment'       => ( $this->comment_post_id_is_reservation ) ? 1 : -1,
 		);
 
 		/**

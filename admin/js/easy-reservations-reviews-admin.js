@@ -7,7 +7,23 @@ jQuery( document ).ready( function( $ ) {
 	var add_same_criteria_error      = ERSRVR_Reviews_Script_Vars.add_same_criteria_error;
 	var existing_criteria_result     = ERSRVR_Reviews_Script_Vars.existing_criteria_result;
 	var ajaxurl                      = ERSRVR_Reviews_Script_Vars.ajaxurl;
-	
+	var is_reservation_comment       = ERSRVR_Reviews_Script_Vars.is_reservation_comment;
+
+	// Add phone field to the review form.
+	if ( '1' === is_reservation_comment ) {
+		var reviewer_email_td = $( 'input[name="newcomment_author_email"]' ).parent( 'td' );
+		var reviewer_email_tr = reviewer_email_td.parent( 'tr' );
+		reviewer_email_tr.addClass( 'reviewer-email-tr' );
+
+		// Prepare the html now.
+		var reviewer_phone_html = '<tr>';
+		reviewer_phone_html    += '<td class="first"><label for="phone">Phone</label></td>';
+		reviewer_phone_html    += '<td><input type="text" name="newcomment_author_phone" size="30" value="adarsh@cmsminds.com" id="phone"></td>';
+		reviewer_phone_html    += '</tr>';
+
+		// Insert the HTML now.
+		$( reviewer_phone_html ).insertAfter( 'tr.reviewer-email-tr' );
+	}
 
 	// Get the current section.
 	var current_section = get_query_string_parameter_value( 'section' );
