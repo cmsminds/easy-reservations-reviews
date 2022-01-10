@@ -437,29 +437,45 @@ if ( ! function_exists( 'ersrvr_user_logged_in_data' ) ) {
 	 * @since 1.0.0
 	 */
 	function ersrvr_user_logged_in_data() {
-		$current_userid = get_current_user_id();
-		$users_info     = array();
-		if ( 0 === $current_userid ) {
-			// The user ID is 0, therefore the current user is not logged in.
-			return $users_info; // escape this function, without making any changes.
-		} else {
-			$user_obj          = get_userdata( $current_userid );
-			$first_name        = ! empty( get_user_meta( $current_userid, 'first_name', true ) ) ? get_user_meta( $current_userid, 'first_name', true ) : '';
-			$last_name         = ! empty( get_user_meta( $current_userid, 'last_name', true ) ) ? get_user_meta( $current_userid, 'last_name', true ) : '';
-			$display_name      = ! empty( $user_obj->data->display_name ) ? $user_obj->data->display_name : '';
-			$username          = $first_name . ' ' . $last_name;
-			$username          = ( ' ' !== $username ) ? $username : $display_name;
-			$user_email        = ! empty( $user_obj->data->user_email ) ? $user_obj->data->user_email : '';
-			$user_phone_number = ! empty( get_user_meta( $current_userid, 'billing_phone', true ) ) ? get_user_meta( $current_userid, 'billing_phone', true ) : '';
-			$users_info        = array(
-				'username'          => $username,
-				'user_email'        => $user_email,
-				'user_phone_number' => $user_phone_number,
-				'user_id'           => $current_userid,
-			);
+		$user_id = get_current_user_id();
+
+		// Return blank if the user ID is 0.
+		if ( 0 === $user_id ) {
+			return array();
 		}
-		// This filters holds the user information modifications.
-		return apply_filters( 'ersrvr_add_user_information', $users_info, $current_userid );
+
+		$user_data  = get_userdata( $user_id );
+		$first_name = get_user_meta( $user_id, 'first_name', true );
+		$last_name  = get_user_meta( $user_id, 'last_name', true );
+		
+		// Prepare the user full name.
+		if ( ! empty( $first_name ) && ! empty( $last_name ) ) {
+			$name = "{$first_name} {$last_name}";
+		} elseif ( ! empty( $first_name ) ) {
+			$name = $first_name;
+		} elseif ( ! empty( $last_name ) ) {
+			$name = $last_name;
+		} else {
+			$name = ( ! empty( $user_data->data->display_name ) ) ? $user_data->data->display_name : '';
+		}
+
+		$user_information = array(
+			'name'    => $name,
+			'email'   => ( ! empty( $user_obj->data->user_email ) ) ? $user_obj->data->user_email : '',
+			'phone'   => get_user_meta( $user_id, 'billing_phone', true ),
+			'user_id' => $user_id,
+		);
+
+		/**
+		 * This filter helps on the public end fetching user details.
+		 *
+		 * This filter helps in modifying the user contact details.
+		 *
+		 * @param array $user_information Current loggedin user information.
+		 * @return array
+		 * @since 1.0.0
+		 */
+		$user_information = apply_filters( 'ersrvr_add_user_information', $user_information );
 	}
 }
 /**

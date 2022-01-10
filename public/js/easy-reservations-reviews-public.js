@@ -114,7 +114,11 @@ jQuery( document ).ready( function( $ ) {
 			file_extensions.push( file_ext );
 
 			// Collect the files in an array.
-			review_attachments_arr.push( files[i] );
+			review_attachments_arr.push(
+				{
+					file: files[i],
+				}
+			);
 		}
 
 		// Unwanted selected files.
@@ -148,15 +152,8 @@ jQuery( document ).ready( function( $ ) {
 		var reviewer_phone     = $( '#ersrvr_phone' ).val();
 		var reviewer_email     = $( '#ersrvr_email' ).val();
 		var reviewer_message   = $( '#ersrvr_message' ).val();
-		var review_attachments = $( 'input[name="ersrvr_review_attachments[]"]' ).prop( 'files' );
 		var form_data          = new FormData(); // Prepare the form data.
 		var submit_review      = true;
-
-		console.log( 'review_attachments', review_attachments );
-		console.log( 'review_attachments_arr', review_attachments_arr );
-		form_data.append( 'attachments[]', review_attachments_arr );
-		console.log( 'form_data', form_data );
-		return false;
 
 		// Vacate all the errors.
 		$( '.ersrv-reservation-error' ).text( '' );
@@ -197,11 +194,15 @@ jQuery( document ).ready( function( $ ) {
 			return false;
 		}
 
+		// Iterate through the attachments to attach them to the form data.
+		for( var i in review_attachments_arr ) {
+			form_data.append( 'review_attachments[]', review_attachments_arr[i]['file'] );
+		}
+
 		// Attach all the data to the form data variable.
 		form_data.append( 'action', 'submit_review' );
 		form_data.append( 'reviewer_message', reviewer_message );
-		form_data.append( 'review_attachments', review_attachments );
-		form_data.append( 'user_criteria_ratings', user_criteria_ratings );
+		form_data.append( 'user_ratings', JSON.stringify( user_criteria_ratings ) );
 		form_data.append( 'item_id', $( '.single-reserve-page' ).data( 'item' ) );
 
 		// Collect all the data now.

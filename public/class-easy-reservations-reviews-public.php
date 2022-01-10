@@ -393,18 +393,20 @@ class Easy_Reservations_Reviews_Public {
 	public function ersrvr_submit_review_callback() {
 		global $wp_filesystem;
 		WP_Filesystem();
-		$posted_array   = filter_input_array( INPUT_POST );
+		$user_information = ersrvr_user_logged_in_data();
 
-		debug( $posted_array );
-		debug( $_POST );
-		debug( $_FILES );
-		die;
+		// Posted data.
+		$posted_array     = filter_input_array( INPUT_POST );
+		$reviewer_email   = ( is_user_logged_in() ) ? $user_information['email'] : filter_input( INPUT_POST, 'reviewer_email', FILTER_SANITIZE_STRING );
+		$reviewer_name    = ( is_user_logged_in() ) ? $user_information['name'] : filter_input( INPUT_POST, 'reviewer_name', FILTER_SANITIZE_STRING );
+		$reviewer_phone   = ( is_user_logged_in() ) ? $user_information['phone'] : filter_input( INPUT_POST, 'reviewer_phone', FILTER_SANITIZE_STRING );
+		$reviewer_message = filter_input( INPUT_POST, 'reviewer_message', FILTER_SANITIZE_STRING );
+		$item_id          = filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
 
-		$user_email     = ( ! empty( $posted_array['useremail'] ) ) ? $posted_array['useremail'] : '';
-		$username       = ( ! empty( $posted_array['username'] ) ) ? $posted_array['username'] : '';
-		$phone          = ( ! empty( $posted_array['phone'] ) ) ? $posted_array['phone'] : '';
-		$review_message = ( ! empty( $posted_array['review_message'] ) ) ? $posted_array['review_message'] : '';
-		$post_id        = ( ! empty( $posted_array['current_post_id'] ) ) ? $posted_array['current_post_id'] : '';
+		die("pool");
+
+
+
 		$user           = get_user_by( 'email', $user_email );
 		$user_id        = ( ! empty( $user->ID ) ) ? $user->ID : 0;
 		$user_name      = ( ! empty( $user->data->display_name ) ) ? $user->data->display_name : $username;
