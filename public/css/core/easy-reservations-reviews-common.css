@@ -218,3 +218,15 @@
   padding-bottom: 0px !important;
   margin-bottom: 0px !important;
 }
+.file-preview-thumbnails {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.file-preview-thumbnails .file-preview-frame {
+  flex-basis: calc(100% / 3 - 16px);
+}
+.btn-file .file-input input[type=file],
+.btn.btn-primary.btn-file *{
+  cursor: pointer;
+}
