@@ -23,20 +23,56 @@ class Easy_Reservations_Reviews_Admin {
 	/**
 	 * The ID of this plugin.
 	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * @since 1.0.0
+	 * @access private
+	 * @var string $plugin_name The ID of this plugin.
 	 */
 	private $plugin_name;
 
 	/**
 	 * The version of this plugin.
 	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
+	 * @since 1.0.0
+	 * @access private
+	 * @var string $version The current version of this plugin.
 	 */
 	private $version;
+
+	/**
+	 * Comment ID.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 * @var string $comment_id The current comment ID on the comment edit screen.
+	 */
+	private $comment_id;
+
+	/**
+	 * Comment object.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 * @var string $comment The current comment object on the comment edit screen.
+	 */
+	private $comment;
+
+	/**
+	 * Comment post ID.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 * @var string $comment_post_id The current comment post ID on the comment edit screen.
+	 */
+	private $comment_post_id;
+
+	/**
+	 * Comment post ID is a reservation item.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 * @var bool $comment_post_id_is_reservation If the comment post ID is a reservation item.
+	 */
+	private $comment_post_id_is_reservation;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -46,8 +82,17 @@ class Easy_Reservations_Reviews_Admin {
 	 * @param string $version The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
-		$this->plugin_name = $plugin_name;
-		$this->version     = $version;
+		$this->plugin_name                    = $plugin_name;
+		$this->version                        = $version;
+		$this->comment_id                     = filter_input( INPUT_GET, 'c', FILTER_SANITIZE_NUMBER_INT ); // Get details about the comment ID and related post ID.
+		$this->comment_post_id                = false;
+		$this->comment_post_id_is_reservation = false;
+
+		// If the comment ID is available.
+		if ( ! is_null( $this->comment_id ) ) {
+			$this->comment         = get_comment( $this->comment_id );
+			$this->comment_post_id = ( ! empty( $this->comment->comment_post_ID ) ) ? $this->comment->comment_post_ID : false;
+		}
 	}
 
 	/**
@@ -56,10 +101,8 @@ class Easy_Reservations_Reviews_Admin {
 	 * @since    1.0.0
 	 */
 	public function ersrvr_admin_enqueue_scripts_callback() {
-		$current_screen          = get_current_screen();
-		$is_comment_screen       = ( ! empty( $current_screen->base ) && 'comment' === $current_screen->base ) ? true : false;
-		$comment_id              = filter_input( INPUT_GET, 'c', FILTER_SANITIZE_NUMBER_INT );
-		$existed_criteria_result = ( ! empty( $comment_id ) ) ? get_comment_meta( $comment_id, 'user_criteria_ratings', true ) : array();
+		// If the comment post ID is available, check if the post ID is a reservation item.
+		$this->comment_post_id_is_reservation = ( false !== $this->comment_post_id ) ? ersrv_product_is_reservation( $this->comment_post_id ) : $this->comment_post_id_is_reservation;
 
 		// Enqueue the font-awesome style.
 		wp_enqueue_style(
@@ -98,7 +141,7 @@ class Easy_Reservations_Reviews_Admin {
 			'add_criteria_button_text'     => __( 'Add Criteria', 'easy-reservations-reviews' ),
 			'add_criterias_promptbox_text' => __( 'New Criteria', 'easy-reservations-reviews' ),
 			'add_same_criteria_error'      => __( 'The criteria already exists. Please add a different criteria.', 'easy-reservations-reviews' ),
-			'existing_criteria_result'     => $existed_criteria_result,
+			'existing_criteria_result'     => ( $this->comment_post_id_is_reservation ) ? get_comment_meta( $this->comment_id, 'user_criteria_ratings', true ) : array(),
 		);
 
 		/**
@@ -153,20 +196,8 @@ class Easy_Reservations_Reviews_Admin {
 	 * @since 1.0.0
 	 */
 	public function ersrvr_add_meta_boxes_callback() {
-		$comment_id      = filter_input( INPUT_GET, 'c', FILTER_SANITIZE_NUMBER_INT );
-		$comment_obj     = get_comment( $comment_id );
-		$comment_post_id = ( ! empty( $comment_obj->comment_post_ID ) ) ? $comment_obj->comment_post_ID : false;
-
-		// Return, if the comment post ID is unavailable.
-		if ( false === $comment_post_id ) {
-			return;
-		}
-
-		// Check if the post ID is reservation item.
-		$is_reservation_item = ersrv_product_is_reservation( $comment_post_id );
-
 		// Return, if the comment post ID is not a reservation item.
-		if ( false === $is_reservation_item ) {
+		if ( false === $this->comment_post_id_is_reservation ) {
 			return;
 		}
 
