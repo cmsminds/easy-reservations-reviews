@@ -230,3 +230,21 @@
 .btn.btn-primary.btn-file *{
   cursor: pointer;
 }
+@media(max-width:767px){
+  .file-preview-thumbnails {
+    padding-bottom: 60px;
+  }
+  .file-preview-thumbnails .file-preview-frame {
+    flex-basis: calc(100% / 2 - 16px);
+    width: calc(100% / 2 - 16px) !important;
+    float: none !important;
+    display: inline-flex;
+    height: auto !important;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+  }
+  .file-preview-thumbnails .file-preview-frame img{
+    height: auto !important;
+  }
+}
