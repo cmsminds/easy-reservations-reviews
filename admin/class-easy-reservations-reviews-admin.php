@@ -143,6 +143,8 @@ class Easy_Reservations_Reviews_Admin {
 			'add_same_criteria_error'      => __( 'The criteria already exists. Please add a different criteria.', 'easy-reservations-reviews' ),
 			'existing_criteria_result'     => ( $this->comment_post_id_is_reservation ) ? get_comment_meta( $this->comment_id, 'user_criteria_ratings', true ) : array(),
 			'is_reservation_comment'       => ( $this->comment_post_id_is_reservation ) ? 1 : -1,
+			'reviewer_phone_field_label'   => __( 'Phone', 'easy-reservations-reviews' ),
+			'reviewer_phone'               => get_comment_meta( $this->comment_id, 'reviewer_phone', true ),
 		);
 
 		/**
@@ -329,36 +331,47 @@ class Easy_Reservations_Reviews_Admin {
 		$attached_ids = get_comment_meta( $this->comment_id, 'review_attachments', true );
 		?>
 		<div class="ersrvr-review-attachments-container">
-			<?php
-			if ( ! empty( $attached_ids ) && is_array( $attached_ids ) ) {
-				?>
+			<?php if ( ! empty( $attached_ids ) && is_array( $attached_ids ) ) { ?>
 				<div class="gallery-images ersrvr_count_images_3">
 					<?php
-					foreach ( $attached_ids as $index => $attach_id ) {
-						$image_url = ( ! empty( $attach_id ) ) ? wp_get_attachment_url( $attach_id ) : '';
-	
-						if ( ! empty( $image_url ) ) {
-							?>
-							<div class="ersrvr-gallery-image-item" data-imageid="<?php echo esc_attr( $attach_id ); ?>">
-								<img alt="" src="<?php echo esc_url( $image_url ); ?>" class="ersrvr_attached_files" />
-								<a href="javascript:void(0)" class="delete-link ersrvr_delete_image">
-									<span class="icon"><span class="dashicons dashicons-dismiss"></span></span>
-									<span class="text sr-only">Delete</span>
-								</a>
-							</div>
-							<?php
+					foreach ( $attached_ids as $attachment_id ) {
+						$image_url = ( ! empty( $attachment_id ) ) ? wp_get_attachment_url( $attachment_id ) : '';
+
+						// Skip if the image doesn't exist.
+						if ( empty( $image_url ) ) {
+							continue;
 						}
+						?>
+						<div class="ersrvr-gallery-image-item" data-imageid="<?php echo esc_attr( $attachment_id ); ?>">
+							<img alt="<?php echo esc_attr( basename( $image_url ) ); ?>" src="<?php echo esc_url( $image_url ); ?>" class="ersrvr_attached_files" />
+							<a href="javascript:void(0)" class="delete-link">
+								<span class="icon"><span class="dashicons dashicons-dismiss"></span></span>
+								<span class="text sr-only"><?php esc_html_e( 'Delete', 'easy-reservations-reviews' ); ?></span>
+							</a>
+						</div>
+						<?php
 					}
 					?>
 				</div>
-				<?php
-			}
-			?>
+			<?php } ?>
 		</div>
 		<div class="ersrvr-add-more-attachments-to-review">
 			<a href="javascript:void(0);"><?php esc_html_e( 'Add review attachments', 'easy-reservations-reviews' ); ?></a>
 		</div>
 		<?php
+	}
+
+	/**
+	 * AJAX to remove the review attachment and update the database.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrvr_remove_review_attachment_callback() {
+		$review_id     = filter_input( INPUT_POST, 'review_id', FILTER_SANITIZE_NUMBER_INT );
+		$attachment_id = filter_input( INPUT_POST, 'attachment_id', FILTER_SANITIZE_NUMBER_INT );
+
+		var_dump( $attachment_id, $review_id );
+		die;
 	}
 
 	/**

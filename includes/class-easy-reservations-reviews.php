@@ -131,6 +131,7 @@ class Easy_Reservations_Reviews {
 		$this->loader->add_filter( 'woocommerce_get_sections_easy-reservations', $plugin_admin, 'ersrvr_reviews_settings_section' );
 		$this->loader->add_filter( 'woocommerce_get_settings_easy-reservations', $plugin_admin, 'ersrvr_reviews_settings_fields', 10, 2 );
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'ersrvr_add_meta_boxes_callback' );
+		$this->loader->add_action( 'wp_ajax_remove_review_attachment', $plugin_admin, 'ersrvr_remove_review_attachment_callback' );
 		$this->loader->add_action( 'wp_ajax_ersrvr_submit_reviews_current_comment', $plugin_admin, 'ersrvr_submit_reviews_current_comment' );
 	}
 
