@@ -327,30 +327,34 @@ class Easy_Reservations_Reviews_Admin {
 	 */
 	public function ersrvr_review_attachments_callback() {
 		$attached_ids = get_comment_meta( $this->comment_id, 'review_attachments', true );
-		if ( ! empty( $attached_ids ) && is_array( $attached_ids ) ) {
-			?>
-			<div class="gallery-images ersrvr_count_images_3">
-				<?php
-				foreach ( $attached_ids as $index => $attach_id ) {
-					$image_url = ( ! empty( $attach_id ) ) ? wp_get_attachment_url( $attach_id ) : '';
-
-					if ( ! empty( $image_url ) ) {
-						?>
-						<div class="ersrvr-gallery-image-item" data-imageid="<?php echo esc_attr( $attach_id ); ?>">
-							<img alt="" src="<?php echo esc_url( $image_url ); ?>" class="ersrvr_attached_files" />
-							<a href="javascript:void(0)" class="delete-link ersrvr_delete_image">
-								<span class="icon"><span class="dashicons dashicons-dismiss"></span></span>
-								<span class="text sr-only">Delete</span>
-							</a>
-						</div>
-						<?php
-					}
-				}
-				?>
-			</div>
-			<?php
-		}
 		?>
+		<div class="ersrvr-review-attachments-container">
+			<?php
+			if ( ! empty( $attached_ids ) && is_array( $attached_ids ) ) {
+				?>
+				<div class="gallery-images ersrvr_count_images_3">
+					<?php
+					foreach ( $attached_ids as $index => $attach_id ) {
+						$image_url = ( ! empty( $attach_id ) ) ? wp_get_attachment_url( $attach_id ) : '';
+	
+						if ( ! empty( $image_url ) ) {
+							?>
+							<div class="ersrvr-gallery-image-item" data-imageid="<?php echo esc_attr( $attach_id ); ?>">
+								<img alt="" src="<?php echo esc_url( $image_url ); ?>" class="ersrvr_attached_files" />
+								<a href="javascript:void(0)" class="delete-link ersrvr_delete_image">
+									<span class="icon"><span class="dashicons dashicons-dismiss"></span></span>
+									<span class="text sr-only">Delete</span>
+								</a>
+							</div>
+							<?php
+						}
+					}
+					?>
+				</div>
+				<?php
+			}
+			?>
+		</div>
 		<div class="ersrvr-add-more-attachments-to-review">
 			<a href="javascript:void(0);"><?php esc_html_e( 'Add review attachments', 'easy-reservations-reviews' ); ?></a>
 		</div>
