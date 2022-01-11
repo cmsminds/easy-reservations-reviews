@@ -2,14 +2,15 @@ jQuery( document ).ready( function( $ ) {
 	'use strict';
 
 	// Localized variables.
-	var add_criteria_button_text     = ERSRVR_Reviews_Script_Vars.add_criteria_button_text;
-	var add_criterias_promptbox_text = ERSRVR_Reviews_Script_Vars.add_criterias_promptbox_text;
-	var add_same_criteria_error      = ERSRVR_Reviews_Script_Vars.add_same_criteria_error;
-	var existing_criteria_result     = ERSRVR_Reviews_Script_Vars.existing_criteria_result;
-	var ajaxurl                      = ERSRVR_Reviews_Script_Vars.ajaxurl;
-	var is_reservation_comment       = ERSRVR_Reviews_Script_Vars.is_reservation_comment;
-	var reviewer_phone_field_label   = ERSRVR_Reviews_Script_Vars.reviewer_phone_field_label;
-	var reviewer_phone               = ERSRVR_Reviews_Script_Vars.reviewer_phone;
+	var add_criteria_button_text       = ERSRVR_Reviews_Script_Vars.add_criteria_button_text;
+	var add_criterias_promptbox_text   = ERSRVR_Reviews_Script_Vars.add_criterias_promptbox_text;
+	var add_same_criteria_error        = ERSRVR_Reviews_Script_Vars.add_same_criteria_error;
+	var existing_criteria_result       = ERSRVR_Reviews_Script_Vars.existing_criteria_result;
+	var ajaxurl                        = ERSRVR_Reviews_Script_Vars.ajaxurl;
+	var is_reservation_comment         = ERSRVR_Reviews_Script_Vars.is_reservation_comment;
+	var reviewer_phone_field_label     = ERSRVR_Reviews_Script_Vars.reviewer_phone_field_label;
+	var reviewer_phone                 = ERSRVR_Reviews_Script_Vars.reviewer_phone;
+	var remove_attachment_confirm_text = ERSRVR_Reviews_Script_Vars.remove_attachment_confirm_text;
 
 	// Global vars.
 	var user_criteria_ratings = [];
@@ -23,7 +24,7 @@ jQuery( document ).ready( function( $ ) {
 		// Prepare the html now.
 		var reviewer_phone_html = '<tr>';
 		reviewer_phone_html    += '<td class="first"><label for="phone">' + reviewer_phone_field_label + '</label></td>';
-		reviewer_phone_html    += '<td><input type="text" name="newcomment_author_phone" size="30" value="' + reviewer_phone + '" id="phone"></td>';
+		reviewer_phone_html    += '<td><input type="text" name="newcomment_author_phone" size="30" value="' + reviewer_phone + '" id="phone" required /></td>';
 		reviewer_phone_html    += '</tr>';
 
 		// Insert the HTML now.
@@ -81,7 +82,13 @@ jQuery( document ).ready( function( $ ) {
 
 	// Delete the review attachment from the edit comment screen.
 	$( document ).on( 'click', '.ersrvr-gallery-image-item a.delete-link', function() {
-		var this_link = $( this );
+		var confirm_remove = confirm( remove_attachment_confirm_text );
+		var this_link      = $( this );
+
+		// Exit, if the user denies.
+		if ( false === confirm_remove ) {
+			return false;
+		}
 
 		// Block the image.
 		block_element( this_link.parents( '.ersrvr-gallery-image-item' ) );
@@ -93,21 +100,14 @@ jQuery( document ).ready( function( $ ) {
 			type: 'POST',
 			data: {
 				action: 'remove_review_attachment',
-				review_id: $( '#comment_ID' ).val(),
-				attachment_id: this_link.parents( '.ersrvr-gallery-image-item' ).data( 'imageid' ),
+				review_id: $( 'input[name="comment_ID"]' ).val(),
+				attachment_id: this_link.parent( 'div' ).data( 'imageid' ),
 			},
 			success: function ( response ) {
-				// Check for invalid ajax request.
-				if ( 0 === response ) {
-					console.log( 'easy reservations: invalid ajax request' );
-					return false;
+				if( 'review-attachment-removed' === response.data.code ) {
+					// Remove the image block.
+					this_link.parents( '.ersrvr-gallery-image-item' ).remove();
 				}
-				unblock_element( this_btn );
-				unblock_element( $( '.comment-php #publishing-action input[type="submit"]' ) );
-				if( 'ersrvr_ratings_submitted' === response.data.code ) {
-					$('.ersrvr_average_ratings').text( response.data.ersrvr_average_ratings );
-				}
-
 			},
 		} );
 	} );

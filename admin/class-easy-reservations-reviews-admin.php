@@ -145,7 +145,7 @@ class Easy_Reservations_Reviews_Admin {
 			'is_reservation_comment'         => ( $this->comment_post_id_is_reservation ) ? 1 : -1,
 			'reviewer_phone_field_label'     => __( 'Phone', 'easy-reservations-reviews' ),
 			'reviewer_phone'                 => get_comment_meta( $this->comment_id, 'reviewer_phone', true ),
-			'remove_attachment_confirm_text' => __( '', '' ),
+			'remove_attachment_confirm_text' => __( 'Are you sure you want to delete the attachment? Click OK to confirm.', 'easy-reservations-reviews' ),
 		);
 
 		/**
@@ -368,11 +368,50 @@ class Easy_Reservations_Reviews_Admin {
 	 * @since 1.0.0
 	 */
 	public function ersrvr_remove_review_attachment_callback() {
-		$review_id     = filter_input( INPUT_POST, 'review_id', FILTER_SANITIZE_NUMBER_INT );
-		$attachment_id = filter_input( INPUT_POST, 'attachment_id', FILTER_SANITIZE_NUMBER_INT );
+		$review_id     = (int) filter_input( INPUT_POST, 'review_id', FILTER_SANITIZE_NUMBER_INT );
+		$attachment_id = (int) filter_input( INPUT_POST, 'attachment_id', FILTER_SANITIZE_NUMBER_INT );
 
-		var_dump( $attachment_id, $review_id );
-		die;
+		// Get the attachments from the review meta.
+		$review_attachments = get_comment_meta( $review_id, 'review_attachments', true );
+		$attachment_index   = array_search( $attachment_id, $review_attachments, true );
+
+		// Remove the index if found.
+		if ( false !== $attachment_index ) {
+			unset( $review_attachments[ $attachment_index ] );
+		}
+
+		// Reset the indexes if the array has elements.
+		if ( ! empty( $review_attachments ) ) {
+			$review_attachments = array_values( $review_attachments );
+			update_comment_meta( $review_id, 'review_attachments', $review_attachments );
+		} else {
+			delete_comment_meta( $review_id, 'review_attachments' );
+		}
+
+		// Send the AJAX response.
+		wp_send_json_success(
+			array(
+				'code' => 'review-attachment-removed',
+			)
+		);
+		wp_die();
+	}
+
+	/**
+	 * Update the custom fields once comment is updated from admin panel.
+	 *
+	 * @param 
+	 * @since 1.0.0
+	 */
+	public function ersrvr_edit_comment_callback( $comment_id, $data ) {
+		$reviewer_phone = filter_input( INPUT_POST, 'newcomment_author_phone', FILTER_SANITIZE_STRING );
+
+		// If the reviewer phone is available, update it.
+		if ( ! empty( $reviewer_phone ) ) {
+			update_comment_meta( $comment_id, 'reviewer_phone', $reviewer_phone );
+		} else {
+			delete_comment_meta( $review_id, 'reviewer_phone' );
+		}
 	}
 
 	/**
@@ -381,11 +420,6 @@ class Easy_Reservations_Reviews_Admin {
 	 * @since 1.0.0
 	 */
 	public function ersrvr_submit_reviews_current_comment() {
-		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
-		// Check if action mismatches.
-		if ( empty( $action ) || 'ersrvr_submit_reviews_current_comment' !== $action ) {
-			wp_die();
-		}
 		$comment_id   = filter_input( INPUT_POST, 'comment_id', FILTER_SANITIZE_NUMBER_INT );
 		$posted_array = filter_input_array( INPUT_POST );
 		$all_criteria = ( ! empty( $posted_array['updated_results'] ) ) ? $posted_array['updated_results'] : array();
