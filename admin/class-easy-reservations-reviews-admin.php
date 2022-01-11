@@ -137,14 +137,15 @@ class Easy_Reservations_Reviews_Admin {
 
 		// Localized strings.
 		$localized_strings = array(
-			'ajaxurl'                      => admin_url( 'admin-ajax.php' ),
-			'add_criteria_button_text'     => __( 'Add Criteria', 'easy-reservations-reviews' ),
-			'add_criterias_promptbox_text' => __( 'New Criteria', 'easy-reservations-reviews' ),
-			'add_same_criteria_error'      => __( 'The criteria already exists. Please add a different criteria.', 'easy-reservations-reviews' ),
-			'existing_criteria_result'     => ( $this->comment_post_id_is_reservation ) ? get_comment_meta( $this->comment_id, 'user_criteria_ratings', true ) : array(),
-			'is_reservation_comment'       => ( $this->comment_post_id_is_reservation ) ? 1 : -1,
-			'reviewer_phone_field_label'   => __( 'Phone', 'easy-reservations-reviews' ),
-			'reviewer_phone'               => get_comment_meta( $this->comment_id, 'reviewer_phone', true ),
+			'ajaxurl'                        => admin_url( 'admin-ajax.php' ),
+			'add_criteria_button_text'       => __( 'Add Criteria', 'easy-reservations-reviews' ),
+			'add_criterias_promptbox_text'   => __( 'New Criteria', 'easy-reservations-reviews' ),
+			'add_same_criteria_error'        => __( 'The criteria already exists. Please add a different criteria.', 'easy-reservations-reviews' ),
+			'existing_criteria_result'       => ( $this->comment_post_id_is_reservation ) ? get_comment_meta( $this->comment_id, 'user_criteria_ratings', true ) : array(),
+			'is_reservation_comment'         => ( $this->comment_post_id_is_reservation ) ? 1 : -1,
+			'reviewer_phone_field_label'     => __( 'Phone', 'easy-reservations-reviews' ),
+			'reviewer_phone'                 => get_comment_meta( $this->comment_id, 'reviewer_phone', true ),
+			'remove_attachment_confirm_text' => __( '', '' ),
 		);
 
 		/**
