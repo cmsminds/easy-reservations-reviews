@@ -168,7 +168,7 @@
         "First Second third four fifth six-see-all";
     }
     .gallery-images>.ersrvr-gallery-image-item{
-        height: 100px;
+        height: 95px;
     }
 }
 @media(min-width:1024px){
@@ -177,7 +177,7 @@
         grid-template-rows: repeat(1, 1fr);
     }
     .gallery-images>.ersrvr-gallery-image-item{
-        height: 110px;
+        height: 80px;
     }
 }
 @media(min-width:1440px){
@@ -187,8 +187,10 @@
         grid-template-areas:
             "First Second third four fifth six-see-all";
     }
+}
+@media(min-width:1600px){
     .gallery-images>.ersrvr-gallery-image-item{
-        height: 140px;
+        height: 100px;
     }
 }
 
