@@ -41,9 +41,9 @@ class Easy_Reservations_Reviews_Public {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
-	 * @param      string $plugin_name       The name of the plugin.
-	 * @param      string $version    The version of this plugin.
+	 * @since 1.0.0
+	 * @param string $plugin_name The name of the plugin.
+	 * @param string $version The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 		$this->plugin_name = $plugin_name;
@@ -55,7 +55,7 @@ class Easy_Reservations_Reviews_Public {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts() {
+	public function ersrvr_wp_enqueue_scripts_callback() {
 		global $wp_registered_widgets, $post, $wp_query;
 
 		// Active style file based on the active theme.
@@ -150,115 +150,7 @@ class Easy_Reservations_Reviews_Public {
 		}
 
 		ob_start();
-		echo wp_kses(
-			ersrvr_prepare_reviews_html(),
-			array(
-				'div'      => array(
-					'class'         => array(),
-					'id'            => array(),
-					'role'          => array(),
-					'data-criteria' => array(),
-					'style'         => array(),
-					'aria-valuenow' => array(),
-					'aria-valuemin' => array(),
-					'aria-valuemax' => array(),
-					'tabindex'      => array(),
-					'data-text'     => array(),
-					'data-imageid'  => array(),
-				),
-				'span'     => array(
-					'class'     => array(),
-					'data-cost' => array(),
-				),
-				'p'        => array(
-					'class' => array(),
-				),
-				'a'        => array(
-					'href'           => array(),
-					'class'          => array(),
-					'download'       => array(),
-					'data-toggle'    => array(),
-					'role'           => array(),
-					'aria-expanded'  => array(),
-					'aria-controls'  => array(),
-					'data-commentid' => array(),
-					'data-userid'    => array(),
-					'data-postid'    => array(),
-				),
-				'h1'       => array(),
-				'button'   => array(
-					'type'  => array(),
-					'class' => array(),
-				),
-				'input'    => array(
-					'type'              => array(),
-					'name'              => array(),
-					'id'                => array(),
-					'accept'            => array(),
-					'placeholder'       => array(),
-					'class'             => array(),
-					'value'             => array(),
-					'checked'           => array(),
-					'multiple'          => array(),
-					'data-show-upload'  => array(),
-					'data-show-caption' => array(),
-				),
-				'form'     => array(
-					'method'  => array(),
-					'enctype' => array(),
-					'action'  => array(),
-					'id'      => array(),
-				),
-				'label'    => array(
-					'class' => array(),
-					'for'   => array(),
-				),
-				'textarea' => array(
-					'name'        => array(),
-					'id'          => array(),
-					'class'       => array(),
-					'placeholder' => array(),
-				),
-				'h2'       => array(
-					'class' => array(),
-				),
-				'h3'       => array(
-					'class' => array(),
-				),
-				'h4'       => array(
-					'class' => array(),
-				),
-				'h5'       => array(
-					'class' => array(),
-				),
-				'img'      => array(
-					'src'   => array(),
-					'class' => array(),
-					'alt'   => array(),
-				),
-				'ul'       => array(
-					'class' => array(),
-				),
-				'li'       => array(
-					'class' => array(),
-				),
-				'table'    => array(
-					'class' => array(),
-				),
-				'tbody'    => array(
-					'class' => array(),
-				),
-				'th'       => array(
-					'class' => array(),
-				),
-				'td'       => array(
-					'class' => array(),
-				),
-				'tr'       => array(
-					'class' => array(),
-				),
-			),
-		);
+		require_once ERSRVR_PLUGIN_PATH . 'public/templates/woocommerce/easy-reservations-reviews-html.php';
 		return ob_get_clean();
 	}
 	/**
@@ -268,121 +160,37 @@ class Easy_Reservations_Reviews_Public {
 	 * @since 1.0.0
 	 */
 	public function ersrvr_after_item_details_callback( $reservation_id ) {
-		$product = wc_get_product( $reservation_id );
-		// check product is reservation type or not.
-		if ( $product->is_type( 'reservation' ) ) {
-			echo wp_kses(
-				ersrvr_prepare_reviews_html(),
-				array(
-					'div'      => array(
-						'class'         => array(),
-						'id'            => array(),
-						'role'          => array(),
-						'data-criteria' => array(),
-						'style'         => array(),
-						'aria-valuenow' => array(),
-						'aria-valuemin' => array(),
-						'aria-valuemax' => array(),
-						'tabindex'      => array(),
-						'data-text'     => array(),
-						'data-imageid'  => array(),
-					),
-					'span'     => array(
-						'class'     => array(),
-						'data-cost' => array(),
-					),
-					'p'        => array(
-						'class' => array(),
-					),
-					'a'        => array(
-						'href'           => array(),
-						'class'          => array(),
-						'download'       => array(),
-						'data-toggle'    => array(),
-						'role'           => array(),
-						'aria-expanded'  => array(),
-						'aria-controls'  => array(),
-						'data-commentid' => array(),
-						'data-userid'    => array(),
-						'data-postid'    => array(),
-					),
-					'h1'       => array(),
-					'button'   => array(
-						'type'     => array(),
-						'class'    => array(),
-						'tabindex' => array(),
-						'title'    => array(),
-					),
-					'input'    => array(
-						'type'              => array(),
-						'name'              => array(),
-						'id'                => array(),
-						'accept'            => array(),
-						'placeholder'       => array(),
-						'class'             => array(),
-						'value'             => array(),
-						'checked'           => array(),
-						'multiple'          => array(),
-						'data-show-upload'  => array(),
-						'data-show-caption' => array(),
-					),
-					'form'     => array(
-						'method'  => array(),
-						'enctype' => array(),
-						'action'  => array(),
-						'id'      => array(),
-					),
-					'label'    => array(
-						'class' => array(),
-						'for'   => array(),
-					),
-					'textarea' => array(
-						'name'        => array(),
-						'id'          => array(),
-						'class'       => array(),
-						'placeholder' => array(),
-					),
-					'h2'       => array(
-						'class' => array(),
-					),
-					'h3'       => array(
-						'class' => array(),
-					),
-					'h4'       => array(
-						'class' => array(),
-					),
-					'h5'       => array(
-						'class' => array(),
-					),
-					'img'      => array(
-						'src'   => array(),
-						'class' => array(),
-						'alt'   => array(),
-					),
-					'ul'       => array(
-						'class' => array(),
-					),
-					'li'       => array(
-						'class' => array(),
-					),
-					'table'    => array(
-						'class' => array(),
-					),
-					'tbody'    => array(
-						'class' => array(),
-					),
-					'th'       => array(
-						'class' => array(),
-					),
-					'td'       => array(
-						'class' => array(),
-					),
-					'tr'       => array(
-						'class' => array(),
-					),
-				),
-			);
-		}
+		echo do_shortcode( '[ersrvr_review_form_shortcode]' );
+	}
+
+	/**
+	 * Review summary on the reservation item header.
+	 *
+	 * @param int $item_id Reservation item ID.
+	 * @since 1.0.0
+	 */
+	public function ersrvr_ersrv_after_reservation_item_title_callback( $item_id ) {
+		?>
+		<div class="review d-flex justify-content-center align-items-center color-white mb-3 font-size-17 font-weight-normal">
+			<img src="<?php echo esc_url ( ERSRV_PLUGIN_URL . 'public/images/stars.png' ); ?>" alt="stars">
+			<span class="ml-2">(1 review)</span>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Add review summary on the reservation item blocks html.
+	 *
+	 * @param int    $item_id Reservation item ID.
+	 * @param string $page Current page.
+	 * @since 1.0.0
+	 */
+	public function ersrvr_ersrv_single_reservation_block_after_title_callback( $item_id, $page ) {
+		?>
+		<div class="review-stars mb-3">
+			<img src="<?php echo esc_url ( ERSRV_PLUGIN_URL . 'public/images/stars.png' ); ?>" alt="stars">
+		</div>
+		<?php
 	}
 
 	/**
@@ -391,108 +199,107 @@ class Easy_Reservations_Reviews_Public {
 	 * @since 1.0.0
 	 */
 	public function ersrvr_submit_review_callback() {
-		global $wp_filesystem;
-		WP_Filesystem();
 		$user_information = ersrvr_user_logged_in_data();
-
 		// Posted data.
-		$posted_array     = filter_input_array( INPUT_POST );
-		$reviewer_email   = ( is_user_logged_in() ) ? $user_information['email'] : filter_input( INPUT_POST, 'reviewer_email', FILTER_SANITIZE_STRING );
-		$reviewer_name    = ( is_user_logged_in() ) ? $user_information['name'] : filter_input( INPUT_POST, 'reviewer_name', FILTER_SANITIZE_STRING );
-		$reviewer_phone   = ( is_user_logged_in() ) ? $user_information['phone'] : filter_input( INPUT_POST, 'reviewer_phone', FILTER_SANITIZE_STRING );
-		$reviewer_message = filter_input( INPUT_POST, 'reviewer_message', FILTER_SANITIZE_STRING );
-		$item_id          = filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
+		$posted_array          = filter_input_array( INPUT_POST );
+		$reviewer_email        = ( is_user_logged_in() ) ? $user_information['email'] : filter_input( INPUT_POST, 'reviewer_email', FILTER_SANITIZE_STRING );
+		$reviewer_name         = ( is_user_logged_in() ) ? $user_information['name'] : filter_input( INPUT_POST, 'reviewer_name', FILTER_SANITIZE_STRING );
+		$reviewer_phone        = ( is_user_logged_in() ) ? $user_information['phone'] : filter_input( INPUT_POST, 'reviewer_phone', FILTER_SANITIZE_STRING );
+		$reviewer_message      = filter_input( INPUT_POST, 'reviewer_message', FILTER_SANITIZE_STRING );
+		$item_id               = filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
+		$attachments           = ( ! empty( $_FILES['review_attachments'] ) ) ? $_FILES['review_attachments'] : array();
+		$review_attachment_ids = array();
+		$user_ratings          = filter_input( INPUT_POST, 'user_ratings' );
+		$user_ratings          = ( ! empty( $user_ratings ) ) ? json_decode( $user_ratings, true ) : array();
+		$need_manual_approval  = ersrvr_get_plugin_settings( 'ersrvr_review_needs_manual_approval' );
 
-		die("pool");
+		// Get the attachments so they can be uploaded to the media.
+		if ( ! empty( $attachments['name'] ) && is_array( $attachments['name'] ) ) {
+			// Iterate through the files to upload them.
+			foreach ( $attachments['name'] as $attachment_index => $attachment_filename ) {
+				$attachment_tmp_name = $attachments['tmp_name'][ $attachment_index ];
+				$upload_attachment   = wp_upload_bits( $attachment_filename, null, file_get_contents( $attachment_tmp_name ) );
+				if ( ! $upload_attachment['error'] ) {
+					$wp_filetype   = wp_check_filetype( $attachment_filename, null );
+					$attachment    = array(
+						'post_mime_type' => $wp_filetype['type'],
+						'post_parent'    => 0,
+						'post_title'     => preg_replace('/\.[^.]+$/', '', $attachment_filename ),
+						'post_content'   => '',
+						'post_status'    => 'inherit'
+					);
+					$attachment_id = wp_insert_attachment( $attachment, $upload_attachment['file'] );
+					if ( ! is_wp_error( $attachment_id ) ) {
+						require_once( ABSPATH . 'wp-admin/includes/image.php' );
+						$attachment_data = wp_generate_attachment_metadata( $attachment_id, $upload_attachment['file'] );
+						wp_update_attachment_metadata( $attachment_id,  $attachment_data );
+					}
 
-
-
-		$user           = get_user_by( 'email', $user_email );
-		$user_id        = ( ! empty( $user->ID ) ) ? $user->ID : 0;
-		$user_name      = ( ! empty( $user->data->display_name ) ) ? $user->data->display_name : $username;
-		$author_url     = ( ! empty( get_author_posts_url( $user_id ) ) ) ? get_author_posts_url( $user_id ) : '';
-		$all_criteria   = ( ! empty( $posted_array['user_criteria_ratings'] ) ) ? $posted_array['user_criteria_ratings'] : '';
-		$all_criteria   = json_decode( $all_criteria );
-		foreach ( $all_criteria as $array_of_criteria ) {
-			$closest_criteria        = $array_of_criteria->closest_criteria;
-			$rating                  = $array_of_criteria->rating;
-			$new_array_of_criteria[] = array(
-				'closest_criteria' => $closest_criteria,
-				'rating'           => $rating,
-			);
+					$review_attachment_ids[] = $attachment_id; // Collect the attachment files here.
+				}
+			}
 		}
-		$names     = isset( $_FILES['files']['name'] ) ? $_FILES['files']['name'] : array();
-		$tmp_names = isset( $_FILES['files']['tmp_name'] ) ? $_FILES['files']['tmp_name'] : array();
-		$types     = isset( $_FILES['files']['type'] ) ? $_FILES['files']['type'] : array();
-		$sizes     = isset( $_FILES['files']['size'] ) ? $_FILES['files']['size'] : array();
-		$errors    = isset( $_FILES['files']['error'] ) ? $_FILES['files']['error'] : array();
-		foreach ( $names as $key => $name ) {
-			$tempname         = $tmp_names[ $key ];
-			$type             = $types[ $key ];
-			$review_file_name = isset( $name ) ? $name : '';
-			$review_file_temp = isset( $tempname ) ? $tempname : '';
-			$file_data        = $wp_filesystem->get_contents( $review_file_temp );
-			$filename         = basename( $review_file_name );
-			$upload_dir       = wp_upload_dir();
-			$file_path        = ( ! empty( $upload_dir['path'] ) ) ? $upload_dir['path'] . '/' . $filename : $upload_dir['basedir'] . '/' . $filename;
-			$wp_filesystem->put_contents(
-				$file_path,
-				$file_data,
-			);
 
-			// Upload it as WP attachment.
-			$wp_filetype  = wp_check_filetype( $filename, null );
-			$attachment   = array(
-				'post_mime_type' => $type,
-				'post_title'     => sanitize_file_name( $filename ),
-				'post_content'   => '',
-				'post_status'    => 'inherit',
-			);
-			$attach_ids[] = wp_insert_attachment( $attachment, $file_path );
-		}
-		$image_url = wp_get_attachment_url( $attach_id );
-		foreach ( $all_criteria as $key => $criteria ) {
-			$closest_criteria  = $criteria->closest_criteria;
-			$rating            = $criteria->rating;
-			$combine_ratings[] = $rating;
-		}
-		$total_ratings  = array_sum( $combine_ratings );
-		$avrage_ratings = $total_ratings / count( $combine_ratings );
-		$save_option    = array(
-			'average_ratings' => $avrage_ratings,
-		);
-		$comment_data   = array(
-			'comment_post_ID'      => $post_id,
-			'comment_author'       => $user_name,
-			'comment_author_email' => $user_email,
-			'comment_author_url'   => $author_url,
-			'comment_content'      => $review_message,
-			'user_id'              => $user_id,
-			'comment_author_IP'    => '127.0.0.1',
-			'comment_agent'        => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.10) Gecko/2009042316 Firefox/3.0.10 (.NET CLR 3.5.30729)',
-			'comment_date'         => gmdate( 'Y/m/d h:i:s' ),
-			'comment_approved'     => 1,
-		);
-		$comment_id     = wp_insert_comment( $comment_data );
-		add_comment_meta( $comment_id, 'average_ratings', $avrage_ratings );
-		add_comment_meta( $comment_id, 'user_criteria_ratings', $new_array_of_criteria );
-		add_comment_meta( $comment_id, 'attached_files', $attach_ids );
-		$all_comments      = get_comments(
-			array(
-				'post_id' => $post_id,
+		// Prepare the review data to be inserted into the database.
+		$review_data = array(
+			'comment_agent'        => $_SERVER['HTTP_USER_AGENT'],
+			'comment_approved'     => ( ! empty( $need_manual_approval ) && 'no' === $need_manual_approval ) ? 1 : 0,
+			'comment_author'       => $reviewer_name,
+			'comment_author_email' => $reviewer_email,
+			'comment_author_IP'    => $_SERVER['REMOTE_ADDR'],
+			'comment_content'      => $reviewer_message,
+			'comment_post_ID'      => $item_id,
+			'user_id'              => get_current_user_id(),
+			'comment_meta'         => array(
+				'user_ratings'       => $user_ratings,
+				'review_attachments' => $review_attachment_ids,
+				'reviewer_phone'     => $reviewer_phone,
 			),
 		);
-		$html              = ersrvr_html_comment_message_box( $all_comments );
-		$total_review_html = ersrvr_html_of_total_review();
-		$response          = array(
-			'code'              => 'ersrvr_submit_reviews_success',
-			'toast_message'     => __( 'Your Reviews Submitted.', 'easy-reservations-reviews' ),
-			'html'              => $html,
-			'total_review_html' => $total_review_html,
+
+		/**
+		 * This hook fires on the AJAX call that adds a new comment.
+		 *
+		 * This filter helps you to modify the data before the comment is saved in the database.
+		 *
+		 * @param array $review_data Revoew data.
+		 * @return array
+		 * @since 1.0.0
+		 */
+		$review_data = apply_filters( 'ersrvr_posted_review_data', $review_data );
+
+		// Insert the comment now.
+		wp_insert_comment( $review_data );
+
+		// Success message.
+		if ( ! empty( $need_manual_approval ) && 'no' === $need_manual_approval ) {
+			$toast_message = __( 'Your review has been published. Thank you for your efforts.', 'easy-reservations-reviews' );
+		} else {
+			$toast_message = __( 'Thank you for providing your review. It is under moderation and will be approved soon.', 'easy-reservations-reviews' );
+		}
+
+		/**
+		 * This hook fires on the AJAX call that adds a new comment.
+		 *
+		 * This filter helps you to modify the success message that appears once the review has been added to the database.
+		 *
+		 * @param string $toast_message AJAX success message.
+		 * @param string $need_manual_approval Review needs manual approval.
+		 * @return string
+		 * @since 1.0.0
+		 */
+		$toast_message = apply_filters( 'ersrvr_review_added_success_message', $toast_message, $need_manual_approval );
+
+		// Send the AJAX response now.
+		wp_send_json_success(
+			array(
+				'code'          => 'review-added',
+				'toast_message' => $toast_message,
+			)
 		);
-		wp_send_json_success( $response );
 		wp_die();
 	}
+
 	/**
 	 * Add custom assets to footer section.
 	 *
@@ -500,8 +307,9 @@ class Easy_Reservations_Reviews_Public {
 	 */
 	public function ersrvr_wp_footer_callback() {
 		global $post, $wp_query;
-			require_once ERSRVR_PLUGIN_PATH . 'public/templates/modals/edit-review.php';
+		require_once ERSRVR_PLUGIN_PATH . 'public/templates/modals/edit-review.php';
 	}
+
 	/**
 	 * Delete row of comments.
 	 *

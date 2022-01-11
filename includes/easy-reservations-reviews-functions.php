@@ -54,6 +54,12 @@ if ( ! function_exists( 'ersrvr_plugin_settings_fields' ) ) {
 				'id'   => 'ersrvr_enable_reservation_reviews_guest_users',
 			),
 			array(
+				'name' => __( 'Before The Review Appears', 'easy-reservations-reviews' ),
+				'type' => 'checkbox',
+				'desc' => __( 'The review needs to be manually approved.', 'easy-reservations-reviews' ),
+				'id'   => 'ersrvr_review_needs_manual_approval',
+			),
+			array(
 				'name' => __( 'Edit Review', 'easy-reservations-reviews' ),
 				'type' => 'checkbox',
 				'desc' => __( 'Check this to allow users to edit their posted reviews. This works only for "loggedin" users.', 'easy-reservations-reviews' ),
@@ -70,6 +76,16 @@ if ( ! function_exists( 'ersrvr_plugin_settings_fields' ) ) {
 				'id'   => 'ersrvr_reviews',
 			),
 		);
+
+		/**
+		 * This hook fires on the admin panel.
+		 *
+		 * This filter helps you modify the admin settings fields.
+		 *
+		 * @param array $fields Settings fields.
+		 * @return array
+		 * @since 1.0.0
+		 */
 		return apply_filters( 'ersrv_review_section_plugin_settings', $fields );
 	}
 }
@@ -87,27 +103,38 @@ if ( ! function_exists( 'ersrvr_get_plugin_settings' ) ) {
 	 */
 	function ersrvr_get_plugin_settings( $setting ) {
 		switch ( $setting ) {
+
 			case 'ersrvr_submit_review_criterias':
 				$data = get_option( $setting );
 				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : array();
 				$data = ( ! empty( $data ) ) ? ersrvr_prepare_criterias_array( $data ) : array();
 				break;
+
 			case 'ersrvr_submit_review_button_text':
 				$data = get_option( $setting );
 				$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : __( 'Submit', 'easy-reservations-reviews' );
 				break;
+
 			case 'ersrvr_enable_reservation_reviews_guest_users':
 				$data = get_option( $setting );
 				$data = ( ! empty( $data ) && 'yes' === $data ) ? 'yes' : 'no';
 				break;
+
 			case 'ersrvr_enable_edit_reservation_reviews':
 				$data = get_option( $setting );
 				$data = ( ! empty( $data ) && 'yes' === $data ) ? 'yes' : 'no';
 				break;
+
 			case 'ersrvr_enable_delete_reservation_reviews':
 				$data = get_option( $setting );
 				$data = ( ! empty( $data ) && 'yes' === $data ) ? 'yes' : 'no';
 				break;
+
+			case 'ersrvr_review_needs_manual_approval':
+				$data = get_option( $setting );
+				$data = ( ! empty( $data ) && 'yes' === $data ) ? 'yes' : 'no';
+				break;
+
 			default:
 				$data = -1;
 		}
@@ -141,135 +168,6 @@ if ( ! function_exists( 'ersrvr_prepare_criterias_array' ) ) {
 		}
 
 		return $criterias;
-	}
-}
-/**
- * Check if the function exists.
- */
-if ( ! function_exists( 'ersrvr_prepare_reviews_html' ) ) {
-	/**
-	 * Make Review Template HTML.
-	 *
-	 * @return string
-	 * @since 1.0.0
-	 */
-	function ersrvr_prepare_reviews_html() {
-		$html = '';
-		ob_start();
-		$file_path = plugin_dir_path( __DIR__ ) . 'public/templates/woocommerce/easy-reservations-reviews-html.php';
-		if ( file_exists( $file_path ) ) {
-			require_once $file_path;
-		}
-		$html .= wp_kses(
-			ob_get_clean(),
-			array(
-				'div'      => array(
-					'class'         => array(),
-					'id'            => array(),
-					'role'          => array(),
-					'data-criteria' => array(),
-					'style'         => array(),
-					'aria-valuenow' => array(),
-					'aria-valuemin' => array(),
-					'aria-valuemax' => array(),
-					'tabindex'      => array(),
-					'data-text'     => array(),
-					'data-imageid'  => array(),
-				),
-				'span'     => array(
-					'class'     => array(),
-					'data-cost' => array(),
-				),
-				'p'        => array(
-					'class' => array(),
-				),
-				'a'        => array(
-					'href'           => array(),
-					'class'          => array(),
-					'download'       => array(),
-					'data-toggle'    => array(),
-					'role'           => array(),
-					'aria-expanded'  => array(),
-					'aria-controls'  => array(),
-					'data-commentid' => array(),
-					'data-userid'    => array(),
-					'data-postid'    => array(),
-				),
-				'h1'       => array(),
-				'button'   => array(
-					'type'  => array(),
-					'class' => array(),
-				),
-				'input'    => array(
-					'type'              => array(),
-					'name'              => array(),
-					'id'                => array(),
-					'accept'            => array(),
-					'placeholder'       => array(),
-					'class'             => array(),
-					'value'             => array(),
-					'checked'           => array(),
-					'multiple'          => array(),
-					'data-show-upload'  => array(),
-					'data-show-caption' => array(),
-				),
-				'form'     => array(
-					'method'  => array(),
-					'enctype' => array(),
-					'action'  => array(),
-					'id'      => array(),
-				),
-				'label'    => array(
-					'class' => array(),
-					'for'   => array(),
-				),
-				'textarea' => array(
-					'name'        => array(),
-					'id'          => array(),
-					'class'       => array(),
-					'placeholder' => array(),
-				),
-				'h2'       => array(
-					'class' => array(),
-				),
-				'h3'       => array(
-					'class' => array(),
-				),
-				'h4'       => array(
-					'class' => array(),
-				),
-				'h5'       => array(
-					'class' => array(),
-				),
-				'img'      => array(
-					'src'   => array(),
-					'class' => array(),
-					'alt'   => array(),
-				),
-				'ul'       => array(
-					'class' => array(),
-				),
-				'li'       => array(
-					'class' => array(),
-				),
-				'table'    => array(
-					'class' => array(),
-				),
-				'tbody'    => array(
-					'class' => array(),
-				),
-				'th'       => array(
-					'class' => array(),
-				),
-				'td'       => array(
-					'class' => array(),
-				),
-				'tr'       => array(
-					'class' => array(),
-				),
-			),
-		);
-		return $html;
 	}
 }
 
@@ -461,7 +359,7 @@ if ( ! function_exists( 'ersrvr_user_logged_in_data' ) ) {
 
 		$user_information = array(
 			'name'    => $name,
-			'email'   => ( ! empty( $user_obj->data->user_email ) ) ? $user_obj->data->user_email : '',
+			'email'   => ( ! empty( $user_data->data->user_email ) ) ? $user_data->data->user_email : '',
 			'phone'   => get_user_meta( $user_id, 'billing_phone', true ),
 			'user_id' => $user_id,
 		);
@@ -475,7 +373,7 @@ if ( ! function_exists( 'ersrvr_user_logged_in_data' ) ) {
 		 * @return array
 		 * @since 1.0.0
 		 */
-		$user_information = apply_filters( 'ersrvr_add_user_information', $user_information );
+		return apply_filters( 'ersrvr_add_user_information', $user_information );
 	}
 }
 /**

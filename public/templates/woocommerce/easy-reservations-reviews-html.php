@@ -13,9 +13,9 @@
  */
 global $post;
 $user_info                     = ersrvr_user_logged_in_data();
-$user_email                    = ! empty( $user_info ) ? $user_info['user_email'] : '';
-$username                      = ! empty( $user_info ) ? $user_info['username'] : '';
-$user_phone_number             = ! empty( $user_info ) ? $user_info['user_phone_number'] : '';
+$user_email                    = ! empty( $user_info ) ? $user_info['email'] : '';
+$username                      = ! empty( $user_info ) ? $user_info['name'] : '';
+$user_phone_number             = ! empty( $user_info ) ? $user_info['phone'] : '';
 $get_guest_user_enable_Setting = ersrvr_get_plugin_settings( 'ersrvr_enable_reservation_reviews_guest_users' );
 $get_all_comments              = get_comments( array(
 	'post_id' => $post->ID,

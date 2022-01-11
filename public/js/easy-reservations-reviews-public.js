@@ -228,26 +228,24 @@ jQuery( document ).ready( function( $ ) {
 			contentType: false,
 			processData: false,
 			success: function ( response ) {
-				// Check for invalid ajax request.
-				if ( 0 === response ) {
-					console.log( 'easy reservations: invalid ajax request' );
-					return false;
-				}
-				unblock_element( this_button );
-				this_button.text( this_button_text );
-				if( 'ersrvr_submit_reviews_success' === response.data.code ) {
+				// If the review has been added.
+				if( 'review-added' === response.data.code ) {
+					// Unblock the button.
+					unblock_element( this_button );
+
+					// Revert back the button text.
+					this_button.html( this_button_text );
+
 					// Show the toast now.
 					ersrvr_show_toast( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
+					
+					// Reset the form fields.
 					$( 'input[type="radio"]' ).removeClass( 'fill_star_click' );
-					$( '.file-preview' ).remove();
-					$( '.file-input .file-caption-name' ).text( '' );
-					if( ! $('.divider_list_comments').hasClass('available') ) {
-						$('.ersrvr_comment_message_box_view').before('<div class="dropdown-divider divider_list_comments available"></div>');
-					}
-					// $( '.ersrvr_comment_message_box_view' ).html( '' );
-					$( '.ersrvr_comment_message_box_view' ).html( response.data.html );
-					$( '.ersrvr_total_review_html' ).html( response.data.total_review_html );
-					$('#ersrvr_message').val( '' );
+					$( '.fileinput-remove-button' ).click();
+					$( '#ersrvr_name, #ersrvr_phone, #ersrvr_email, #ersrvr_message' ).val( '' );
+
+					// Refresh the review listings.
+					ersrvr_refresh_item_reviews();
 				}
 			},
 		} );
@@ -290,7 +288,7 @@ jQuery( document ).ready( function( $ ) {
 	/**
 	 * Show/hide the reservation splitted cost.
 	 */
-	 $( document ).on( 'click', '.ersrvr-review-details-popup', function( evt ) {
+	$( document ).on( 'click', '.ersrvr-review-details-popup', function( evt ) {
 		evt.preventDefault();
 		var this_anchor = $( this );
 		$( '#ersrvr-reservation-reviews-details-id' ).toggleClass( 'show' );
@@ -304,14 +302,14 @@ jQuery( document ).ready( function( $ ) {
 			}
 		}
 	} );
-	// /**
-	//  * Show/hide the reservation splitted cost.
-	//  */
-	//  $( document ).on( 'mouseout', '.ersrvr-review-details-popup', function( evt ) {
-	// 	evt.preventDefault();
-	// 	var this_anchor = $( this );
-	// 	$( '#ersrvr-reservation-reviews-details-id' ).removeClass( 'show' );
-	// } );
+
+	/**
+	 * Load the item reviews.
+	 */
+	function ersrvr_refresh_item_reviews() {
+
+	}
+
 	/**
 	 * Check if a string is valid.
 	 *

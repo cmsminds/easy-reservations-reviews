@@ -137,7 +137,3 @@ function ersrvr_plugin_actions_callback( $links ) {
 
 	return array_merge( $this_plugin_links, $links );
 }
-
-add_action( 'wp', function() {
-	debug( ersrvr_user_logged_in_data() ); die;
-} );

@@ -144,11 +144,14 @@ class Easy_Reservations_Reviews {
 	private function define_public_hooks() {
 
 		$plugin_public = new Easy_Reservations_Reviews_Public( $this->get_plugin_name(), $this->get_version() );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-		$this->loader->add_action( 'ersrv_after_item_details', $plugin_public, 'ersrvr_after_item_details_callback' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'ersrvr_wp_enqueue_scripts_callback' );
 		$this->loader->add_shortcode( 'ersrvr_review_form_shortcode', $plugin_public, 'ersrvr_review_form_shortcode_callback' );
+		$this->loader->add_action( 'ersrv_after_item_details', $plugin_public, 'ersrvr_after_item_details_callback' );
+		$this->loader->add_action( 'ersrv_after_reservation_item_title', $plugin_public, 'ersrvr_ersrv_after_reservation_item_title_callback' );
+		$this->loader->add_action( 'ersrv_single_reservation_block_after_title', $plugin_public, 'ersrvr_ersrv_single_reservation_block_after_title_callback', 10, 2 );
 		$this->loader->add_action( 'wp_ajax_submit_review', $plugin_public, 'ersrvr_submit_review_callback' );
 		$this->loader->add_action( 'wp_ajax_nopriv_submit_review', $plugin_public, 'ersrvr_submit_review_callback' );
+		
 
 		$this->loader->add_action( 'wp_ajax_ersrvr_delete_review_comment', $plugin_public, 'ersrvr_delete_review_comment' );
 		$this->loader->add_action( 'wp_ajax_nopriv_ersrvr_delete_review_comment', $plugin_public, 'ersrvr_delete_review_comment' );

@@ -202,29 +202,30 @@ class Easy_Reservations_Reviews_Admin {
 			return;
 		}
 
-		// Metabox for 
+		// Metabox for reviews basic data.
 		add_meta_box(
-			'ersrvr-reservation-item-reviews-metabox',
-			__( 'Reservation Item Reviews', 'easy-reservations-reviews' ),
+			'ersrvr-review-basic-data',
+			__( 'Review Basic Information', 'easy-reservations-reviews' ),
 			array( $this, 'ersrvr_add_reviews_data' ),
+			'comment',
+			'normal'
+		);
+
+		// Metabox for reviews attachments.
+		add_meta_box(
+			'ersrvr-review-attachments',
+			__( 'Review Attachments', 'easy-reservations-reviews' ),
+			array( $this, 'ersrvr_review_attachments_callback' ),
 			'comment',
 			'normal',
 			'high'
-		);
-
-		add_meta_box(
-			'ersrvr_add_reviews_images',
-			__( 'Review Images', 'easy-reservations-reviews' ),
-			array( $this, 'ersrvr_add_reviews_images' ),
-			'comment',
-			'normal'
 		);
 	}
 
 	/**
 	 * Function to add output data.
 	 */
-	function ersrvr_add_reviews_data() {
+	public function ersrvr_add_reviews_data() {
 		$get_comment_id            = filter_input( INPUT_GET, 'c', FILTER_SANITIZE_NUMBER_INT );
 		$get_average_ratings       = get_comment_meta( $get_comment_id, 'average_ratings', true );
 		$get_user_criteria_ratings = get_comment_meta( $get_comment_id, 'user_criteria_ratings', true ); ?>
@@ -324,36 +325,21 @@ class Easy_Reservations_Reviews_Admin {
 	/**
 	 * Function to add Image comment meta box.
 	 */
-	function ersrvr_add_reviews_images() {
-		$get_comment_id = filter_input( INPUT_GET, 'c', FILTER_SANITIZE_NUMBER_INT );
-		$attached_ids   = get_comment_meta( $get_comment_id, 'attached_files', true );
+	public function ersrvr_review_attachments_callback() {
+		$attached_ids = get_comment_meta( $this->comment_id, 'review_attachments', true );
 		if ( ! empty( $attached_ids ) && is_array( $attached_ids ) ) {
 			?>
 			<div class="gallery-images ersrvr_count_images_3">
 				<?php
 				foreach ( $attached_ids as $index => $attach_id ) {
-					$gallery_images_last_index = count( $attached_ids ) - 1;
-					$image_url                 = ( ! empty( $attach_id ) ) ? wp_get_attachment_url( $attach_id ) : '';
-					/**
-					* Last image custom class.
-					* And, this should work only when the images are more than 5.
-					*/
-					$last_gallery_image_custom_class = '';
-					$last_gallery_image_custom_text  = '';
-					if ( 6 < count( $attached_ids ) && 5 === $index ) {
-						$last_gallery_image_custom_class = 'ersrvr_gallery-last-image-overlay';
-						$last_gallery_image_custom_text  = sprintf( __( '+%1$d images', 'easy-reservations-reviews' ), ( count( $attached_ids ) - 6 ) );
-					}
-					// Hide the images after 6 images.
-					$display_none_image_class = ( 5 < $index ) ? 'd-none' : '';
+					$image_url = ( ! empty( $attach_id ) ) ? wp_get_attachment_url( $attach_id ) : '';
+
 					if ( ! empty( $image_url ) ) {
 						?>
-						<div data-text="<?php echo esc_html( $last_gallery_image_custom_text ); ?>" class="ersrvr-gallery-image-item <?php echo esc_attr( "{$last_gallery_image_custom_class} {$display_none_image_class}" ); ?>" data-imageid="<?php echo esc_attr( $attach_id ); ?>">
-							<img src="<?php echo esc_url( $image_url ); ?>" class="ersrvr_attached_files" />
+						<div class="ersrvr-gallery-image-item" data-imageid="<?php echo esc_attr( $attach_id ); ?>">
+							<img alt="" src="<?php echo esc_url( $image_url ); ?>" class="ersrvr_attached_files" />
 							<a href="javascript:void(0)" class="delete-link ersrvr_delete_image">
-								<span class="icon">
-									<span class="dashicons dashicons-dismiss"></span>
-								</span>
+								<span class="icon"><span class="dashicons dashicons-dismiss"></span></span>
 								<span class="text sr-only">Delete</span>
 							</a>
 						</div>
@@ -364,6 +350,11 @@ class Easy_Reservations_Reviews_Admin {
 			</div>
 			<?php
 		}
+		?>
+		<div class="ersrvr-add-more-attachments-to-review">
+			<a href="javascript:void(0);"><?php esc_html_e( 'Add review attachments', 'easy-reservations-reviews' ); ?></a>
+		</div>
+		<?php
 	}
 
 	/**

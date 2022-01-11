@@ -15,9 +15,9 @@ defined( 'ABSPATH' ) || exit;
 
 global $post;
 $user_info             = ersrvr_user_logged_in_data();
-$user_email_id         = ! empty( $user_info ) ? $user_info['user_email'] : '';
-$username              = ! empty( $user_info ) ? $user_info['username'] : '';
-$user_phone_number     = ! empty( $user_info ) ? $user_info['user_phone_number'] : '';
+$user_email_id         = ! empty( $user_info ) ? $user_info['email'] : '';
+$username              = ! empty( $user_info ) ? $user_info['name'] : '';
+$user_phone_number     = ! empty( $user_info ) ? $user_info['phone'] : '';
 $guest_reviews_allowed = ersrvr_get_plugin_settings( 'ersrvr_enable_reservation_reviews_guest_users' );
 ?>
 <div class="review-form-wrapper">
