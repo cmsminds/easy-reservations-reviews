@@ -387,7 +387,7 @@ if ( ! function_exists( 'ersrvr_get_review_file_allowed_file_types' ) ) {
 	 * @since 1.0.0
 	 */
 	function ersrvr_get_review_file_allowed_file_types() {
-		$file_types = array( '.jpeg', '.jpg', '.pdf', '.png' );
+		$file_types = array( '.jpeg', '.jpg', '.png' );
 
 		/**
 		 * This hook runs on the checkout page and the order edit page.

@@ -2,15 +2,17 @@ jQuery( document ).ready( function( $ ) {
 	'use strict';
 
 	// Localized variables.
-	var add_criteria_button_text       = ERSRVR_Reviews_Script_Vars.add_criteria_button_text;
-	var add_criterias_promptbox_text   = ERSRVR_Reviews_Script_Vars.add_criterias_promptbox_text;
-	var add_same_criteria_error        = ERSRVR_Reviews_Script_Vars.add_same_criteria_error;
-	var existing_criteria_result       = ERSRVR_Reviews_Script_Vars.existing_criteria_result;
-	var ajaxurl                        = ERSRVR_Reviews_Script_Vars.ajaxurl;
-	var is_reservation_comment         = ERSRVR_Reviews_Script_Vars.is_reservation_comment;
-	var reviewer_phone_field_label     = ERSRVR_Reviews_Script_Vars.reviewer_phone_field_label;
-	var reviewer_phone                 = ERSRVR_Reviews_Script_Vars.reviewer_phone;
-	var remove_attachment_confirm_text = ERSRVR_Reviews_Script_Vars.remove_attachment_confirm_text;
+	var add_criteria_button_text         = ERSRVR_Reviews_Script_Vars.add_criteria_button_text;
+	var add_criterias_promptbox_text     = ERSRVR_Reviews_Script_Vars.add_criterias_promptbox_text;
+	var add_same_criteria_error          = ERSRVR_Reviews_Script_Vars.add_same_criteria_error;
+	var existing_criteria_result         = ERSRVR_Reviews_Script_Vars.existing_criteria_result;
+	var ajaxurl                          = ERSRVR_Reviews_Script_Vars.ajaxurl;
+	var is_reservation_comment           = ERSRVR_Reviews_Script_Vars.is_reservation_comment;
+	var reviewer_phone_field_label       = ERSRVR_Reviews_Script_Vars.reviewer_phone_field_label;
+	var reviewer_phone                   = ERSRVR_Reviews_Script_Vars.reviewer_phone;
+	var remove_attachment_confirm_text   = ERSRVR_Reviews_Script_Vars.remove_attachment_confirm_text;
+	var media_uploader_modal_header      = ERSRVR_Reviews_Script_Vars.media_uploader_modal_header;
+	var review_attachments_allowed_types = ERSRVR_Reviews_Script_Vars.review_attachments_allowed_types;
 
 	// Global vars.
 	var user_criteria_ratings = [];
@@ -111,13 +113,97 @@ jQuery( document ).ready( function( $ ) {
 			},
 		} );
 	} );
+
+	// Media uploader for adding attachments to the reviews.
+	$( document ).on( 'click', '.ersrvr-add-more-attachments-to-review a', function() {
+		var attachments_html = '';
+		var images = wp.media( {
+			title: media_uploader_modal_header,
+			multiple: true,
+		} ).open()
+		.on( 'select', function( e ) {
+			var images_arr      = images.state().get( 'selection' ).toJSON();
+			var new_attachments = [];
+
+			// Iterate through the selected files.
+			for ( var i in images_arr ) {
+				var image_id  = images_arr[i].id;
+				var image_url = images_arr[i].url;
+				var filename  = images_arr[i].filename;
+
+				// If the filename is invalid, skip.
+				if ( -1 === is_valid_string( filename ) ) {
+					continue;
+				}
+
+				// Check if the filename has a dot in it.
+				var dot_index = filename.indexOf( '.' );
+
+				// If there is no dot, skip.
+				if ( -1 === dot_index ) {
+					continue;
+				}
+
+				// Get the extension from the image URL and see if that is within the allowed types.
+				var file_ext = filename.split( '.' ).pop();
+				file_ext     = '.' + file_ext;
+
+				// Skip the iteration, if the file extension doesn't match the allowed ones.
+				if ( -1 === $.inArray( file_ext, review_attachments_allowed_types ) ) {
+					continue;
+				}
+
+				// Collect the image data into an array.
+				new_attachments.push( image_id );
+
+				// Prepare the attachments HTML.
+				attachments_html += '<div class="ersrvr-gallery-image-item" data-imageid="' + image_id + '">';
+				attachments_html += '<img alt="legacy-system-notice-2.png" src="' + image_url + '" class="ersrvr_attached_files">';
+				attachments_html += '<a href="javascript:void(0)" class="delete-link">';
+				attachments_html += '<span class="icon"><span class="dashicons dashicons-dismiss"></span></span>';
+				attachments_html += '<span class="text sr-only">Delete</span>';
+				attachments_html += '</a>';
+				attachments_html += '</div>';
+			}
+
+			// Exit, if there are no attachments to upload.
+			if ( 0 === new_attachments.length ) {
+				return false;
+			}
+
+			// Block the gallery section now.
+			block_element( $( '.ersrvr-review-attachments-container' ) );
+			block_element( $( '.ersrvr-add-more-attachments-to-review' ) );
+
+			// Send the AJAX now to update the review attachments.
+			$.ajax( {
+				dataType: 'JSON',
+				url: ajaxurl,
+				type: 'POST',
+				data: {
+					action: 'add_review_attachments',
+					review_id: $( 'input[name="comment_ID"]' ).val(),
+					new_attachments: new_attachments,
+				},
+				success: function ( response ) {
+					if( 'review-attachments-added' === response.data.code ) {
+						// Unblock the elements.
+						unblock_element( $( '.ersrvr-review-attachments-container' ) );
+						unblock_element( $( '.ersrvr-add-more-attachments-to-review' ) );
+
+						// Paste the HTML now.
+						$( '.ersrvr-review-attachments-container .gallery-images' ).append( attachments_html );
+					}
+				},
+			} );
+		} );
+	} );
 	
 	$(document).on( 'mouseout', '.rating__label', function( evt ) {
 		// evt.preventDefault();
 		var this_label        = $( this );
 		var criteria_input    = this_label.prev( 'input[type="radio"]' );
 		var criteria_input_id = criteria_input.attr( 'id' );
-		// var closest_criteria  = $( this ).closest( '.rating-group' ).data( 'criteria' );
 		$( '#' + criteria_input_id ).prevUntil( '.rating__input:first' ).addBack().removeClass( 'fill_star_hover' );
 		$( 'label.rating__label' ).removeClass( 'fill_star_hover' );
 	});

@@ -116,15 +116,8 @@ class Easy_Reservations_Reviews_Admin {
 		wp_enqueue_style(
 			$this->plugin_name,
 			ERSRVR_PLUGIN_URL . 'admin/css/easy-reservations-reviews-admin.css',
-		);
-
-		// Custom admin script.
-		wp_enqueue_script(
-			$this->plugin_name,
-			ERSRVR_PLUGIN_URL . 'admin/js/easy-reservations-reviews-admin.js',
-			array( 'jquery' ),
-			filemtime( ERSRVR_PLUGIN_PATH . 'admin/js/easy-reservations-reviews-admin.js' ),
-			true
+			array(),
+			filemtime( ERSRVR_PLUGIN_PATH . 'admin/css/easy-reservations-reviews-admin.css' )
 		);
 
 		// Enqueue the common style file for the star ratings.
@@ -135,17 +128,36 @@ class Easy_Reservations_Reviews_Admin {
 			filemtime( ERSRVR_PLUGIN_PATH . 'public/css/core/easy-reservations-reviews-common.css' )
 		);
 
+		// Enqueue jQuery script.
+		wp_enqueue_script( 'jquery' );
+
+		// Enqueue the media uploader script.
+		if ( $this->comment_post_id_is_reservation ) {
+			wp_enqueue_media();
+		}
+
+		// Custom admin script.
+		wp_enqueue_script(
+			$this->plugin_name,
+			ERSRVR_PLUGIN_URL . 'admin/js/easy-reservations-reviews-admin.js',
+			array(),
+			filemtime( ERSRVR_PLUGIN_PATH . 'admin/js/easy-reservations-reviews-admin.js' ),
+			true
+		);
+
 		// Localized strings.
 		$localized_strings = array(
-			'ajaxurl'                        => admin_url( 'admin-ajax.php' ),
-			'add_criteria_button_text'       => __( 'Add Criteria', 'easy-reservations-reviews' ),
-			'add_criterias_promptbox_text'   => __( 'New Criteria', 'easy-reservations-reviews' ),
-			'add_same_criteria_error'        => __( 'The criteria already exists. Please add a different criteria.', 'easy-reservations-reviews' ),
-			'existing_criteria_result'       => ( $this->comment_post_id_is_reservation ) ? get_comment_meta( $this->comment_id, 'user_criteria_ratings', true ) : array(),
-			'is_reservation_comment'         => ( $this->comment_post_id_is_reservation ) ? 1 : -1,
-			'reviewer_phone_field_label'     => __( 'Phone', 'easy-reservations-reviews' ),
-			'reviewer_phone'                 => get_comment_meta( $this->comment_id, 'reviewer_phone', true ),
-			'remove_attachment_confirm_text' => __( 'Are you sure you want to delete the attachment? Click OK to confirm.', 'easy-reservations-reviews' ),
+			'ajaxurl'                          => admin_url( 'admin-ajax.php' ),
+			'add_criteria_button_text'         => __( 'Add Criteria', 'easy-reservations-reviews' ),
+			'add_criterias_promptbox_text'     => __( 'New Criteria', 'easy-reservations-reviews' ),
+			'add_same_criteria_error'          => __( 'The criteria already exists. Please add a different criteria.', 'easy-reservations-reviews' ),
+			'existing_criteria_result'         => ( $this->comment_post_id_is_reservation ) ? get_comment_meta( $this->comment_id, 'user_criteria_ratings', true ) : array(),
+			'is_reservation_comment'           => ( $this->comment_post_id_is_reservation ) ? 1 : -1,
+			'reviewer_phone_field_label'       => __( 'Phone', 'easy-reservations-reviews' ),
+			'reviewer_phone'                   => get_comment_meta( $this->comment_id, 'reviewer_phone', true ),
+			'remove_attachment_confirm_text'   => __( 'Are you sure you want to delete the attachment? Click OK to confirm.', 'easy-reservations-reviews' ),
+			'media_uploader_modal_header'      => __( 'Upload Review Attachments', 'easy-reservations-reviews' ),
+			'review_attachments_allowed_types' => ersrvr_get_review_file_allowed_file_types(),
 		);
 
 		/**
@@ -226,107 +238,46 @@ class Easy_Reservations_Reviews_Admin {
 	}
 
 	/**
-	 * Function to add output data.
+	 * Manage the review basic data.
+	 *
+	 * @since 1.0.0
 	 */
 	public function ersrvr_add_reviews_data() {
-		$get_comment_id            = filter_input( INPUT_GET, 'c', FILTER_SANITIZE_NUMBER_INT );
-		$get_average_ratings       = get_comment_meta( $get_comment_id, 'average_ratings', true );
-		$get_user_criteria_ratings = get_comment_meta( $get_comment_id, 'user_criteria_ratings', true ); ?>
-		<?php if ( ! empty( $get_user_criteria_ratings ) && is_array( $get_user_criteria_ratings ) ) { ?>
-			<div class="form-row">
-				<div class="col-12">
-					<div id="full-stars-example-two" class="rating-group-wrapper border py-2 px-1 rounded-xl">
-						<?php $k = 1; ?>
-						<?php $rating_by_criteria = array(); ?>
-						<?php foreach ( $get_user_criteria_ratings as $get_user_criteria_rating ) { ?>
-							<?php
-							$rating_by_criteria[] = array(
-								$get_user_criteria_rating['closest_criteria'] => $get_user_criteria_rating['rating'],
-							);
-							$final_ratings_array  = array();
-							foreach ( $rating_by_criteria as $key => $formatted_data ) {
-								foreach ( $formatted_data as $key => $value ) {
-									$final_ratings_array[ $key ] = $value;
-								}
-							}
-						}
-						$k = 1;
-						foreach ( $final_ratings_array as $criteria_key => $criteria_rating ) {
-							$criteria_rating = (int) $criteria_rating;
-							$criteria_name   = ucfirst( $criteria_key );
-							$criteria_name   = str_replace( '-', ' ', $criteria_name );
-							$criteria_slug   = $criteria_key;
-							?>
-							<div class="rating-item d-flex flex-wrap align-items-center">
-								<div class="col-4 col-sm-3">
-									<label class="font-Poppins font-weight-semibold text-black font-size-14"><?php echo esc_html( $criteria_name ); ?> </label>
-								</div>
-								<div class="col-8 col-sm-9 rating-group" id="<?php echo esc_attr( $criteria_slug ); ?>" data-criteria="<?php echo esc_attr( $criteria_name ); ?>">
-									<?php for ( $i = 1; $i <= 5; $i++ ) { ?>
-										<?php $filled_star_class = ( $criteria_rating >= $i ) ? 'fill_star_click' : ''; ?>
-										<input class="rating__input <?php echo esc_attr( $filled_star_class ); ?>" name="rating3" id="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
-										<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-									<?php } ?>
-								</div>
+		$user_ratings = get_comment_meta( $this->comment_id, 'user_ratings', true );
+		$criterias    = ersrvr_get_plugin_settings( 'ersrvr_submit_review_criterias' );
+		debug( $user_ratings );
+		?>
+		<div class="form-row adarshverma">
+			<div class="col-12">
+				<label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( 'Please reate us 1 (bad) to 5 (excellent)', 'easy-reservations-reviews' ); ?></label>
+				<div id="full-stars-example-two" class="rating-group-wrapper border py-2 px-1 rounded-xl">
+					<?php $k = 1; ?>
+					<?php foreach ( $criterias as $criteria ) { ?>
+						<?php
+						$criteria_slug = strtolower( $criteria );
+						$criteria_slug = str_replace( ' ', '-', $criteria_slug );
+						?>
+						<div class="rating-item d-flex flex-wrap align-items-center">
+							<div class="col-4 col-sm-3"><label class="font-Poppins font-weight-semibold text-black font-size-14"><?php echo esc_html( $criteria ); ?> </label></div>
+							<div class="col-8 col-sm-9 rating-group" id="<?php echo esc_attr( $criteria_slug ); ?>" data-criteria="<?php echo esc_attr( $criteria ); ?>">
+								<?php for ( $i = 1; $i <= 5; $i++ ) { ?>
+									<input class="rating__input" name="rating3" id="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
+									<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+									<?php $k++; ?>
+								<?php } ?>
 							</div>
-							<?php $k++; ?>
-						<?php } ?>
-					</div>
+						</div>
+					<?php } ?>
 				</div>
 			</div>
-		<?php } else { ?>
-			<?php $criterias = ersrvr_get_plugin_settings( 'ersrvr_submit_review_criterias' ); ?>
-			<div class="form-row">
-				<div class="col-12">
-					<label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( 'Please reate us 1 (bad) to 5 (excellent)', 'easy-reservations-reviews' ); ?></label>
-					<div id="full-stars-example-two" class="rating-group-wrapper border py-2 px-1 rounded-xl">
-						<?php $k = 1; ?>
-						<?php foreach ( $criterias as $criteria ) { ?>
-							<?php
-							$criteria_slug = strtolower( $criteria );
-							$criteria_slug = str_replace( ' ', '-', $criteria_slug );
-							?>
-							<div class="rating-item d-flex flex-wrap align-items-center">
-								<div class="col-4 col-sm-3"><label class="font-Poppins font-weight-semibold text-black font-size-14"><?php echo esc_html( $criteria ); ?> </label></div>
-								<div class="col-8 col-sm-9 rating-group" id="<?php echo esc_attr( $criteria_slug ); ?>" data-criteria="<?php echo esc_attr( $criteria ); ?>">
-									<?php for ( $i = 1; $i <= 5; $i++ ) { ?>
-										<input class="rating__input" name="rating3" id="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
-										<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-										<?php $k++; ?>
-									<?php } ?>
-								</div>
-							</div>
-						<?php } ?>
-					</div>
-				</div>
-			</div>
-		<?php } ?>
-		<br/>
-		<div class="col-4 col-sm-3">
-			<button type="button" class="button ersrvr_submit_review" data-commentid = "<?php echo esc_attr( $get_comment_id ); ?>" >Submit Review</button>
-		</div>
-		<div class="col-8 col-sm-9 rating-group"></div>
-		<div class="col-4 col-sm-3">
-			<label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( 'Avrage Ratings', 'easy-reservations-reviews' ); ?> </label>
-		</div>
-		<div class="col-8 col-sm-9 rating-group">
-			<h2 class="ersrvr_average_ratings"><?php echo esc_html( $get_average_ratings ); ?></h2>
-			<!-- <input class="rating__input" name="rating3" id="rating3-1" value="1" type="radio">
-			<label aria-label="1 star" class="rating__label" for="rating3-1"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-			<input class="rating__input" name="rating3" id="rating3-2" value="2" type="radio">
-			<label aria-label="2 stars" class="rating__label" for="rating3-2"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-			<input class="rating__input" name="rating3" id="rating3-3" value="3" type="radio">
-			<label aria-label="3 stars" class="rating__label" for="rating3-3"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-			<input class="rating__input" name="rating3" id="rating3-4" value="4" type="radio">
-			<label aria-label="4 stars" class="rating__label" for="rating3-4"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-			<input class="rating__input" name="rating3" id="rating3-5" value="5" type="radio">
-			<label aria-label="5 stars" class="rating__label" for="rating3-5"><span class="rating__icon rating__icon--star fa fa-star"></span></label> -->
 		</div>
 		<?php
 	}
 
 	/**
-	 * Function to add Image comment meta box.
+	 * Manage the review attachments.
+	 *
+	 * @since 1.0.0
 	 */
 	public function ersrvr_review_attachments_callback() {
 		$attached_ids = get_comment_meta( $this->comment_id, 'review_attachments', true );
@@ -373,7 +324,7 @@ class Easy_Reservations_Reviews_Admin {
 
 		// Get the attachments from the review meta.
 		$review_attachments = get_comment_meta( $review_id, 'review_attachments', true );
-		$attachment_index   = array_search( $attachment_id, $review_attachments, true );
+		$attachment_index   = array_search( $attachment_id, $review_attachments );
 
 		// Remove the index if found.
 		if ( false !== $attachment_index ) {
@@ -412,6 +363,34 @@ class Easy_Reservations_Reviews_Admin {
 		} else {
 			delete_comment_meta( $review_id, 'reviewer_phone' );
 		}
+	}
+
+	/**
+	 * AJAX to add new attachments to the review and update the database.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrvr_add_review_attachments_callback() {
+		$posted_array    = filter_input_array( INPUT_POST );
+		$review_id       = (int) filter_input( INPUT_POST, 'review_id', FILTER_SANITIZE_NUMBER_INT );
+		$new_attachments = ( ! empty( $posted_array['new_attachments'] ) ) ? $posted_array['new_attachments'] : array();
+
+		// Get the attachments from the review meta.
+		$review_attachments = get_comment_meta( $review_id, 'review_attachments', true );
+
+		// Merge the new attachments with the old attachments.
+		$review_attachments = array_unique( array_merge( $review_attachments, $new_attachments ) );
+
+		// Update the database with the new set of review attachments.
+		update_comment_meta( $review_id, 'review_attachments', $review_attachments );
+
+		// Send the AJAX response.
+		wp_send_json_success(
+			array(
+				'code' => 'review-attachments-added',
+			)
+		);
+		wp_die();
 	}
 
 	/**
