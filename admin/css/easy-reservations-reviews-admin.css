@@ -20,8 +20,8 @@
 
 .gallery-images>.ersrvr-gallery-image-item .delete-link {
     position: absolute;
-    top: -5px;
-    right: -5px;
+    top: -8px;
+    right: -8px;
     background: #fff;
     border-radius: 100%;
     opacity: 0;
@@ -31,8 +31,6 @@
 }
 
 .gallery-images>.ersrvr-gallery-image-item:hover .delete-link {
-    top: -5px;
-    right: -5px;
     opacity: 1;
 }
 .gallery-images>.ersrvr-gallery-image-item .delete-link :hover{
@@ -147,7 +145,9 @@
 .ersrvr-add-more-attachments-to-review{
     margin-top: 16px;
 }
-
+.gallery-images>.ersrvr-gallery-image-item{
+    border:2px solid #999;
+}
 
 @media(min-width:100px){
     .ersrvr-review-attachments-container .gallery-images {
