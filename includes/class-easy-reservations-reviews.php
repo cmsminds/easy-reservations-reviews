@@ -134,7 +134,6 @@ class Easy_Reservations_Reviews {
 		$this->loader->add_action( 'wp_ajax_remove_review_attachment', $plugin_admin, 'ersrvr_remove_review_attachment_callback' );
 		$this->loader->add_action( 'edit_comment', $plugin_admin, 'ersrvr_edit_comment_callback', 10, 2 );
 		$this->loader->add_action( 'wp_ajax_add_review_attachments', $plugin_admin, 'ersrvr_add_review_attachments_callback' );
-		$this->loader->add_action( 'wp_ajax_ersrvr_submit_reviews_current_comment', $plugin_admin, 'ersrvr_submit_reviews_current_comment' );
 	}
 
 	/**
@@ -154,7 +153,11 @@ class Easy_Reservations_Reviews {
 		$this->loader->add_action( 'ersrv_single_reservation_block_after_title', $plugin_public, 'ersrvr_ersrv_single_reservation_block_after_title_callback', 10, 2 );
 		$this->loader->add_action( 'wp_ajax_submit_review', $plugin_public, 'ersrvr_submit_review_callback' );
 		$this->loader->add_action( 'wp_ajax_nopriv_submit_review', $plugin_public, 'ersrvr_submit_review_callback' );
-		
+		$this->loader->add_action( 'wp_ajax_load_reviews', $plugin_public, 'ersrvr_load_reviews_callback' );
+		$this->loader->add_action( 'wp_ajax_nopriv_load_reviews', $plugin_public, 'ersrvr_load_reviews_callback' );
+		$this->loader->add_action( 'wp_ajax_load_reviews_list', $plugin_public, 'ersrvr_load_reviews_list_callback' );
+		$this->loader->add_action( 'wp_ajax_nopriv_load_reviews_list', $plugin_public, 'ersrvr_load_reviews_list_callback' );
+
 
 		$this->loader->add_action( 'wp_ajax_ersrvr_delete_review_comment', $plugin_public, 'ersrvr_delete_review_comment' );
 		$this->loader->add_action( 'wp_ajax_nopriv_ersrvr_delete_review_comment', $plugin_public, 'ersrvr_delete_review_comment' );

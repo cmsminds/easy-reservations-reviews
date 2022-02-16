@@ -243,26 +243,30 @@ class Easy_Reservations_Reviews_Admin {
 	 * @since 1.0.0
 	 */
 	public function ersrvr_add_reviews_data() {
-		$user_ratings = get_comment_meta( $this->comment_id, 'user_ratings', true );
-		$criterias    = ersrvr_get_plugin_settings( 'ersrvr_submit_review_criterias' );
-		debug( $user_ratings );
+		$user_ratings                   = get_comment_meta( $this->comment_id, 'user_ratings', true );
+		$user_ratings_by_criteria_slugs = array_column( $user_ratings, 'criteria_name' );
+		$criterias                      = ersrvr_get_plugin_settings( 'ersrvr_submit_review_criterias' );
 		?>
-		<div class="form-row adarshverma">
+		<div class="form-row">
 			<div class="col-12">
 				<label class="font-Poppins font-weight-semibold text-black font-size-14"><?php esc_html_e( 'Please reate us 1 (bad) to 5 (excellent)', 'easy-reservations-reviews' ); ?></label>
-				<div id="full-stars-example-two" class="rating-group-wrapper border py-2 px-1 rounded-xl">
-					<?php $k = 1; ?>
-					<?php foreach ( $criterias as $criteria ) { ?>
-						<?php
-						$criteria_slug = strtolower( $criteria );
-						$criteria_slug = str_replace( ' ', '-', $criteria_slug );
+				<div class="rating-group-wrapper border py-2 px-1 rounded-xl">
+					<?php
+					$k = 1;
+					foreach ( $criterias as $criteria ) {
+						$criteria_slug       = strtolower( $criteria );
+						$criteria_slug       = str_replace( ' ', '-', $criteria_slug );
+						$criteria_slug_index = array_search( $criteria_slug, $user_ratings_by_criteria_slugs, true );
+						$user_rating         = ( false !== $criteria_slug_index && ! empty( $user_ratings[ $criteria_slug_index ]['rating'] ) ) ? (int) $user_ratings[ $criteria_slug_index ]['rating'] : 0;
 						?>
 						<div class="rating-item d-flex flex-wrap align-items-center">
 							<div class="col-4 col-sm-3"><label class="font-Poppins font-weight-semibold text-black font-size-14"><?php echo esc_html( $criteria ); ?> </label></div>
 							<div class="col-8 col-sm-9 rating-group" id="<?php echo esc_attr( $criteria_slug ); ?>" data-criteria="<?php echo esc_attr( $criteria ); ?>">
-								<?php for ( $i = 1; $i <= 5; $i++ ) { ?>
-									<input class="rating__input" name="rating3" id="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
-									<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+								<?php for ( $i = 1; $i <= 5; $i++ ) {
+									$filled_star_class = ( $i <= $user_rating ) ? 'fill_star_click' : '';
+									?>
+									<input class="rating__input <?php echo esc_attr( $filled_star_class ); ?>" name="rating3" id="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
+									<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label <?php echo esc_attr( $filled_star_class ); ?>" for="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
 									<?php $k++; ?>
 								<?php } ?>
 							</div>
@@ -390,35 +394,6 @@ class Easy_Reservations_Reviews_Admin {
 				'code' => 'review-attachments-added',
 			)
 		);
-		wp_die();
-	}
-
-	/**
-	 * Function to return save comment hook.
-	 *
-	 * @since 1.0.0
-	 */
-	public function ersrvr_submit_reviews_current_comment() {
-		$comment_id   = filter_input( INPUT_POST, 'comment_id', FILTER_SANITIZE_NUMBER_INT );
-		$posted_array = filter_input_array( INPUT_POST );
-		$all_criteria = ( ! empty( $posted_array['updated_results'] ) ) ? $posted_array['updated_results'] : array();
-		foreach ( $all_criteria as $key => $criteria ) {
-			$closest_criteria  = $criteria['closest_criteria'];
-			$rating            = $criteria['rating'];
-			$combine_ratings[] = $rating;
-		}
-		$total_ratings  = array_sum( $combine_ratings );
-		$avrage_ratings = round( $total_ratings / count( $combine_ratings ), 2 );
-		$save_option    = array(
-			'average_ratings' => $avrage_ratings,
-		);
-		update_comment_meta( $comment_id, 'average_ratings', $avrage_ratings );
-		update_comment_meta( $comment_id, 'user_criteria_ratings', $all_criteria );
-		$response = array(
-			'code'                   => 'ersrvr_ratings_submitted',
-			'ersrvr_average_ratings' => $avrage_ratings,
-		);
-		wp_send_json_success( $response );
 		wp_die();
 	}
 }

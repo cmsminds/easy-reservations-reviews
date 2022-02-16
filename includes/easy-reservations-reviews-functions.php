@@ -174,6 +174,97 @@ if ( ! function_exists( 'ersrvr_prepare_criterias_array' ) ) {
 /**
  * Check if the function exists.
  */
+if ( ! function_exists( 'ersrvr_get_item_rating' ) ) {
+	/**
+	 * Get the average reviews html for the item.
+	 *
+	 * @param int   $post_id Post ID.
+	 * @param array $comments Comment IDs array.
+	 * @return float
+	 * @since 1.0.0
+	 */
+	function ersrvr_get_item_rating( $post_id, $comments ) {
+		// Return blank if there are no comments.
+		if ( empty( $comments ) || ! is_array( $comments ) ) {
+			return;
+		}
+
+		$average_rating_total = 0; // Sum of all the average ratings.
+
+		// Iterate through the comments to get their rating values.
+		foreach ( $comments as $comment_id ) {
+			$total_rating   = 0; // All rating sum.
+			$user_ratings   = get_comment_meta( $comment_id, 'user_ratings', true );
+			$criterias      = get_comment_meta( $comment_id, 'criterias', true );
+			$criteria_count = ( ! empty( $criterias ) ) ? count( $criterias ) : 0;
+
+			// Skip, if there are no ratings available.
+			if ( empty( $user_ratings ) || ! is_array( $user_ratings ) || 0 === $criteria_count ) {
+				continue;
+			}
+
+			// Iterate through the user ratings.
+			foreach ( $user_ratings as $rating ) {
+				$total_rating += ( ! empty( $rating['rating'] ) ) ? (int) $rating['rating'] : 0;
+			}
+
+			$review_avg_rating     = (float) number_format( ( $total_rating / $criteria_count ), 2 ); // Item avg. rating.
+			$average_rating_total += $review_avg_rating; // Add the average rating.
+		}
+
+		// Calculate the average rating of the item.
+		$reviews_count = count( $comments );
+
+		return (float) number_format( ( $average_rating_total / $reviews_count ), 1 );
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrvr_get_item_rating_html' ) ) {
+	/**
+	 * Return the item rating HTML.
+	 *
+	 * @param float $item_rating Item rating.
+	 * @param array $comments Item comments.
+	 * @return string
+	 * @since 1.0.0
+	 */
+	function ersrvr_get_item_rating_html( $item_rating, $comments ) {
+		$reviews_count = count( $comments );
+		ob_start();
+		?>
+		<div class="list-Of-Review-title">
+			<h2 class="font-popins font-size-24 font-weight-bold">
+				<?php
+				/* translators: 1: %d: reviews count */
+				echo sprintf( __( '%1$d reviews', 'easy-reservations-reviews' ), $reviews_count );
+				?>
+			</h2>
+		</div>
+		<div class="total-of-star-rating">
+			<div class="rating-item d-flex flex-wrap align-items-center">
+				<div class="col-12 col-sm-12 rating-group px-0">
+					<?php for ( $i = 1; $i <= 5; $i++ ) {
+						// $filled_star_class = ( $total_rating_star >= $i ) ? 'fill_star_click' : '';
+						// $filled_icons      = ( is_float( $reviews_count ) ) ? 'fa-star-half' : 'fa-star';
+						$filled_star_class = 'fill_star_click';
+						?>
+						<input class="rating__input <?php echo esc_attr( $filled_star_class ); ?>" name="rating3" id="rating<?php echo esc_attr( $i ); ?>-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
+						<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="rating<?php echo esc_attr( $i ); ?>-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+					<?php } ?>
+				</div>
+			</div>
+		</div>
+		<?php
+		return ob_get_clean();
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
 if ( ! function_exists( 'ersrvr_prepare_reviews_form_html' ) ) {
 	/**
 	 * Make Review Form HTML.
@@ -468,7 +559,7 @@ if ( ! function_exists( 'ersrvr_html_of_total_review' ) ) {
 /**
  * Check if the function exists.
  */
-if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
+if ( ! function_exists( 'ersrvr_get_review_item_html' ) ) {
 	/**
 	 * Get HTML of total ratings
 	 *
@@ -476,153 +567,153 @@ if ( ! function_exists( 'ersrvr_html_comment_message_box' ) ) {
 	 * @return string
 	 * @since 1.0.0
 	 */
-	function ersrvr_html_comment_message_box( $allcomments ) {
+	function ersrvr_get_review_item_html( $comment_id ) {
+		$user_id         = (int) $get_all_comment->user_id;
+		$current_user    = ersrvr_user_logged_in_data();
+		$current_user_id = ! empty( $current_user['user_id'] ) ? $current_user['user_id'] : '';
+		$current_user_id = (int) $current_user_id;
+		$comment_date    = $get_all_comment->comment_date;
+		$comment_date    = gmdate( 'd M Y', strtotime( $comment_date ) );
+		$user_obj        = get_userdata( $user_id );
+		$first_name      = ! empty( get_user_meta( $user_id, 'first_name', true ) ) ? get_user_meta( $user_id, 'first_name', true ) : '';
+		$last_name       = ! empty( get_user_meta( $user_id, 'last_name', true ) ) ? get_user_meta( $user_id, 'last_name', true ) : '';
+		$display_name    = ! empty( $user_obj->data->display_name ) ? $user_obj->data->display_name : '';
+		$username        = $first_name . ' ' . $last_name;
+		$username        = ( ' ' !== $username ) ? $username : $display_name;
+		$comment_content = $get_all_comment->comment_content;
+		$average_rating  = get_comment_meta( $comment_id, 'average_ratings', true );
+		$average_rating  = (int) $average_rating;
+		$criteria        = get_comment_meta( $comment_id, 'user_criteria_ratings', true );
+		$post_id         = (int) $get_all_comment->comment_post_ID;
+
+		// Prepare the HTML now.
 		ob_start();
-		foreach ( $allcomments as $get_all_comment ) {
-			$commnet_id      = $get_all_comment->comment_ID;
-			$user_id         = (int) $get_all_comment->user_id;
-			$current_user    = ersrvr_user_logged_in_data();
-			$current_user_id = ! empty( $current_user['user_id'] ) ? $current_user['user_id'] : '';
-			$current_user_id = (int) $current_user_id;
-			$comment_date    = $get_all_comment->comment_date;
-			$comment_date    = gmdate( 'd M Y', strtotime( $comment_date ) );
-			$user_obj        = get_userdata( $user_id );
-			$first_name      = ! empty( get_user_meta( $user_id, 'first_name', true ) ) ? get_user_meta( $user_id, 'first_name', true ) : '';
-			$last_name       = ! empty( get_user_meta( $user_id, 'last_name', true ) ) ? get_user_meta( $user_id, 'last_name', true ) : '';
-			$display_name    = ! empty( $user_obj->data->display_name ) ? $user_obj->data->display_name : '';
-			$username        = $first_name . ' ' . $last_name;
-			$username        = ( ' ' !== $username ) ? $username : $display_name;
-			$comment_content = $get_all_comment->comment_content;
-			$average_rating  = get_comment_meta( $commnet_id, 'average_ratings', true );
-			$average_rating  = (int) $average_rating;
-			$criteria        = get_comment_meta( $commnet_id, 'user_criteria_ratings', true );
-			$post_id         = (int) $get_all_comment->comment_post_ID;
-			?>
-			<li class="media mb-4 ersrvr_comment_id_<?php echo esc_attr( $commnet_id ); ?>">
-				<img class="mr-3 rounded-circle" alt="user-photo" src="<?php echo esc_attr( site_url() ); ?>/wp-content/uploads/2021/08/pexels-jason-boyd-3423147-scaled.jpg" />
-				<div class="media-body">
-					<div class="media-title">
-						<div id="full-stars-example-two" class="rating-group-wrapper">
-							<div class="rating-item d-flex flex-wrap align-items-center">
-							<?php if ( ! empty( $criteria ) && is_array( $criteria ) ) { ?>
-								<a class="text-decoration-none ersrvr-review-details-popup" href="javascript:void(0);">
-							<?php } ?>
-								<div class="col-auto rating-group px-0">
-									<?php for ( $i = 1; $i <= 5; $i++ ) { ?>
-										<?php
-										$filled_star_class = ( $average_rating >= $i ) ? 'fill_star_click' : '';
-										?>
-										<input class="rating__input <?php echo esc_attr( $filled_star_class ); ?>" name="rating3" id="rating3-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
-										<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="rating3-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-									<?php } ?>
-								</div>
-								<?php if ( ! empty( $criteria ) && is_array( $criteria ) ) { ?>
-									</a>
+		?>
+		<li class="media mb-4 ersrvr_comment_id_<?php echo esc_attr( $comment_id ); ?>">
+			<img class="mr-3 rounded-circle" alt="user-photo" src="<?php echo esc_attr( site_url() ); ?>/wp-content/uploads/2021/08/pexels-jason-boyd-3423147-scaled.jpg" />
+			<div class="media-body">
+				<div class="media-title">
+					<div id="full-stars-example-two" class="rating-group-wrapper">
+						<div class="rating-item d-flex flex-wrap align-items-center">
+						<?php if ( ! empty( $criteria ) && is_array( $criteria ) ) { ?>
+							<a class="text-decoration-none ersrvr-review-details-popup" href="javascript:void(0);">
+						<?php } ?>
+							<div class="col-auto rating-group px-0">
+								<?php for ( $i = 1; $i <= 5; $i++ ) { ?>
+									<?php
+									$filled_star_class = ( $average_rating >= $i ) ? 'fill_star_click' : '';
+									?>
+									<input class="rating__input <?php echo esc_attr( $filled_star_class ); ?>" name="rating3" id="rating3-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
+									<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="rating3-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
 								<?php } ?>
-								<?php if ( ! empty( $criteria ) && is_array( $criteria ) ) { ?>
-									<div class="ersrvr-reservation-reviews-details" id="ersrvr-reservation-reviews-details-id">
-										<div class="ersrvr-reservation-reviews-details-summary-wrapper p-3">
-											<table class="table table-borderless">
-												<tbody>
-													<?php $k = 1; ?>
-													<?php $rating_by_criteria = array(); ?>
-													<?php
-													foreach ( $criteria as $criteria_data ) {
-														$rating_by_criteria[] = array(
-															$criteria_data['closest_criteria'] => $criteria_data['rating'],
-														);
-														$final_ratings_array  = array();
-														foreach ( $rating_by_criteria as $key => $formatted_data ) {
-															foreach ( $formatted_data as $key => $value ) {
-																$final_ratings_array[ $key ] = $value;
-															}
+							</div>
+							<?php if ( ! empty( $criteria ) && is_array( $criteria ) ) { ?>
+								</a>
+							<?php } ?>
+							<?php if ( ! empty( $criteria ) && is_array( $criteria ) ) { ?>
+								<div class="ersrvr-reservation-reviews-details" id="ersrvr-reservation-reviews-details-id">
+									<div class="ersrvr-reservation-reviews-details-summary-wrapper p-3">
+										<table class="table table-borderless">
+											<tbody>
+												<?php $k = 1; ?>
+												<?php $rating_by_criteria = array(); ?>
+												<?php
+												foreach ( $criteria as $criteria_data ) {
+													$rating_by_criteria[] = array(
+														$criteria_data['closest_criteria'] => $criteria_data['rating'],
+													);
+													$final_ratings_array  = array();
+													foreach ( $rating_by_criteria as $key => $formatted_data ) {
+														foreach ( $formatted_data as $key => $value ) {
+															$final_ratings_array[ $key ] = $value;
 														}
 													}
-													foreach ( $final_ratings_array as $criteria_key => $criteria_rating ) {
-														$criteria_rating = (int) $criteria_rating;
-														$criteria_name   = ucfirst( $criteria_key );
-														$criteria_name   = str_replace( '-', ' ', $criteria_name );
-														$criteria_slug   = $criteria_key;
-														?>
-														<tr class="<?php echo esc_html( $criteria_name ); ?>">
-															<th><?php echo esc_html( $criteria_name ); ?></th>
-															<td>
-																<div class="col-8 col-sm-9 rating-group" id="<?php echo esc_attr( $criteria_slug ); ?>" data-criteria="<?php echo esc_attr( $criteria_name ); ?>">
-																	<?php for ( $i = 1; $i <= 5; $i++ ) { ?>
-																		<?php $filled_star_class = ( $criteria_rating >= $i ) ? 'fill_star_click' : ''; ?>
-																		<input class="rating__input <?php echo esc_attr( $filled_star_class ); ?>" name="rating3" id="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
-																		<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
-																	<?php } ?>
-																</div>
-															</td>
-														</tr>
-														<?php $k++; ?>
-													<?php } ?>
-												</tbody>
-											</table>
-										</div>
+												}
+												foreach ( $final_ratings_array as $criteria_key => $criteria_rating ) {
+													$criteria_rating = (int) $criteria_rating;
+													$criteria_name   = ucfirst( $criteria_key );
+													$criteria_name   = str_replace( '-', ' ', $criteria_name );
+													$criteria_slug   = $criteria_key;
+													?>
+													<tr class="<?php echo esc_html( $criteria_name ); ?>">
+														<th><?php echo esc_html( $criteria_name ); ?></th>
+														<td>
+															<div class="col-8 col-sm-9 rating-group" id="<?php echo esc_attr( $criteria_slug ); ?>" data-criteria="<?php echo esc_attr( $criteria_name ); ?>">
+																<?php for ( $i = 1; $i <= 5; $i++ ) { ?>
+																	<?php $filled_star_class = ( $criteria_rating >= $i ) ? 'fill_star_click' : ''; ?>
+																	<input class="rating__input <?php echo esc_attr( $filled_star_class ); ?>" name="rating3" id="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>" value="<?php echo esc_attr( $i ); ?>" type="radio">
+																	<label aria-label="<?php echo esc_attr( $i ); ?> star" class="rating__label" for="<?php echo esc_attr( $criteria_slug ); ?>-star-<?php echo esc_attr( $i ); ?>"><span class="rating__icon rating__icon--star fa fa-star"></span></label>
+																<?php } ?>
+															</div>
+														</td>
+													</tr>
+													<?php $k++; ?>
+												<?php } ?>
+											</tbody>
+										</table>
 									</div>
-								<?php } ?>
-								<div class="col-auto"><label class="font-Poppins font-weight-semibold text-muted font-size-14"><?php echo esc_html( sprintf( __( '%1$s  of 5', 'easy-reservations-reviews' ), $average_rating ) ); ?> </label>
 								</div>
+							<?php } ?>
+							<div class="col-auto"><label class="font-Poppins font-weight-semibold text-muted font-size-14"><?php echo esc_html( sprintf( __( '%1$s  of 5', 'easy-reservations-reviews' ), $average_rating ) ); ?> </label>
 							</div>
 						</div>
-						<h5 class="mt-2 mb-1 font-popins font-size-16 font-weight-semibold">
-							<?php echo esc_html( $username ); ?>
-							<span class="text-muted font-lato font-weight-normal font-size-14">- <?php echo esc_html( $comment_date ); ?></span>
-							<?php if ( $user_id === $current_user_id ) { ?>
-								<?php
-								$edit_setting = get_option( 'ersrvr_enable_edit_reservation_reviews' );
-								?>
-								<?php if ( 'yes' === $edit_setting  && is_user_logged_in() ) { ?>
-								<span class="text-muted font-lato font-weight-normal font-size-14">- <a href="#" class="ersrvr_edit_review" data-commentid="<?php echo esc_html( $commnet_id ); ?>" data-userid="<?php echo esc_html( $current_user_id ); ?>" data-postid="<?php echo esc_html( $post_id ); ?>" ><span class="fa fa-pencil-alt"></span></a></span>
-								<?php } ?>
-								<?php $delete_setting = get_option( 'ersrvr_enable_delete_reservation_reviews' ); ?>
-								<?php if ( 'yes' === $delete_setting && is_user_logged_in() ) { ?>
-								<span class="text-muted font-lato font-weight-normal font-size-14">- <a href="#" class="ersrvr_delete_review" data-commentid="<?php echo esc_html( $commnet_id ); ?>" data-userid="<?php echo esc_html( $current_user_id ); ?>" data-postid="<?php echo esc_html( $post_id ); ?>" ><span class="fa fa-window-close"></span></a></span>
-								<?php } ?>
-							<?php } ?>
-						</h5>
 					</div>
-					<p class="font-lato font-size-14 font-weight-normal mb-3"><?php echo esc_html( $comment_content ); ?></p>
-					<?php
-					$attached_ids = get_comment_meta( $commnet_id, 'attached_files', true );
-					if ( ! empty( $attached_ids ) && is_array( $attached_ids ) ) {
-						?>
-						<div class="gallery-images ersrvr_count_images_3">
+					<h5 class="mt-2 mb-1 font-popins font-size-16 font-weight-semibold">
+						<?php echo esc_html( $username ); ?>
+						<span class="text-muted font-lato font-weight-normal font-size-14">- <?php echo esc_html( $comment_date ); ?></span>
+						<?php if ( $user_id === $current_user_id ) { ?>
 							<?php
-							foreach ( $attached_ids as $index => $attach_id ) {
-								$gallery_images_last_index = count( $attached_ids ) - 1;
-								$image_url                 = ( ! empty( $attach_id ) ) ? wp_get_attachment_url( $attach_id ) : '';
-								/**
-								* Last image custom class.
-								* And, this should work only when the images are more than 5.
-								*/
-								$last_gallery_image_custom_class = '';
-								$last_gallery_image_custom_text  = '';
-								if ( 6 < count( $attached_ids ) && 5 === $index ) {
-									$last_gallery_image_custom_class = 'ersrvr_gallery-last-image-overlay';
-									$last_gallery_image_custom_text  = sprintf( __( '+%1$d images', 'easy-reservations-reviews' ), ( count( $attached_ids ) - 6 ) );
-								}
-								// Hide the images after 6 images.
-								$display_none_image_class = ( 5 < $index ) ? 'd-none' : '';
-								if ( ! empty( $image_url ) ) {
-									?>
-									<div data-text="<?php echo esc_html( $last_gallery_image_custom_text ); ?>" class="ersrvr-gallery-image-item gallery-image-item <?php echo esc_attr( "{$last_gallery_image_custom_class} {$display_none_image_class}" ); ?>" data-imageid="<?php echo esc_attr( $attach_id ); ?>">
-										<img src="<?php echo esc_url( $image_url ); ?>" class="ersrvr_attached_files" />
-									</div>
-									<?php
-								}
-							}
+							$edit_setting = get_option( 'ersrvr_enable_edit_reservation_reviews' );
 							?>
-						</div>
-						<?php
-					}
-					?>
+							<?php if ( 'yes' === $edit_setting  && is_user_logged_in() ) { ?>
+							<span class="text-muted font-lato font-weight-normal font-size-14">- <a href="#" class="ersrvr_edit_review" data-commentid="<?php echo esc_html( $comment_id ); ?>" data-userid="<?php echo esc_html( $current_user_id ); ?>" data-postid="<?php echo esc_html( $post_id ); ?>" ><span class="fa fa-pencil-alt"></span></a></span>
+							<?php } ?>
+							<?php $delete_setting = get_option( 'ersrvr_enable_delete_reservation_reviews' ); ?>
+							<?php if ( 'yes' === $delete_setting && is_user_logged_in() ) { ?>
+							<span class="text-muted font-lato font-weight-normal font-size-14">- <a href="#" class="ersrvr_delete_review" data-commentid="<?php echo esc_html( $comment_id ); ?>" data-userid="<?php echo esc_html( $current_user_id ); ?>" data-postid="<?php echo esc_html( $post_id ); ?>" ><span class="fa fa-window-close"></span></a></span>
+							<?php } ?>
+						<?php } ?>
+					</h5>
 				</div>
-			</li>
-		<?php } ?>
+				<p class="font-lato font-size-14 font-weight-normal mb-3"><?php echo esc_html( $comment_content ); ?></p>
+				<?php
+				$attached_ids = get_comment_meta( $comment_id, 'attached_files', true );
+				if ( ! empty( $attached_ids ) && is_array( $attached_ids ) ) {
+					?>
+					<div class="gallery-images ersrvr_count_images_3">
+						<?php
+						foreach ( $attached_ids as $index => $attach_id ) {
+							$gallery_images_last_index = count( $attached_ids ) - 1;
+							$image_url                 = ( ! empty( $attach_id ) ) ? wp_get_attachment_url( $attach_id ) : '';
+							/**
+							* Last image custom class.
+							* And, this should work only when the images are more than 5.
+							*/
+							$last_gallery_image_custom_class = '';
+							$last_gallery_image_custom_text  = '';
+							if ( 6 < count( $attached_ids ) && 5 === $index ) {
+								$last_gallery_image_custom_class = 'ersrvr_gallery-last-image-overlay';
+								$last_gallery_image_custom_text  = sprintf( __( '+%1$d images', 'easy-reservations-reviews' ), ( count( $attached_ids ) - 6 ) );
+							}
+							// Hide the images after 6 images.
+							$display_none_image_class = ( 5 < $index ) ? 'd-none' : '';
+							if ( ! empty( $image_url ) ) {
+								?>
+								<div data-text="<?php echo esc_html( $last_gallery_image_custom_text ); ?>" class="ersrvr-gallery-image-item gallery-image-item <?php echo esc_attr( "{$last_gallery_image_custom_class} {$display_none_image_class}" ); ?>" data-imageid="<?php echo esc_attr( $attach_id ); ?>">
+									<img src="<?php echo esc_url( $image_url ); ?>" class="ersrvr_attached_files" />
+								</div>
+								<?php
+							}
+						}
+						?>
+					</div>
+					<?php
+				}
+				?>
+			</div>
+		</li>
 		<?php
+
 		return ob_get_clean();
 	}
 }

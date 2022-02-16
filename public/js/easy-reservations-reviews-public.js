@@ -14,6 +14,7 @@ jQuery( document ).ready( function( $ ) {
 	var review_file_allowed_extensions         = ERSRVR_Reviews_Public_Script_Vars.review_file_allowed_extensions;
 	var review_file_invalid_file_error         = ERSRVR_Reviews_Public_Script_Vars.review_file_invalid_file_error;
 	var review_cannot_be_submitted             = ERSRVR_Reviews_Public_Script_Vars.review_cannot_be_submitted;
+	var reviews_list_preparing_text            = ERSRVR_Reviews_Public_Script_Vars.reviews_list_preparing_text;
 
 	// Global variables.
 	var user_criteria_ratings  = [];
@@ -252,6 +253,22 @@ jQuery( document ).ready( function( $ ) {
 	} );
 
 	/**
+	 * List the reviews now, on the product details page.
+	 * Check if the reviews element exists.
+	 */
+	if ( $( '.review-listing-wrapper' ).length ) {
+		var load_comments = $( '.review-listing-wrapper' ).data( 'loadcomments' );
+
+		// If there is a request to load comments.
+		if ( 1 === load_comments ) {
+			// Send the AJAX to load comments.
+			ersrvr_load_comments();
+		} else {
+			$( '.sinlgle-review-items-wrapper .jumbotron' ).hide();
+		}
+	}
+
+	/**
 	 * Delete comment.
 	 */
 	$( document ).on( 'click', '.ersrvr_delete_review', function( evt ) {
@@ -306,8 +323,45 @@ jQuery( document ).ready( function( $ ) {
 	/**
 	 * Load the item reviews.
 	 */
-	function ersrvr_refresh_item_reviews() {
+	function ersrvr_load_comments() {
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'load_reviews',
+				post_id: $( '.single-reserve-page' ).data( 'item' ),
+			},
+			success: function ( response ) {
+				// If there are no reviews available.
+				if ( 'no-review-available' === response.data.code ) {
+					$( '.review-listing-wrapper' ).hide();
+				} else if ( 'reviews-available' === response.data.code ) { // If there are reviews available.
+					$( '.ersrvr_total_review_html' ).html( response.data.item_rating_html ); // Paste the rating HTML.
+					$( '.review-listing-wrapper' ).show(); // Show the reviews listing div.
+					$( '.sinlgle-review-items-wrapper .jumbotron h3.loading-title' ).text( reviews_list_preparing_text ); // Update the loader text.
 
+					// Send the AJAX now to fetch the list.
+					$.ajax( {
+						dataType: 'JSON',
+						url: ajaxurl,
+						type: 'POST',
+						data: {
+							action: 'load_reviews_list',
+							post_id: $( '.single-reserve-page' ).data( 'item' ),
+							reviews: response.data.comments,
+						},
+						success: function ( response ) {
+							$( '.sinlgle-review-items-wrapper .jumbotron' ).hide(); // Update the loader.
+							if ( 'reviews-available' === response.data.code ) {
+								// If there are reviews and the HTML is ready to be pasted.
+								$( '.ersrvr_comment_message_box_view' ).html( response.data.html );
+							}
+						},
+					} );
+				}
+			},
+		} );
 	}
 
 	/**

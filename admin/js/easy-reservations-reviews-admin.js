@@ -198,18 +198,18 @@ jQuery( document ).ready( function( $ ) {
 			} );
 		} );
 	} );
-	
-	$(document).on( 'mouseout', '.rating__label', function( evt ) {
-		// evt.preventDefault();
+
+	// Manage the star classes on mouse hover.
+	$( document ).on( 'mouseout', '.rating__label', function() {
 		var this_label        = $( this );
 		var criteria_input    = this_label.prev( 'input[type="radio"]' );
 		var criteria_input_id = criteria_input.attr( 'id' );
 		$( '#' + criteria_input_id ).prevUntil( '.rating__input:first' ).addBack().removeClass( 'fill_star_hover' );
 		$( 'label.rating__label' ).removeClass( 'fill_star_hover' );
-	});
+	} );
 
-	// check user hover on which star and add class till starts
-	$( document ).on( 'mouseover', '.rating__label', function( evt ) {
+	// Sheck user hover on which star and add class till starts
+	$( document ).on( 'mouseover', '.rating__label', function() {
 		var this_label        = $( this );
 		var criteria_input    = this_label.prev( 'input[type="radio"]' );
 		var criteria_input_id = criteria_input.attr( 'id' );
@@ -219,12 +219,10 @@ jQuery( document ).ready( function( $ ) {
 
 	// check user click on which star and add class till starts
 	$( document ).on( 'click', '.rating__label', function() {
-		// evt.preventDefault();
 		$( 'label.rating__label' ).removeClass( 'fill_star_click' );
 		block_element( $( '.comment-php #publishing-action input[type="submit"]' ) );
 		var this_label        = $( this );
 		var criteria_input    = this_label.prev( 'input[type="radio"]' );
-		console.log( criteria_input );
 		var criteria_input_id = criteria_input.attr( 'id' );
 		var closest_criteria  = criteria_input.closest( '.rating-group' ).attr( 'id' );
 		$( '#' + closest_criteria + ' .rating__input' ).removeClass( 'fill_star_click' );
@@ -248,40 +246,8 @@ jQuery( document ).ready( function( $ ) {
 			closest_criteria: closest_criteria,
 			rating: parseInt( rating ),
 		} );
-	} );
 
-
-	// Save review ratings
-	$( document ).on( 'click', '.ersrvr_submit_review', function( evt ) {
-		evt.preventDefault();
-		var this_btn = $( this );
-		var comment_id = this_btn.data( 'commentid' );
-		var updated_results = existing_criteria_result;
-		// Send the AJAX now.
-		block_element( this_btn );
-		$.ajax( {
-			dataType: 'JSON',
-			url: ajaxurl,
-			type: 'POST',
-			data: {
-				action: 'ersrvr_submit_reviews_current_comment',
-				comment_id: comment_id,
-				updated_results: updated_results,
-			},
-			success: function ( response ) {
-				// Check for invalid ajax request.
-				if ( 0 === response ) {
-					console.log( 'easy reservations: invalid ajax request' );
-					return false;
-				}
-				unblock_element( this_btn );
-				unblock_element( $( '.comment-php #publishing-action input[type="submit"]' ) );
-				if( 'ersrvr_ratings_submitted' === response.data.code ) {
-					$('.ersrvr_average_ratings').text( response.data.ersrvr_average_ratings );
-				}
-
-			},
-		} );
+		console.log( 'existing_criteria_result', existing_criteria_result );
 	} );
 
 	/**

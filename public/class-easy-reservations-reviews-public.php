@@ -119,6 +119,7 @@ class Easy_Reservations_Reviews_Public {
 			'toast_success_heading'                  => __( 'Woohhoooo! Success..', 'easy-reservations-reviews' ),
 			'review_file_allowed_extensions'         => ersrvr_get_review_file_allowed_file_types(),
 			'review_file_invalid_file_error'         => sprintf( __( 'Invalid file selected. Allowed extensions are: %1$s', 'easy-reservations-reviews' ), implode( ', ', ersrvr_get_review_file_allowed_file_types() ) ),
+			'reviews_list_preparing_text'            => __( 'The reviews list is getting prepared...', 'easy-reservations-reviews' ),
 		);
 
 		/**
@@ -252,6 +253,7 @@ class Easy_Reservations_Reviews_Public {
 			'user_id'              => get_current_user_id(),
 			'comment_meta'         => array(
 				'user_ratings'       => $user_ratings,
+				'criterias'          => ersrvr_get_plugin_settings( 'ersrvr_submit_review_criterias' ),
 				'review_attachments' => $review_attachment_ids,
 				'reviewer_phone'     => $reviewer_phone,
 			),
@@ -297,6 +299,99 @@ class Easy_Reservations_Reviews_Public {
 				'toast_message' => $toast_message,
 			)
 		);
+		wp_die();
+	}
+
+	/**
+	 * AJAX served to fetch all the comments.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrvr_load_reviews_callback() {
+		// Posted data.
+		$post_id = filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
+
+		// Prepare the arguments to fetch array of comments.
+		$comment_args = array(
+			'status'   => 'approve',
+			'post_id'  => $post_id,
+			'order_by' => 'date',
+			'order'    => 'DESC',
+			'fields'   => 'ids',
+		);
+
+		/**
+		 * This hook fires in the public side when loading all the comments.
+		 *
+		 * This filter helps in modifying the arguments used to fetch the reviews.
+		 *
+		 * @param array $comment_args Reviews arguments.
+		 * @return array
+		 * @since 1.0.0
+		 */
+		$comment_args = apply_filters( 'ersrvr_load_reviews_args', $comment_args );
+
+		// Get the comments now.
+		$comments = get_comments( $comment_args );
+
+		// Return the response if there is no review available.
+		if ( empty( $comments ) || ! is_array( $comments ) ) {
+			$response            = array(
+				'code' => 'no-review-available',
+			);
+			wp_send_json_success( $response );
+			wp_die();
+		}
+
+		/**
+		 * Now that we're here, we need to get the average reviews and the list.
+		 * Get the avg. reviews now.
+		 */
+		$item_rating = ersrvr_get_item_rating( $post_id, $comments );
+
+		// Return back the response.
+		$response            = array(
+			'code'             => 'reviews-available',
+			'item_rating_html' => ersrvr_get_item_rating_html( $item_rating, $comments ),
+			'comments'         => $comments,
+		);
+		wp_send_json_success( $response );
+		wp_die();
+	}
+
+	/**
+	 * AJAX served to fetch the list view of the comments.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrvr_load_reviews_list_callback() {
+		// Posted data.
+		$post_id    = filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
+		$posted_arr = filter_input_array( INPUT_POST );
+		$comments   = ( ! empty( $posted_arr['reviews'] ) ) ? $posted_arr['reviews'] : array();
+
+		// Return the response back if there are no reviews.
+		if ( empty( $comments ) || ! is_array( $comments ) ) {
+			$response = array(
+				'code' => 'no-review-available',
+			);
+			wp_send_json_success( $response );
+			wp_die();
+		}
+
+		$reviews_list_html = '';
+
+		// Prepare the HTML for the reviews list.
+		foreach ( $comments as $comment_id ) {
+			$reviews_list_html .= ersrvr_get_review_item_html( $comment_id );
+		}
+
+		// Send back the HTML now.
+		$response = array(
+			'code' => 'reviews-available',
+			'html' => $reviews_list_html,
+		);
+		wp_send_json_success( $response );
 		wp_die();
 	}
 
